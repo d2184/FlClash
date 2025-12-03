@@ -1,0 +1,107 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  TZ: Asia/Shanghai
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow runs delete
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 0
+          keep_minimum_runs: 2
+
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Set Core Version
+        run: |
+          cd core/Clash.Meta
+          commit_hash=$(git rev-parse --short=7 HEAD~1)
+          sed -i "s/Version    = \".*\"/Version    = \"alpha-${commit_hash}\"/" constant/version.go
+
+      - name: Setup Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.25'
+          cache-dependency-path: |
+            core/go.sum
+          check-latest: true
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.35.7
+          cache: true
+
+      - name: Get Flutter Dependency
+        run: |
+          flutter pub get
+
+      - name: Get latest geo database
+        run: |
+          curl -sSL "https://github.com/d2184/geoip/raw/release/GeoLite2-ASN.mmdb" -o ./assets/data/ASN.mmdb
+          curl -sSL "https://github.com/d2184/geoip/raw/release/geoip.metadb" -o ./assets/data/GEOIP.metadb
+          curl -sSL "https://github.com/d2184/geoip/raw/release/geoip.dat" -o ./assets/data/GEOIP.dat
+          curl -sSL "https://github.com/d2184/geosite/raw/release/geosite.dat" -o ./assets/data/GEOSITE.dat
+        shell: bash
+
+      - name: Build
+        run: |
+          dart setup.dart android
+
+      - name: Display files in directory
+        run: |
+          ls ./dist
+
+      - name: Sign Apks
+        if: success()
+        uses: d2184/android-sign@main
+        with:
+          releaseDirectory: ./dist
+          output: ./dist/signed
+          alias: ${{ secrets.KEY_ALIAS }}
+          signingKeyBase64: ${{ secrets.KEYSTORE_CONTENT }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          BUILD_TOOLS_VERSION: "35.0.0"
+
+      - name: Delete current Prerelease-alpha assets
+        uses: mknejp/delete-release-assets@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Prerelease-Alpha
+          assets: "*.apk"
+          fail-if-no-release: false
+          fail-if-no-assets: false
+
+      - name: Public
+        uses: svenstaro/upload-release-action@master
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: Prerelease-Alpha
+          release_name: Prerelease-Alpha
+          file: "./dist/signed/*.apk"
+          prerelease: true
+          overwrite: true
+          file_glob: true
+
