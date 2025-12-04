@@ -82,43 +82,48 @@ class Request {
   };
 
   Future<Result<IpInfo?>> checkIp({CancelToken? cancelToken}) async {
+    final completer = Completer<Result<IpInfo?>>();
     var failureCount = 0;
-    final futures = _ipInfoSources.entries.map((source) async {
-      final Completer<Result<IpInfo?>> completer = Completer();
-      handleFailRes() {
-        if (!completer.isCompleted && failureCount == _ipInfoSources.length) {
-          completer.complete(Result.success(null));
-        }
+    final totalCount = _ipInfoSources.length;
+    
+    void checkCompletion() {
+      if (failureCount == totalCount && !completer.isCompleted) {
+        completer.complete(Result.success(null));
       }
+    }
 
-      final future = dio
+    for (final source in _ipInfoSources.entries) {
+      dio
           .get<Map<String, dynamic>>(
             source.key,
             cancelToken: cancelToken,
             options: Options(responseType: ResponseType.json),
           )
-          .timeout(const Duration(seconds: 10));
-      future
+          .timeout(const Duration(seconds: 10))
           .then((res) {
+            if (completer.isCompleted) return;
+            
             if (res.statusCode == HttpStatus.ok && res.data != null) {
               completer.complete(Result.success(source.value(res.data!)));
-              return;
+              cancelToken?.cancel();
+            } else {
+              failureCount++;
+              checkCompletion();
             }
-            failureCount++;
-            handleFailRes();
           })
           .catchError((e) {
-            failureCount++;
+            if (completer.isCompleted) return;
+            
             if (e is DioException && e.type == DioExceptionType.cancel) {
-              completer.complete(Result.error('cancelled'));
+              return;
             }
-            handleFailRes();
+            
+            failureCount++;
+            checkCompletion();
           });
-      return completer.future;
-    });
-    final res = await Future.any(futures);
-    cancelToken?.cancel();
-    return res;
+    }
+
+    return completer.future;
   }
 
   Future<bool> pingHelper() async {
