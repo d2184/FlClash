@@ -16,20 +16,10 @@ val localProperties = Properties().apply {
     }
 }
 
-val mStoreFile: File = file("keystore.jks")
-val mStorePassword: String? = localProperties.getProperty("storePassword")
-val mKeyAlias: String? = localProperties.getProperty("keyAlias")
-val mKeyPassword: String? = localProperties.getProperty("keyPassword")
-val isRelease =
-    mStoreFile.exists() && mStorePassword != null && mKeyAlias != null && mKeyPassword != null
-
-
 android {
     namespace = "com.follow.clash"
     compileSdk = libs.versions.compileSdk.get().toInt()
     ndkVersion = libs.versions.ndkVersion.get()
-
-
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -42,17 +32,6 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-    }
-
-    signingConfigs {
-        if (isRelease) {
-            create("release") {
-                storeFile = mStoreFile
-                storePassword = mStorePassword
-                keyAlias = mKeyAlias
-                keyPassword = mKeyPassword
-            }
-        }
     }
 
     packaging {
@@ -70,11 +49,6 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = if (isRelease) {
-                signingConfigs.getByName("release")
-            } else {
-                signingConfigs.getByName("debug")
-            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
@@ -106,3 +80,4 @@ dependencies {
     implementation(libs.firebase.crashlytics.ndk)
     implementation(libs.firebase.analytics)
 }
+
