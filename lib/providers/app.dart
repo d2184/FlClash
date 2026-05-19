@@ -507,11 +507,9 @@ class NetworkDetection extends _$NetworkDetection
     }
     final cancelToken = CancelToken();
     final version = _resetCheckSession(cancelToken);
-    commonPrint.log('checkIp start');
     state = state.copyWith(isLoading: true, ipInfo: null);
     _preIsStart = isStart;
     final res = await request.checkIp(cancelToken: cancelToken);
-    commonPrint.log('checkIp res: $res');
 
     if (!ref.mounted ||
         version != _checkVersion ||
