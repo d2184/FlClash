@@ -100,49 +100,62 @@ class Request {
   };
 
   Future<Result<IpInfo?>> checkIp({CancelToken? cancelToken}) async {
-    var failureCount = 0;
-    final token = cancelToken ?? CancelToken();
-    final futures = _ipInfoSources.entries.map((source) async {
-      final Completer<Result<IpInfo?>> completer = Completer();
-      void handleFailRes() {
-        if (!completer.isCompleted && failureCount == _ipInfoSources.length) {
-          completer.complete(Result.success(null));
-        }
-      }
+    final token = CancelToken();
+    unawaited(cancelToken?.whenCancel.then((_) => token.cancel()));
 
-      final future = dio
-          .get<Map<String, dynamic>>(
-            source.key,
-            cancelToken: token,
-            options: Options(responseType: ResponseType.json),
-          )
-          .timeout(const Duration(seconds: 10));
+    final completer = Completer<Result<IpInfo?>>();
+    var remaining = _ipInfoSources.length;
+
+    void onFailure() {
+      remaining--;
+      if (remaining == 0 && !completer.isCompleted) {
+        completer.complete(Result.success(null));
+      }
+    }
+
+    for (final source in _ipInfoSources.entries) {
       unawaited(
-        future
+        dio
+            .get<Map<String, dynamic>>(
+              source.key,
+              cancelToken: token,
+              options: Options(
+                responseType: ResponseType.json,
+                connectTimeout: const Duration(seconds: 10),
+                receiveTimeout: const Duration(seconds: 10),
+              ),
+            )
             .then((res) {
+              if (completer.isCompleted) return;
               if (res.statusCode == HttpStatus.ok && res.data != null) {
                 completer.complete(Result.success(source.value(res.data!)));
+                token.cancel();
                 return;
               }
-              commonPrint.log('checkIp data empty', logLevel: LogLevel.info);
-              failureCount++;
-              handleFailRes();
+              commonPrint.log(
+                'checkIp ${source.key} returned ${res.statusCode}',
+                logLevel: LogLevel.info,
+              );
+              onFailure();
             })
             .catchError((e) {
-              failureCount++;
+              if (completer.isCompleted) return;
               if (e is DioException && e.type == DioExceptionType.cancel) {
-                completer.complete(Result.error('cancelled'));
+                if (cancelToken?.isCancelled == true) {
+                  completer.complete(Result.error('cancelled'));
+                }
                 return;
               }
-              commonPrint.log('checkIp error $e', logLevel: LogLevel.warning);
-              handleFailRes();
+              commonPrint.log(
+                'checkIp ${source.key} error: $e',
+                logLevel: LogLevel.warning,
+              );
+              onFailure();
             }),
       );
-      return completer.future;
-    });
-    final res = await Future.any(futures);
-    token.cancel();
-    return res;
+    }
+
+    return completer.future;
   }
 }
 
