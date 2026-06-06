@@ -106,7 +106,11 @@ List<String> createFlutterBuildArgs({
     'dart-define-from-file=env.json',
   ];
   if (platform == 'android') {
-    flutterBuildArgs.add('split-per-abi');
+    flutterBuildArgs.addAll([
+      'split-per-abi',
+      'obfuscate',
+      'split-debug-info=.symbols',
+    ]);
   }
   return flutterBuildArgs;
 }
