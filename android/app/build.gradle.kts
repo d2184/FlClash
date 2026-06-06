@@ -15,15 +15,6 @@ val localProperties = Properties().apply {
     }
 }
 
-val releaseStoreFile = file("keystore.jks")
-val releaseStorePassword = localProperties.getProperty("storePassword")
-val releaseKeyAlias = localProperties.getProperty("keyAlias")
-val releaseKeyPassword = localProperties.getProperty("keyPassword")
-val hasReleaseSigning = releaseStoreFile.exists() &&
-    releaseStorePassword != null &&
-    releaseKeyAlias != null &&
-    releaseKeyPassword != null
-
 android {
     namespace = "com.follow.clash"
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -42,17 +33,6 @@ android {
         versionName = flutter.versionName
     }
 
-    signingConfigs {
-        if (hasReleaseSigning) {
-            create("release") {
-                storeFile = releaseStoreFile
-                storePassword = releaseStorePassword
-                keyAlias = releaseKeyAlias
-                keyPassword = releaseKeyPassword
-            }
-        }
-    }
-
     packaging {
         jniLibs {
             useLegacyPackaging = true
@@ -68,12 +48,6 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            if (hasReleaseSigning) {
-                signingConfig = signingConfigs.getByName("release")
-            } else {
-                signingConfig = signingConfigs.getByName("debug")
-                applicationIdSuffix = ".dev"
-            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
