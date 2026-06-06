@@ -12,13 +12,13 @@ const defaultTun = Tun();
 const defaultDns = Dns();
 const defaultGeoXUrl = {
   GeoResource.MMDB:
-      'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb',
+      'https://github.com/d2184/geoip/raw/release/geoip.metadb',
   GeoResource.ASN:
-      'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb',
+      'https://github.com/d2184/geoip/raw/release/GeoLite2-ASN.mmdb',
   GeoResource.GEOIP:
-      'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.dat',
+      'https://github.com/d2184/geoip/raw/release/geoip.dat',
   GeoResource.GEOSITE:
-      'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat',
+      'https://github.com/d2184/geosite/raw/release/geosite.dat',
 };
 
 const defaultMixedPort = 7890;
