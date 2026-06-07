@@ -181,3 +181,26 @@ abstract class ProxiesData with _$ProxiesData {
   factory ProxiesData.fromJson(Map<String, Object?> json) =>
       _$ProxiesDataFromJson(json);
 }
+
+@freezed
+abstract class AgeKeygenResult with _$AgeKeygenResult {
+  const factory AgeKeygenResult({
+    String? secretKey,
+    String? publicKey,
+    String? error,
+  }) = _AgeKeygenResult;
+
+  factory AgeKeygenResult.fromJson(Map<String, Object?> json) =>
+      _$AgeKeygenResultFromJson(json);
+}
+
+@freezed
+abstract class AgeConvertResult with _$AgeConvertResult {
+  const factory AgeConvertResult({
+    List<String>? publicKeys,
+    String? error,
+  }) = _AgeConvertResult;
+
+  factory AgeConvertResult.fromJson(Map<String, Object?> json) =>
+      _$AgeConvertResultFromJson(json);
+}

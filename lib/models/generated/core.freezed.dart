@@ -3738,4 +3738,561 @@ as List<String>,
 
 }
 
+
+/// @nodoc
+mixin _$AgeKeygenResult {
+
+ String? get secretKey; String? get publicKey; String? get error;
+/// Create a copy of AgeKeygenResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AgeKeygenResultCopyWith<AgeKeygenResult> get copyWith => _$AgeKeygenResultCopyWithImpl<AgeKeygenResult>(this as AgeKeygenResult, _$identity);
+
+  /// Serializes this AgeKeygenResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as AgeKeygenResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgeKeygenResult&&(identical(other.secretKey, _this.secretKey) || other.secretKey == _this.secretKey)&&(identical(other.publicKey, _this.publicKey) || other.publicKey == _this.publicKey)&&(identical(other.error, _this.error) || other.error == _this.error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as AgeKeygenResult;
+  return Object.hash(runtimeType,_this.secretKey,_this.publicKey,_this.error);
+}
+
+@override
+String toString() {
+  final _this = this as AgeKeygenResult;
+  return 'AgeKeygenResult(secretKey: ${_this.secretKey}, publicKey: ${_this.publicKey}, error: ${_this.error})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AgeKeygenResultCopyWith<$Res>  {
+  factory $AgeKeygenResultCopyWith(AgeKeygenResult value, $Res Function(AgeKeygenResult) _then) = _$AgeKeygenResultCopyWithImpl;
+@useResult
+$Res call({
+ String? secretKey, String? publicKey, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class _$AgeKeygenResultCopyWithImpl<$Res>
+    implements $AgeKeygenResultCopyWith<$Res> {
+  _$AgeKeygenResultCopyWithImpl(this._self, this._then);
+
+  final AgeKeygenResult _self;
+  final $Res Function(AgeKeygenResult) _then;
+
+/// Create a copy of AgeKeygenResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? secretKey = freezed,Object? publicKey = freezed,Object? error = freezed,}) {
+  return _then(AgeKeygenResult(
+secretKey: freezed == secretKey ? _self.secretKey : secretKey // ignore: cast_nullable_to_non_nullable
+as String?,publicKey: freezed == publicKey ? _self.publicKey : publicKey // ignore: cast_nullable_to_non_nullable
+as String?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AgeKeygenResult].
+extension AgeKeygenResultPatterns on AgeKeygenResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AgeKeygenResult value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AgeKeygenResult() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AgeKeygenResult value)  $default,){
+final _that = this;
+switch (_that) {
+case _AgeKeygenResult():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AgeKeygenResult value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AgeKeygenResult() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? secretKey,  String? publicKey,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AgeKeygenResult() when $default != null:
+return $default(_that.secretKey,_that.publicKey,_that.error);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? secretKey,  String? publicKey,  String? error)  $default,) {final _that = this;
+switch (_that) {
+case _AgeKeygenResult():
+return $default(_that.secretKey,_that.publicKey,_that.error);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? secretKey,  String? publicKey,  String? error)?  $default,) {final _that = this;
+switch (_that) {
+case _AgeKeygenResult() when $default != null:
+return $default(_that.secretKey,_that.publicKey,_that.error);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AgeKeygenResult implements AgeKeygenResult {
+  const _AgeKeygenResult({this.secretKey, this.publicKey, this.error});
+  factory _AgeKeygenResult.fromJson(Map<String, dynamic> json) => _$AgeKeygenResultFromJson(json);
+
+@override final  String? secretKey;
+@override final  String? publicKey;
+@override final  String? error;
+
+/// Create a copy of AgeKeygenResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AgeKeygenResultCopyWith<_AgeKeygenResult> get copyWith => __$AgeKeygenResultCopyWithImpl<_AgeKeygenResult>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AgeKeygenResultToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgeKeygenResult&&(identical(other.secretKey, secretKey) || other.secretKey == secretKey)&&(identical(other.publicKey, publicKey) || other.publicKey == publicKey)&&(identical(other.error, error) || other.error == error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,secretKey,publicKey,error);
+}
+
+@override
+String toString() {
+    return 'AgeKeygenResult(secretKey: $secretKey, publicKey: $publicKey, error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AgeKeygenResultCopyWith<$Res> implements $AgeKeygenResultCopyWith<$Res> {
+  factory _$AgeKeygenResultCopyWith(_AgeKeygenResult value, $Res Function(_AgeKeygenResult) _then) = __$AgeKeygenResultCopyWithImpl;
+@override @useResult
+$Res call({
+ String? secretKey, String? publicKey, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class __$AgeKeygenResultCopyWithImpl<$Res>
+    implements _$AgeKeygenResultCopyWith<$Res> {
+  __$AgeKeygenResultCopyWithImpl(this._self, this._then);
+
+  final _AgeKeygenResult _self;
+  final $Res Function(_AgeKeygenResult) _then;
+
+/// Create a copy of AgeKeygenResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? secretKey = freezed,Object? publicKey = freezed,Object? error = freezed,}) {
+  return _then(_AgeKeygenResult(
+secretKey: freezed == secretKey ? _self.secretKey : secretKey // ignore: cast_nullable_to_non_nullable
+as String?,publicKey: freezed == publicKey ? _self.publicKey : publicKey // ignore: cast_nullable_to_non_nullable
+as String?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$AgeConvertResult {
+
+ List<String>? get publicKeys; String? get error;
+/// Create a copy of AgeConvertResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AgeConvertResultCopyWith<AgeConvertResult> get copyWith => _$AgeConvertResultCopyWithImpl<AgeConvertResult>(this as AgeConvertResult, _$identity);
+
+  /// Serializes this AgeConvertResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as AgeConvertResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AgeConvertResult&&const DeepCollectionEquality().equals(other.publicKeys, _this.publicKeys)&&(identical(other.error, _this.error) || other.error == _this.error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as AgeConvertResult;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.publicKeys),_this.error);
+}
+
+@override
+String toString() {
+  final _this = this as AgeConvertResult;
+  return 'AgeConvertResult(publicKeys: ${_this.publicKeys}, error: ${_this.error})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AgeConvertResultCopyWith<$Res>  {
+  factory $AgeConvertResultCopyWith(AgeConvertResult value, $Res Function(AgeConvertResult) _then) = _$AgeConvertResultCopyWithImpl;
+@useResult
+$Res call({
+ List<String>? publicKeys, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class _$AgeConvertResultCopyWithImpl<$Res>
+    implements $AgeConvertResultCopyWith<$Res> {
+  _$AgeConvertResultCopyWithImpl(this._self, this._then);
+
+  final AgeConvertResult _self;
+  final $Res Function(AgeConvertResult) _then;
+
+/// Create a copy of AgeConvertResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? publicKeys = freezed,Object? error = freezed,}) {
+  return _then(AgeConvertResult(
+publicKeys: freezed == publicKeys ? _self.publicKeys : publicKeys // ignore: cast_nullable_to_non_nullable
+as List<String>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AgeConvertResult].
+extension AgeConvertResultPatterns on AgeConvertResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AgeConvertResult value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AgeConvertResult() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AgeConvertResult value)  $default,){
+final _that = this;
+switch (_that) {
+case _AgeConvertResult():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AgeConvertResult value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AgeConvertResult() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<String>? publicKeys,  String? error)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AgeConvertResult() when $default != null:
+return $default(_that.publicKeys,_that.error);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<String>? publicKeys,  String? error)  $default,) {final _that = this;
+switch (_that) {
+case _AgeConvertResult():
+return $default(_that.publicKeys,_that.error);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<String>? publicKeys,  String? error)?  $default,) {final _that = this;
+switch (_that) {
+case _AgeConvertResult() when $default != null:
+return $default(_that.publicKeys,_that.error);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AgeConvertResult implements AgeConvertResult {
+  const _AgeConvertResult({ List<String>? publicKeys, this.error}): _publicKeys = publicKeys;
+  factory _AgeConvertResult.fromJson(Map<String, dynamic> json) => _$AgeConvertResultFromJson(json);
+
+ final  List<String>? _publicKeys;
+@override List<String>? get publicKeys {
+  final value = _publicKeys;
+  if (value == null) return null;
+  if (_publicKeys is EqualUnmodifiableListView) return _publicKeys;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+@override final  String? error;
+
+/// Create a copy of AgeConvertResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AgeConvertResultCopyWith<_AgeConvertResult> get copyWith => __$AgeConvertResultCopyWithImpl<_AgeConvertResult>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AgeConvertResultToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AgeConvertResult&&const DeepCollectionEquality().equals(other.publicKeys, _publicKeys)&&(identical(other.error, error) || other.error == error));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_publicKeys),error);
+}
+
+@override
+String toString() {
+    return 'AgeConvertResult(publicKeys: $publicKeys, error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AgeConvertResultCopyWith<$Res> implements $AgeConvertResultCopyWith<$Res> {
+  factory _$AgeConvertResultCopyWith(_AgeConvertResult value, $Res Function(_AgeConvertResult) _then) = __$AgeConvertResultCopyWithImpl;
+@override @useResult
+$Res call({
+ List<String>? publicKeys, String? error
+});
+
+
+
+
+}
+/// @nodoc
+class __$AgeConvertResultCopyWithImpl<$Res>
+    implements _$AgeConvertResultCopyWith<$Res> {
+  __$AgeConvertResultCopyWithImpl(this._self, this._then);
+
+  final _AgeConvertResult _self;
+  final $Res Function(_AgeConvertResult) _then;
+
+/// Create a copy of AgeConvertResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? publicKeys = freezed,Object? error = freezed,}) {
+  return _then(_AgeConvertResult(
+publicKeys: freezed == publicKeys ? _self._publicKeys : publicKeys // ignore: cast_nullable_to_non_nullable
+as List<String>?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
 // dart format on

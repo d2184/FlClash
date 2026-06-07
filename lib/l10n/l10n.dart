@@ -5024,6 +5024,151 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Age Key Tools`
+  String get ageKeyManagement {
+    return Intl.message(
+      'Age Key Tools',
+      name: 'ageKeyManagement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate, convert, and copy age encryption keys`
+  String get ageKeyManagementDesc {
+    return Intl.message(
+      'Generate, convert, and copy age encryption keys',
+      name: 'ageKeyManagementDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About age Encryption`
+  String get ageKeyInfoTitle {
+    return Intl.message(
+      'About age Encryption',
+      name: 'ageKeyInfoTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `age is a modern file encryption tool. Service providers can use age to encrypt proxy subscriptions, preventing man-in-the-middle interception. Use this tool to generate key pairs and export public keys.`
+  String get ageKeyInfoDesc {
+    return Intl.message(
+      'age is a modern file encryption tool. Service providers can use age to encrypt proxy subscriptions, preventing man-in-the-middle interception. Use this tool to generate key pairs and export public keys.',
+      name: 'ageKeyInfoDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate standard age-encryption.org/v1 X25519 key pair`
+  String get ageKeyX25519Desc {
+    return Intl.message(
+      'Generate standard age-encryption.org/v1 X25519 key pair',
+      name: 'ageKeyX25519Desc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate MLKEM768-X25519 hybrid post-quantum key pair`
+  String get ageKeyHybridDesc {
+    return Intl.message(
+      'Generate MLKEM768-X25519 hybrid post-quantum key pair',
+      name: 'ageKeyHybridDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate X25519 Key Pair`
+  String get ageKeyGenX25519 {
+    return Intl.message(
+      'Generate X25519 Key Pair',
+      name: 'ageKeyGenX25519',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generate MLKEM768-X25519 Key Pair`
+  String get ageKeyGenHybrid {
+    return Intl.message(
+      'Generate MLKEM768-X25519 Key Pair',
+      name: 'ageKeyGenHybrid',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Export Public Key from Secret Key`
+  String get ageKeyConvertTitle {
+    return Intl.message(
+      'Export Public Key from Secret Key',
+      name: 'ageKeyConvertTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter an existing age-secret-key to export the corresponding age-public-key`
+  String get ageKeyConvertDesc {
+    return Intl.message(
+      'Enter an existing age-secret-key to export the corresponding age-public-key',
+      name: 'ageKeyConvertDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Convert`
+  String get ageKeyConvert {
+    return Intl.message('Convert', name: 'ageKeyConvert', desc: '', args: []);
+  }
+
+  /// `Secret Key`
+  String get ageSecretKey {
+    return Intl.message('Secret Key', name: 'ageSecretKey', desc: '', args: []);
+  }
+
+  /// `Public Key`
+  String get agePublicKey {
+    return Intl.message('Public Key', name: 'agePublicKey', desc: '', args: []);
+  }
+
+  /// `Enter age-secret-key`
+  String get ageSecretKeyHint {
+    return Intl.message(
+      'Enter age-secret-key',
+      name: 'ageSecretKeyHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid format: must start with AGE-SECRET-KEY-`
+  String get ageSecretKeyInvalidFormat {
+    return Intl.message(
+      'Invalid format: must start with AGE-SECRET-KEY-',
+      name: 'ageSecretKeyInvalidFormat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Operation failed, please try again`
+  String get ageKeyError {
+    return Intl.message(
+      'Operation failed, please try again',
+      name: 'ageKeyError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

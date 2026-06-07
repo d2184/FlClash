@@ -266,3 +266,31 @@ Map<String, dynamic> _$ProxiesDataToJson(_ProxiesData instance) =>
       'provider-proxies': instance.providerProxies,
       'all': instance.all,
     };
+
+_AgeKeygenResult _$AgeKeygenResultFromJson(Map<String, dynamic> json) =>
+    _AgeKeygenResult(
+      secretKey: json['secretKey'] as String?,
+      publicKey: json['publicKey'] as String?,
+      error: json['error'] as String?,
+    );
+
+Map<String, dynamic> _$AgeKeygenResultToJson(_AgeKeygenResult instance) =>
+    <String, dynamic>{
+      'secretKey': instance.secretKey,
+      'publicKey': instance.publicKey,
+      'error': instance.error,
+    };
+
+_AgeConvertResult _$AgeConvertResultFromJson(Map<String, dynamic> json) =>
+    _AgeConvertResult(
+      publicKeys: (json['publicKeys'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      error: json['error'] as String?,
+    );
+
+Map<String, dynamic> _$AgeConvertResultToJson(_AgeConvertResult instance) =>
+    <String, dynamic>{
+      'publicKeys': instance.publicKeys,
+      'error': instance.error,
+    };

@@ -607,5 +607,21 @@
   "authorize": "許可",
   "installedAppsPermissionRequired": "アプリ一覧の権限が必要です",
   "installedAppsPermissionDesc": "このシステムでは、許可するまでインストール済みアプリの一覧が提供されません。許可すると、アプリごとのプロキシを設定できます。",
-  "installedAppsPermissionDeniedMessage": "アプリ一覧の権限が拒否されたため、インストール済みアプリを取得できません。システム設定から手動で許可してください。"
+  "installedAppsPermissionDeniedMessage": "アプリ一覧の権限が拒否されたため、インストール済みアプリを取得できません。システム設定から手動で許可してください。",
+  "ageKeyManagement": "Age キーツール",
+  "ageKeyManagementDesc": "Age 暗号化キーの生成、変換、コピー",
+  "ageKeyInfoTitle": "Age 暗号化について",
+  "ageKeyInfoDesc": "Age は最新のファイル暗号化ツールです。サービスプロバイダーは Age 暗号化を使用してプロキシサブスクリプションを暗号化し、中間者攻撃を防ぐことができます。このツールでキーペアを生成し、公開キーをエクスポートできます。",
+  "ageKeyX25519Desc": "標準の age-encryption.org/v1 X25519 キーペアを生成",
+  "ageKeyHybridDesc": "MLKEM768-X25519 ハイブリッドポスト量子キーペアを生成",
+  "ageKeyGenX25519": "X25519 キーペアを生成",
+  "ageKeyGenHybrid": "MLKEM768-X25519 キーペアを生成",
+  "ageKeyConvertTitle": "シークレットキーから公開キーをエクスポート",
+  "ageKeyConvertDesc": "既存の age-secret-key を入力して、対応する age-public-key をエクスポートします",
+  "ageKeyConvert": "変換",
+  "ageSecretKey": "シークレットキー",
+  "agePublicKey": "公開キー",
+  "ageSecretKeyHint": "age-secret-key を入力してください",
+  "ageSecretKeyInvalidFormat": "フォーマットが無効です：AGE-SECRET-KEY- で始まる必要があります",
+  "ageKeyError": "操作に失敗しました。再試行してください"
 }

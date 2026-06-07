@@ -607,5 +607,21 @@
   "authorize": "Authorize",
   "installedAppsPermissionRequired": "App list permission required",
   "installedAppsPermissionDesc": "This system hides the installed app list until the permission is granted. Authorize it to configure the per-app proxy.",
-  "installedAppsPermissionDeniedMessage": "The app list permission was denied, so installed apps cannot be listed. Please grant it manually in system settings."
+  "installedAppsPermissionDeniedMessage": "The app list permission was denied, so installed apps cannot be listed. Please grant it manually in system settings.",
+  "ageKeyManagement": "Age Key Tools",
+  "ageKeyManagementDesc": "Generate, convert, and copy age encryption keys",
+  "ageKeyInfoTitle": "About age Encryption",
+  "ageKeyInfoDesc": "age is a modern file encryption tool. Service providers can use age to encrypt proxy subscriptions, preventing man-in-the-middle interception. Use this tool to generate key pairs and export public keys.",
+  "ageKeyX25519Desc": "Generate standard age-encryption.org/v1 X25519 key pair",
+  "ageKeyHybridDesc": "Generate MLKEM768-X25519 hybrid post-quantum key pair",
+  "ageKeyGenX25519": "Generate X25519 Key Pair",
+  "ageKeyGenHybrid": "Generate MLKEM768-X25519 Key Pair",
+  "ageKeyConvertTitle": "Export Public Key from Secret Key",
+  "ageKeyConvertDesc": "Enter an existing age-secret-key to export the corresponding age-public-key",
+  "ageKeyConvert": "Convert",
+  "ageSecretKey": "Secret Key",
+  "agePublicKey": "Public Key",
+  "ageSecretKeyHint": "Enter age-secret-key",
+  "ageSecretKeyInvalidFormat": "Invalid format: must start with AGE-SECRET-KEY-",
+  "ageKeyError": "Operation failed, please try again"
 }

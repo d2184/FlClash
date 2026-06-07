@@ -122,6 +122,40 @@ class MessageLookup extends MessageLookupByLibrary {
     "addressTip": MessageLookupByLibrary.simpleMessage("请输入有效的WebDAV地址"),
     "advancedConfig": MessageLookupByLibrary.simpleMessage("进阶配置"),
     "advancedConfigDesc": MessageLookupByLibrary.simpleMessage("提供多样化配置"),
+    "ageKeyConvert": MessageLookupByLibrary.simpleMessage("转换"),
+    "ageKeyConvertDesc": MessageLookupByLibrary.simpleMessage(
+      "输入已有的 age-secret-key，导出对应的 age-public-key",
+    ),
+    "ageKeyConvertTitle": MessageLookupByLibrary.simpleMessage(
+      "从 Secret Key 导出 Public Key",
+    ),
+    "ageKeyError": MessageLookupByLibrary.simpleMessage("操作失败，请重试"),
+    "ageKeyGenHybrid": MessageLookupByLibrary.simpleMessage(
+      "生成 MLKEM768-X25519 密钥对",
+    ),
+    "ageKeyGenX25519": MessageLookupByLibrary.simpleMessage("生成 X25519 密钥对"),
+    "ageKeyHybridDesc": MessageLookupByLibrary.simpleMessage(
+      "生成 MLKEM768-X25519 混合后量子密钥对",
+    ),
+    "ageKeyInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "age 是一种现代文件加密工具。服务提供方可以使用 age 加密代理订阅，以防止订阅内容被中间人窃取。本工具用于生成密钥对并导出公钥。",
+    ),
+    "ageKeyInfoTitle": MessageLookupByLibrary.simpleMessage("关于 age 加密"),
+    "ageKeyManagement": MessageLookupByLibrary.simpleMessage("Age 密钥工具"),
+    "ageKeyManagementDesc": MessageLookupByLibrary.simpleMessage(
+      "生成、转换和复制 age 加密密钥",
+    ),
+    "ageKeyX25519Desc": MessageLookupByLibrary.simpleMessage(
+      "生成标准的 age-encryption.org/v1 X25519 密钥对",
+    ),
+    "agePublicKey": MessageLookupByLibrary.simpleMessage("Public Key"),
+    "ageSecretKey": MessageLookupByLibrary.simpleMessage("Secret Key"),
+    "ageSecretKeyHint": MessageLookupByLibrary.simpleMessage(
+      "请输入 age-secret-key",
+    ),
+    "ageSecretKeyInvalidFormat": MessageLookupByLibrary.simpleMessage(
+      "格式错误：必须以 AGE-SECRET-KEY- 开头",
+    ),
     "agree": MessageLookupByLibrary.simpleMessage("同意"),
     "allowBypass": MessageLookupByLibrary.simpleMessage("允许应用绕过VPN"),
     "allowBypassDesc": MessageLookupByLibrary.simpleMessage("开启后部分应用可绕过VPN"),
