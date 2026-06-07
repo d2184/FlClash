@@ -44,9 +44,7 @@ enum GroupType {
   @JsonValue('fallback')
   Fallback('fallback'),
   @JsonValue('load-balance')
-  LoadBalance('load-balance'),
-  @JsonValue('relay')
-  Relay('relay');
+  LoadBalance('load-balance');
 
   final String value;
 
@@ -58,7 +56,6 @@ enum GroupType {
       'select' || 'selector' => Selector,
       'fallback' => Fallback,
       'load-balance' || 'loadbalance' => LoadBalance,
-      'relay' => Relay,
       String() => throw UnimplementedError(),
     };
   }

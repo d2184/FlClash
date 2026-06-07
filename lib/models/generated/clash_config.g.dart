@@ -64,7 +64,6 @@ const _$GroupTypeEnumMap = {
   GroupType.URLTest: 'url-test',
   GroupType.Fallback: 'fallback',
   GroupType.LoadBalance: 'load-balance',
-  GroupType.Relay: 'relay',
 };
 
 _Proxy _$ProxyFromJson(Map<String, dynamic> json) => _Proxy(
