@@ -126,6 +126,40 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "advancedConfig": MessageLookupByLibrary.simpleMessage("詳細設定"),
     "advancedConfigDesc": MessageLookupByLibrary.simpleMessage("多彩な設定項目を提供します"),
+    "ageKeyConvert": MessageLookupByLibrary.simpleMessage("変換"),
+    "ageKeyConvertDesc": MessageLookupByLibrary.simpleMessage(
+      "既存の age-secret-key を入力して、対応する age-public-key をエクスポートします",
+    ),
+    "ageKeyConvertTitle": MessageLookupByLibrary.simpleMessage(
+      "シークレットキーから公開キーをエクスポート",
+    ),
+    "ageKeyError": MessageLookupByLibrary.simpleMessage("操作に失敗しました。再試行してください"),
+    "ageKeyGenHybrid": MessageLookupByLibrary.simpleMessage(
+      "MLKEM768-X25519 キーペアを生成",
+    ),
+    "ageKeyGenX25519": MessageLookupByLibrary.simpleMessage("X25519 キーペアを生成"),
+    "ageKeyHybridDesc": MessageLookupByLibrary.simpleMessage(
+      "MLKEM768-X25519 ハイブリッドポスト量子キーペアを生成",
+    ),
+    "ageKeyInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Age は最新のファイル暗号化ツールです。サービスプロバイダーは Age 暗号化を使用してプロキシサブスクリプションを暗号化し、中間者攻撃を防ぐことができます。このツールでキーペアを生成し、公開キーをエクスポートできます。",
+    ),
+    "ageKeyInfoTitle": MessageLookupByLibrary.simpleMessage("Age 暗号化について"),
+    "ageKeyManagement": MessageLookupByLibrary.simpleMessage("Age キーツール"),
+    "ageKeyManagementDesc": MessageLookupByLibrary.simpleMessage(
+      "Age 暗号化キーの生成、変換、コピー",
+    ),
+    "ageKeyX25519Desc": MessageLookupByLibrary.simpleMessage(
+      "標準の age-encryption.org/v1 X25519 キーペアを生成",
+    ),
+    "agePublicKey": MessageLookupByLibrary.simpleMessage("公開キー"),
+    "ageSecretKey": MessageLookupByLibrary.simpleMessage("シークレットキー"),
+    "ageSecretKeyHint": MessageLookupByLibrary.simpleMessage(
+      "age-secret-key を入力してください",
+    ),
+    "ageSecretKeyInvalidFormat": MessageLookupByLibrary.simpleMessage(
+      "フォーマットが無効です：AGE-SECRET-KEY- で始まる必要があります",
+    ),
     "agree": MessageLookupByLibrary.simpleMessage("同意する"),
     "allowBypass": MessageLookupByLibrary.simpleMessage("アプリによるVPNバイパスを許可"),
     "allowBypassDesc": MessageLookupByLibrary.simpleMessage(

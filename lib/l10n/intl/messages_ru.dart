@@ -150,6 +150,46 @@ class MessageLookup extends MessageLookupByLibrary {
     "advancedConfigDesc": MessageLookupByLibrary.simpleMessage(
       "Разнообразные параметры конфигурации",
     ),
+    "ageKeyConvert": MessageLookupByLibrary.simpleMessage("Конвертировать"),
+    "ageKeyConvertDesc": MessageLookupByLibrary.simpleMessage(
+      "Введите существующий age-secret-key для экспорта соответствующего age-public-key",
+    ),
+    "ageKeyConvertTitle": MessageLookupByLibrary.simpleMessage(
+      "Экспорт публичного ключа из секретного",
+    ),
+    "ageKeyError": MessageLookupByLibrary.simpleMessage(
+      "Операция не удалась, попробуйте снова",
+    ),
+    "ageKeyGenHybrid": MessageLookupByLibrary.simpleMessage(
+      "Сгенерировать пару MLKEM768-X25519",
+    ),
+    "ageKeyGenX25519": MessageLookupByLibrary.simpleMessage(
+      "Сгенерировать пару X25519",
+    ),
+    "ageKeyHybridDesc": MessageLookupByLibrary.simpleMessage(
+      "Генерация гибридной постквантовой пары ключей MLKEM768-X25519",
+    ),
+    "ageKeyInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "Age — это современный инструмент шифрования файлов. Провайдеры могут использовать Age для шифрования прокси-подписок, предотвращая перехват. Используйте этот инструмент для генерации ключей и экспорта публичных ключей.",
+    ),
+    "ageKeyInfoTitle": MessageLookupByLibrary.simpleMessage("О шифровании Age"),
+    "ageKeyManagement": MessageLookupByLibrary.simpleMessage(
+      "Инструменты ключей Age",
+    ),
+    "ageKeyManagementDesc": MessageLookupByLibrary.simpleMessage(
+      "Генерация, конвертация и копирование ключей шифрования Age",
+    ),
+    "ageKeyX25519Desc": MessageLookupByLibrary.simpleMessage(
+      "Генерация стандартной пары ключей age-encryption.org/v1 X25519",
+    ),
+    "agePublicKey": MessageLookupByLibrary.simpleMessage("Публичный ключ"),
+    "ageSecretKey": MessageLookupByLibrary.simpleMessage("Секретный ключ"),
+    "ageSecretKeyHint": MessageLookupByLibrary.simpleMessage(
+      "Введите age-secret-key",
+    ),
+    "ageSecretKeyInvalidFormat": MessageLookupByLibrary.simpleMessage(
+      "Неверный формат: должен начинаться с AGE-SECRET-KEY-",
+    ),
     "agree": MessageLookupByLibrary.simpleMessage("Согласен"),
     "allowBypass": MessageLookupByLibrary.simpleMessage(
       "Разрешить приложениям обходить VPN",

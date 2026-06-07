@@ -246,6 +246,18 @@ class CoreController {
   Future<String> clearEffect(int profileId) async {
     return _interface.clearEffect(profileId);
   }
+
+  Future<AgeKeygenResult?> ageKeygen() {
+    return _interface.ageKeygen();
+  }
+
+  Future<AgeKeygenResult?> ageKeygenPq() {
+    return _interface.ageKeygenPq();
+  }
+
+  Future<AgeConvertResult?> ageConvert(String secretKey) {
+    return _interface.ageConvert(secretKey);
+  }
 }
 
 final coreController = CoreController();
