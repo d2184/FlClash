@@ -20,6 +20,7 @@ import (
 	"github.com/metacubex/mihomo/adapter/outboundgroup"
 	"github.com/metacubex/mihomo/common/observable"
 	"github.com/metacubex/mihomo/common/utils"
+	"github.com/metacubex/mihomo/component/age"
 	"github.com/metacubex/mihomo/component/resolver"
 	"github.com/metacubex/mihomo/component/updater"
 	"github.com/metacubex/mihomo/config"
@@ -694,6 +695,52 @@ func handleClearEffect(profileId int64) string {
 }
 
 var setupConfig = applyConfig
+
+type AgeKeygenResult struct {
+	SecretKey string `json:"secretKey"`
+	PublicKey string `json:"publicKey"`
+	Error     string `json:"error,omitempty"`
+}
+
+func handleAgeKeygen() AgeKeygenResult {
+	secretKey, publicKey, err := age.GenX25519KeyPair()
+	if err != nil {
+		return AgeKeygenResult{Error: err.Error()}
+	}
+	if secretKey == "" || publicKey == "" {
+		return AgeKeygenResult{Error: "keygen returned empty key"}
+	}
+	return AgeKeygenResult{SecretKey: secretKey, PublicKey: publicKey}
+}
+
+func handleAgeKeygenPq() AgeKeygenResult {
+	secretKey, publicKey, err := age.GenHybridKeyPair()
+	if err != nil {
+		return AgeKeygenResult{Error: err.Error()}
+	}
+	if secretKey == "" || publicKey == "" {
+		return AgeKeygenResult{Error: "keygen returned empty key"}
+	}
+	return AgeKeygenResult{SecretKey: secretKey, PublicKey: publicKey}
+}
+
+type AgeConvertResult struct {
+	PublicKeys []string `json:"publicKeys"`
+	Error      string   `json:"error,omitempty"`
+}
+
+func handleAgeConvert(secretKey string) AgeConvertResult {
+	publicKeys, err := age.ToPublicKeys(secretKey)
+	if err != nil {
+		return AgeConvertResult{Error: err.Error()}
+	}
+	if len(publicKeys) == 0 {
+		return AgeConvertResult{Error: "no public keys derived from the given secret key"}
+	}
+	return AgeConvertResult{
+		PublicKeys: publicKeys,
+	}
+}
 
 func handleSetupConfig(params *SetupParams) string {
 	if !isInit.Load() {

@@ -607,5 +607,21 @@
   "authorize": "授权",
   "installedAppsPermissionRequired": "需要读取应用列表权限",
   "installedAppsPermissionDesc": "当前系统在授权前不会提供已安装的应用列表，授权后即可配置分应用代理。",
-  "installedAppsPermissionDeniedMessage": "读取应用列表权限已被拒绝，无法获取已安装的应用。请前往系统设置手动开启。"
+  "installedAppsPermissionDeniedMessage": "读取应用列表权限已被拒绝，无法获取已安装的应用。请前往系统设置手动开启。",
+  "ageKeyManagement": "Age 密钥工具",
+  "ageKeyManagementDesc": "生成、转换和复制 age 加密密钥",
+  "ageKeyInfoTitle": "关于 age 加密",
+  "ageKeyInfoDesc": "age 是一种现代文件加密工具。服务提供方可以使用 age 加密代理订阅，以防止订阅内容被中间人窃取。本工具用于生成密钥对并导出公钥。",
+  "ageKeyX25519Desc": "生成标准的 age-encryption.org/v1 X25519 密钥对",
+  "ageKeyHybridDesc": "生成 MLKEM768-X25519 混合后量子密钥对",
+  "ageKeyGenX25519": "生成 X25519 密钥对",
+  "ageKeyGenHybrid": "生成 MLKEM768-X25519 密钥对",
+  "ageKeyConvertTitle": "从 Secret Key 导出 Public Key",
+  "ageKeyConvertDesc": "输入已有的 age-secret-key，导出对应的 age-public-key",
+  "ageKeyConvert": "转换",
+  "ageSecretKey": "Secret Key",
+  "agePublicKey": "Public Key",
+  "ageSecretKeyHint": "请输入 age-secret-key",
+  "ageSecretKeyInvalidFormat": "格式错误：必须以 AGE-SECRET-KEY- 开头",
+  "ageKeyError": "操作失败，请重试"
 }

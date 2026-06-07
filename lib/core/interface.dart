@@ -77,9 +77,22 @@ mixin CoreInterface {
   FutureOr<bool> closeConnections();
 
   FutureOr<bool> resetConnections();
+
+  Future<AgeKeygenResult?> ageKeygen();
+
+  Future<AgeKeygenResult?> ageKeygenPq();
+
+  Future<AgeConvertResult?> ageConvert(String secretKey);
 }
 
 abstract class CoreHandlerInterface with CoreInterface {
+  Object? _logArguments(CoreMethod method, Object? arguments) {
+    return switch (method) {
+      CoreMethod.ageConvert => '<redacted>',
+      _ => arguments,
+    };
+  }
+
   Future<T?> _invokeMethod<T>({
     required CoreMethod method,
     Object? arguments,
@@ -88,7 +101,7 @@ abstract class CoreHandlerInterface with CoreInterface {
     return await handleWatch(
       onStart: () {
         commonPrint.log(
-          'Invoke method ${method.name} ${DateTime.now()} $arguments',
+          'Invoke method ${method.name} ${DateTime.now()} ${_logArguments(method, arguments)}',
         );
       },
       function: () async {
@@ -311,6 +324,34 @@ abstract class CoreHandlerInterface with CoreInterface {
   @override
   Future<String> clearEffect(int profileId) async {
     return _invokeMessage(method: CoreMethod.clearEffect, arguments: profileId);
+  }
+
+  @override
+  Future<AgeKeygenResult?> ageKeygen() async {
+    final data = await _invokeMethod<Map<String, dynamic>>(
+      method: CoreMethod.ageKeygen,
+    );
+    if (data == null) return null;
+    return AgeKeygenResult.fromJson(data);
+  }
+
+  @override
+  Future<AgeKeygenResult?> ageKeygenPq() async {
+    final data = await _invokeMethod<Map<String, dynamic>>(
+      method: CoreMethod.ageKeygenPq,
+    );
+    if (data == null) return null;
+    return AgeKeygenResult.fromJson(data);
+  }
+
+  @override
+  Future<AgeConvertResult?> ageConvert(String secretKey) async {
+    final data = await _invokeMethod<Map<String, dynamic>>(
+      method: CoreMethod.ageConvert,
+      arguments: secretKey,
+    );
+    if (data == null) return null;
+    return AgeConvertResult.fromJson(data);
   }
 
   @override
