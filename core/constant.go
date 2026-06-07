@@ -122,6 +122,9 @@ const (
 	setupConfigMethod              CoreMethod = "setupConfig"
 	getConfigMethod                CoreMethod = "getConfig"
 	clearEffectMethod              CoreMethod = "clearEffect"
+	ageKeygenMethod                CoreMethod = "ageKeygen"
+	ageKeygenPqMethod              CoreMethod = "ageKeygenPq"
+	ageConvertMethod               CoreMethod = "ageConvert"
 )
 
 type CoreMethod string

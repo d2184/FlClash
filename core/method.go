@@ -266,6 +266,15 @@ var methodHandlers = map[CoreMethod]methodHandler{
 			response.success(handleClearEffect(*profileId))
 		})
 	}),
+	ageKeygenMethod: withoutArguments(func(response MethodResponse) {
+		response.success(handleAgeKeygen())
+	}),
+	ageKeygenPqMethod: withoutArguments(func(response MethodResponse) {
+		response.success(handleAgeKeygenPq())
+	}),
+	ageConvertMethod: withArguments(func(secretKey *string, response MethodResponse) {
+		response.success(handleAgeConvert(*secretKey))
+	}),
 }
 
 func registerMethod(method CoreMethod, handler methodHandler) {

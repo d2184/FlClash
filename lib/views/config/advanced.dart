@@ -1,6 +1,7 @@
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/models/clash_config.dart';
 import 'package:fl_clash/providers/config.dart';
+import 'package:fl_clash/views/config/age_key.dart';
 import 'package:fl_clash/views/config/dns.dart';
 import 'package:fl_clash/views/config/network.dart';
 import 'package:fl_clash/views/config/on_demand.dart';
@@ -80,6 +81,13 @@ class AdvancedConfigView extends StatelessWidget {
         subtitle: Text(appLocalizations.overrideScript),
         leading: const Icon(Icons.rocket, fontWeight: FontWeight.w900),
         widget: const ScriptsView(),
+        blur: false,
+      ),
+      ListItem.open(
+        title: Text(appLocalizations.ageKeyManagement),
+        subtitle: Text(appLocalizations.ageKeyManagementDesc),
+        leading: const Icon(Icons.key, fontWeight: FontWeight.w900),
+        widget: const AgeKeyPage(),
         blur: false,
       ),
     ];

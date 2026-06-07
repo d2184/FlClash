@@ -150,6 +150,46 @@ class MessageLookup extends MessageLookupByLibrary {
     "advancedConfigDesc": MessageLookupByLibrary.simpleMessage(
       "Provides diverse configuration options",
     ),
+    "ageKeyConvert": MessageLookupByLibrary.simpleMessage("Convert"),
+    "ageKeyConvertDesc": MessageLookupByLibrary.simpleMessage(
+      "Enter an existing age-secret-key to export the corresponding age-public-key",
+    ),
+    "ageKeyConvertTitle": MessageLookupByLibrary.simpleMessage(
+      "Export Public Key from Secret Key",
+    ),
+    "ageKeyError": MessageLookupByLibrary.simpleMessage(
+      "Operation failed, please try again",
+    ),
+    "ageKeyGenHybrid": MessageLookupByLibrary.simpleMessage(
+      "Generate MLKEM768-X25519 Key Pair",
+    ),
+    "ageKeyGenX25519": MessageLookupByLibrary.simpleMessage(
+      "Generate X25519 Key Pair",
+    ),
+    "ageKeyHybridDesc": MessageLookupByLibrary.simpleMessage(
+      "Generate MLKEM768-X25519 hybrid post-quantum key pair",
+    ),
+    "ageKeyInfoDesc": MessageLookupByLibrary.simpleMessage(
+      "age is a modern file encryption tool. Service providers can use age to encrypt proxy subscriptions, preventing man-in-the-middle interception. Use this tool to generate key pairs and export public keys.",
+    ),
+    "ageKeyInfoTitle": MessageLookupByLibrary.simpleMessage(
+      "About age Encryption",
+    ),
+    "ageKeyManagement": MessageLookupByLibrary.simpleMessage("Age Key Tools"),
+    "ageKeyManagementDesc": MessageLookupByLibrary.simpleMessage(
+      "Generate, convert, and copy age encryption keys",
+    ),
+    "ageKeyX25519Desc": MessageLookupByLibrary.simpleMessage(
+      "Generate standard age-encryption.org/v1 X25519 key pair",
+    ),
+    "agePublicKey": MessageLookupByLibrary.simpleMessage("Public Key"),
+    "ageSecretKey": MessageLookupByLibrary.simpleMessage("Secret Key"),
+    "ageSecretKeyHint": MessageLookupByLibrary.simpleMessage(
+      "Enter age-secret-key",
+    ),
+    "ageSecretKeyInvalidFormat": MessageLookupByLibrary.simpleMessage(
+      "Invalid format: must start with AGE-SECRET-KEY-",
+    ),
     "agree": MessageLookupByLibrary.simpleMessage("Agree"),
     "allowBypass": MessageLookupByLibrary.simpleMessage(
       "Allow apps to bypass VPN",
