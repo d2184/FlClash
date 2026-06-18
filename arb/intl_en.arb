@@ -287,6 +287,7 @@
   "interfaceNameDesc": "Network interface used for outbound connections",
   "pleaseInputAdminPassword": "Please enter the administrator password",
   "copyEnvVar": "Copy environment variables",
+  "coreVersion": "Core version",
   "cancel": "Cancel",
   "fileIsUpdate": "The file has been modified. Save the changes?",
   "profileHasUpdate": "The profile has been modified. Turn off auto update?",

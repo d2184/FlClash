@@ -1,13 +1,14 @@
 package main
 
 import (
+	"net/netip"
+	"time"
+
 	"github.com/metacubex/mihomo/adapter/provider"
 	P "github.com/metacubex/mihomo/component/process"
 	"github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/log"
 	"github.com/metacubex/mihomo/tunnel"
-	"net/netip"
-	"time"
 )
 
 type InitParams struct {
@@ -107,6 +108,7 @@ const (
 	closeConnectionMethod          CoreMethod = "closeConnection"
 	getExternalProvidersMethod     CoreMethod = "getExternalProviders"
 	getExternalProviderMethod      CoreMethod = "getExternalProvider"
+	getVersionMethod               CoreMethod = "getVersion"
 	updateGeoDataMethod            CoreMethod = "updateGeoData"
 	updateExternalProviderMethod   CoreMethod = "updateExternalProvider"
 	sideLoadExternalProviderMethod CoreMethod = "sideLoadExternalProvider"

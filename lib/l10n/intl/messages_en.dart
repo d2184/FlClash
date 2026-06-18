@@ -321,6 +321,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Windows Smart App Control blocked FlClashCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start FlClash again. Smart App Control cannot be turned back on without reinstalling Windows.",
     ),
     "coreStatus": MessageLookupByLibrary.simpleMessage("Core status"),
+    "coreVersion": MessageLookupByLibrary.simpleMessage("Core version"),
     "country": MessageLookupByLibrary.simpleMessage("Region"),
     "crashDetected": MessageLookupByLibrary.simpleMessage("Crash detected"),
     "crashDetectedTip": m1,

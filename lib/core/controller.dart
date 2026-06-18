@@ -218,6 +218,11 @@ class CoreController {
     return _interface.getTraffic(onlyStatisticsProxy);
   }
 
+  Future<String?> getCoreVersion() async {
+    final version = await _interface.getVersion();
+    return version.isEmpty ? null : version;
+  }
+
   Future<Traffic> getTotalTraffic(bool onlyStatisticsProxy) async {
     return _interface.getTotalTraffic(onlyStatisticsProxy);
   }
