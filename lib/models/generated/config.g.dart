@@ -82,7 +82,6 @@ const _$DashboardWidgetEnumMap = {
   DashboardWidget.vpnButton: 'vpnButton',
   DashboardWidget.systemProxyButton: 'systemProxyButton',
   DashboardWidget.intranetIp: 'intranetIp',
-  DashboardWidget.memoryInfo: 'memoryInfo',
 };
 
 _AccessControlProps _$AccessControlPropsFromJson(Map<String, dynamic> json) =>

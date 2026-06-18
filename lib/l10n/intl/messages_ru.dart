@@ -660,7 +660,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "maxLengthTip": m19,
     "maximize": MessageLookupByLibrary.simpleMessage("Развернуть"),
-    "memoryInfo": MessageLookupByLibrary.simpleMessage("Память"),
     "messageTest": MessageLookupByLibrary.simpleMessage("Тест сообщения"),
     "messageTestTip": MessageLookupByLibrary.simpleMessage("Это сообщение."),
     "min": MessageLookupByLibrary.simpleMessage("Минимальный"),

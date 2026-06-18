@@ -642,7 +642,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "maxFailedTimes": MessageLookupByLibrary.simpleMessage("Max failures"),
     "maxLengthTip": m19,
     "maximize": MessageLookupByLibrary.simpleMessage("Maximize"),
-    "memoryInfo": MessageLookupByLibrary.simpleMessage("Memory info"),
     "messageTest": MessageLookupByLibrary.simpleMessage("Message test"),
     "messageTestTip": MessageLookupByLibrary.simpleMessage(
       "This is a message.",
