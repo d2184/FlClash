@@ -645,10 +645,6 @@ func handleStopLog() {
 	}
 }
 
-func handleGetMemory() uint64 {
-	return statistic.DefaultManager.Memory()
-}
-
 func handleGetConfig(path string) (*config.RawConfig, error) {
 	buf, err := os.ReadFile(path)
 	if err != nil {

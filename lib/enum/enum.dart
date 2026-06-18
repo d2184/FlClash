@@ -284,8 +284,7 @@ enum DashboardWidget {
   tunButton(platforms: desktopPlatforms),
   vpnButton(platforms: [SupportPlatform.Android]),
   systemProxyButton(platforms: desktopPlatforms),
-  intranetIp,
-  memoryInfo;
+  intranetIp;
 
   final List<SupportPlatform> platforms;
 

@@ -2225,11 +2225,6 @@ class AppLocalizations {
     );
   }
 
-  /// `Memory info`
-  String get memoryInfo {
-    return Intl.message('Memory info', name: 'memoryInfo', desc: '', args: []);
-  }
-
   /// `Cancel`
   String get cancel {
     return Intl.message('Cancel', name: 'cancel', desc: '', args: []);

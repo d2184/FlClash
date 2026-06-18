@@ -77,7 +77,6 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
         'mode': 'rule',
         'rule': ['MATCH,DIRECT'],
       },
-      CoreMethod.getMemory => 2048,
       _ => '',
     };
     return result as T;
@@ -219,7 +218,6 @@ void main() {
       'mode': 'rule',
       'rule': ['MATCH,DIRECT'],
     });
-    expect(await handler.getMemory(), 2048);
   });
 
   test('getConfig preserves structured core errors', () async {

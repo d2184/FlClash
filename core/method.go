@@ -162,10 +162,6 @@ var methodHandlers = map[CoreMethod]methodHandler{
 	getIsInitMethod: withoutArguments(func(response MethodResponse) {
 		response.success(handleGetIsInit())
 	}),
-	forceGcMethod: withoutArguments(func(response MethodResponse) {
-		handleForceGC()
-		response.success(true)
-	}),
 	shutdownMethod: withoutArguments(func(response MethodResponse) {
 		response.success(handleShutdown())
 	}),
@@ -261,11 +257,6 @@ var methodHandlers = map[CoreMethod]methodHandler{
 	}),
 	stopListenerMethod: withoutArguments(func(response MethodResponse) {
 		response.success(handleStopListener())
-	}),
-	getMemoryMethod: withoutArguments(func(response MethodResponse) {
-		safeGo(response, func() {
-			response.success(handleGetMemory())
-		})
 	}),
 	clearEffectMethod: withArguments(func(profileId *int64, response MethodResponse) {
 		safeGo(response, func() {
