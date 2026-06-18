@@ -222,10 +222,6 @@ class CoreController {
     return _interface.getTotalTraffic(onlyStatisticsProxy);
   }
 
-  Future<int> getMemory() async {
-    return _interface.getMemory();
-  }
-
   void resetTraffic() {
     _interface.resetTraffic();
   }
@@ -236,10 +232,6 @@ class CoreController {
 
   void stopLog() {
     _interface.stopLog();
-  }
-
-  Future<void> requestGc() async {
-    await _interface.forceGc();
   }
 
   Future<void> crash() async {

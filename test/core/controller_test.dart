@@ -242,12 +242,6 @@ void main() {
       expect(result.up, 3);
       expect(result.down, 4);
     });
-
-    test('getMemory delegates numeric memory', () async {
-      when(() => mock.getMemory()).thenAnswer((_) async => 2048);
-      final result = await controller.getMemory();
-      expect(result, 2048);
-    });
   });
 
   group('misc methods', () {
@@ -276,12 +270,6 @@ void main() {
       when(() => mock.updateGeoData('MMDB')).thenAnswer((_) async => 'ok');
       final result = await controller.updateGeoData('MMDB');
       expect(result, 'ok');
-    });
-
-    test('requestGc delegates to forceGc', () async {
-      when(() => mock.forceGc()).thenAnswer((_) async => true);
-      await controller.requestGc();
-      verify(() => mock.forceGc()).called(1);
     });
 
     test('clearEffect delegates', () async {
