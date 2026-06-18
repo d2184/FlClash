@@ -40,10 +40,6 @@ extension DashboardWidgetView on DashboardWidget {
       crossAxisCellCount: 4,
       child: IntranetIP(),
     ),
-    DashboardWidget.memoryInfo => const GridItem(
-      crossAxisCellCount: 4,
-      child: MemoryInfo(),
-    ),
   };
 }
 

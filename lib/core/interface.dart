@@ -19,8 +19,6 @@ mixin CoreInterface {
 
   Future<bool> get isInit;
 
-  Future<bool> forceGc();
-
   Future<String> validateConfig(String path);
 
   Future<Map<String, dynamic>> getConfig(String path);
@@ -59,8 +57,6 @@ mixin CoreInterface {
   FutureOr<Traffic> getTraffic(bool onlyStatisticsProxy);
 
   FutureOr<Traffic> getTotalTraffic(bool onlyStatisticsProxy);
-
-  FutureOr<int> getMemory();
 
   FutureOr<void> resetTraffic();
 
@@ -145,11 +141,6 @@ abstract class CoreHandlerInterface with CoreInterface {
   @override
   Future<bool> get isInit async {
     return await _invokeMethod<bool>(method: CoreMethod.getIsInit) ?? false;
-  }
-
-  @override
-  Future<bool> forceGc() async {
-    return await _invokeMethod<bool>(method: CoreMethod.forceGc) ?? false;
   }
 
   @override
@@ -363,10 +354,5 @@ abstract class CoreHandlerInterface with CoreInterface {
       timeout: delayTestGuardDuration,
     );
     return data == null ? null : Delay.fromJson(data);
-  }
-
-  @override
-  Future<int> getMemory() async {
-    return await _invokeMethod<int>(method: CoreMethod.getMemory) ?? 0;
   }
 }
