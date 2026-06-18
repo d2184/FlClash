@@ -58,6 +58,8 @@ mixin CoreInterface {
 
   FutureOr<Traffic> getTotalTraffic(bool onlyStatisticsProxy);
 
+  FutureOr<String> getVersion();
+
   FutureOr<void> resetTraffic();
 
   FutureOr<void> startLog();
@@ -354,5 +356,10 @@ abstract class CoreHandlerInterface with CoreInterface {
       timeout: delayTestGuardDuration,
     );
     return data == null ? null : Delay.fromJson(data);
+  }
+
+  @override
+  Future<String> getVersion() async {
+    return await _invokeMethod<String>(method: CoreMethod.getVersion) ?? '';
   }
 }

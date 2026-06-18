@@ -29,6 +29,7 @@ enum CoreMethod {
   stopLog,
   startListener,
   stopListener,
+  getVersion,
   crash,
   setupConfig,
   clearEffect,

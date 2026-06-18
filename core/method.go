@@ -258,6 +258,9 @@ var methodHandlers = map[CoreMethod]methodHandler{
 	stopListenerMethod: withoutArguments(func(response MethodResponse) {
 		response.success(handleStopListener())
 	}),
+	getVersionMethod: withoutArguments(func(response MethodResponse) {
+		response.success(handleGetVersion())
+	}),
 	clearEffectMethod: withArguments(func(profileId *int64, response MethodResponse) {
 		safeGo(response, func() {
 			response.success(handleClearEffect(*profileId))
