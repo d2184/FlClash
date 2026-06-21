@@ -1850,6 +1850,26 @@ class AppLocalizations {
     );
   }
 
+  /// `Fallback lazy query`
+  String get fallbackLazyQuery {
+    return Intl.message(
+      'Fallback lazy query',
+      name: 'fallbackLazyQuery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Query nameserver first, only send to fallback if result matches fallback-filter`
+  String get fallbackLazyQueryDesc {
+    return Intl.message(
+      'Query nameserver first, only send to fallback if result matches fallback-filter',
+      name: 'fallbackLazyQueryDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Fallback filter`
   String get fallbackFilter {
     return Intl.message(

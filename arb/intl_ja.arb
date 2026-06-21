@@ -238,6 +238,8 @@
   "proxyNameserverDesc": "プロキシノードのドメイン解決に使用します",
   "fallback": "フォールバック",
   "fallbackDesc": "通常は国外のDNSを使用します",
+  "fallbackLazyQuery": "フォールバック遅延クエリ",
+  "fallbackLazyQueryDesc": "まずネームサーバーに問い合わせ、結果がフォールバックフィルターに一致した場合のみフォールバックへ送信",
   "fallbackFilter": "フォールバックフィルター",
   "geoipCode": "GeoIPコード",
   "ipcidr": "IP/CIDR",

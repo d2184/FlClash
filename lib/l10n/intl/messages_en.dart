@@ -487,6 +487,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Usually an overseas DNS",
     ),
     "fallbackFilter": MessageLookupByLibrary.simpleMessage("Fallback filter"),
+    "fallbackLazyQuery": MessageLookupByLibrary.simpleMessage(
+      "Fallback lazy query",
+    ),
+    "fallbackLazyQueryDesc": MessageLookupByLibrary.simpleMessage(
+      "Query nameserver first, only send to fallback if result matches fallback-filter",
+    ),
     "fidelityScheme": MessageLookupByLibrary.simpleMessage("Fidelity"),
     "file": MessageLookupByLibrary.simpleMessage("File"),
     "fileDesc": MessageLookupByLibrary.simpleMessage(

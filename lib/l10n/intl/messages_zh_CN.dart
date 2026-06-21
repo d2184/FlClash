@@ -357,6 +357,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "fallback": MessageLookupByLibrary.simpleMessage("Fallback"),
     "fallbackDesc": MessageLookupByLibrary.simpleMessage("一般情况下使用境外DNS"),
     "fallbackFilter": MessageLookupByLibrary.simpleMessage("Fallback过滤"),
+    "fallbackLazyQuery": MessageLookupByLibrary.simpleMessage("Fallback 延迟查询"),
+    "fallbackLazyQueryDesc": MessageLookupByLibrary.simpleMessage(
+      "先查询主DNS，仅在结果命中fallback-filter时才向fallback发起查询",
+    ),
     "fidelityScheme": MessageLookupByLibrary.simpleMessage("高保真"),
     "file": MessageLookupByLibrary.simpleMessage("文件"),
     "fileDesc": MessageLookupByLibrary.simpleMessage("直接上传配置文件"),

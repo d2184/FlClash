@@ -238,6 +238,8 @@
   "proxyNameserverDesc": "用于解析代理节点的域名",
   "fallback": "Fallback",
   "fallbackDesc": "一般情况下使用境外DNS",
+  "fallbackLazyQuery": "Fallback 延迟查询",
+  "fallbackLazyQueryDesc": "先查询主DNS，仅在结果命中fallback-filter时才向fallback发起查询",
   "fallbackFilter": "Fallback过滤",
   "geoipCode": "Geoip代码",
   "ipcidr": "IP/掩码",

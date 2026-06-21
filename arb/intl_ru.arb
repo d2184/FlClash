@@ -238,6 +238,8 @@
   "proxyNameserverDesc": "Используется для разрешения доменов прокси-узлов",
   "fallback": "Fallback",
   "fallbackDesc": "Обычно зарубежный DNS",
+  "fallbackLazyQuery": "Ленивый запрос fallback",
+  "fallbackLazyQueryDesc": "Сначала опрашивать основной DNS, к fallback обращаться только если результат совпадает с fallback-filter",
   "fallbackFilter": "Фильтр fallback",
   "geoipCode": "Код GeoIP",
   "ipcidr": "IP/CIDR",
