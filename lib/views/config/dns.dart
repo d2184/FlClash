@@ -236,6 +236,13 @@ class DnsOptions extends StatelessWidget {
             update: (state, value) => state.copyWith.dns(fallback: value),
             itemMaxLength: TextInputLimits.dnsServer,
           ),
+          _dnsToggle(
+            title: (l) => l.fallbackLazyQuery,
+            subtitle: (l) => l.fallbackLazyQueryDesc,
+            select: (dns) => dns.fallbackLazyQuery,
+            update: (state, value) =>
+                state.copyWith.dns(fallbackLazyQuery: value),
+          ),
           _dnsList(
             title: (l) => l.proxyNameserver,
             subtitle: (l) => l.proxyNameserverDesc,

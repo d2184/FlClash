@@ -238,6 +238,8 @@
   "proxyNameserverDesc": "Used to resolve proxy node domains",
   "fallback": "Fallback",
   "fallbackDesc": "Usually an overseas DNS",
+  "fallbackLazyQuery": "Fallback lazy query",
+  "fallbackLazyQueryDesc": "Query nameserver first, only send to fallback if result matches fallback-filter",
   "fallbackFilter": "Fallback filter",
   "geoipCode": "GeoIP code",
   "ipcidr": "IP/CIDR",

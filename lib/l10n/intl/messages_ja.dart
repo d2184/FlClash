@@ -397,6 +397,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "fallback": MessageLookupByLibrary.simpleMessage("フォールバック"),
     "fallbackDesc": MessageLookupByLibrary.simpleMessage("通常は国外のDNSを使用します"),
     "fallbackFilter": MessageLookupByLibrary.simpleMessage("フォールバックフィルター"),
+    "fallbackLazyQuery": MessageLookupByLibrary.simpleMessage("フォールバック遅延クエリ"),
+    "fallbackLazyQueryDesc": MessageLookupByLibrary.simpleMessage(
+      "まずネームサーバーに問い合わせ、結果がフォールバックフィルターに一致した場合のみフォールバックへ送信",
+    ),
     "fidelityScheme": MessageLookupByLibrary.simpleMessage("フィデリティ"),
     "file": MessageLookupByLibrary.simpleMessage("ファイル"),
     "fileDesc": MessageLookupByLibrary.simpleMessage("プロファイルファイルを直接アップロードします"),
