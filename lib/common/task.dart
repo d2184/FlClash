@@ -160,7 +160,6 @@ Future<({String yaml, String md5})> _makeRealProfileTask(
   }
 
   rawConfig['external-controller'] = realPatchConfig.externalController.value;
-  rawConfig['external-ui'] = '';
   switch (realPatchConfig.interfaceNameMode) {
     case InterfaceNameMode.clear:
       rawConfig['interface-name'] = '';
@@ -169,7 +168,6 @@ Future<({String yaml, String md5})> _makeRealProfileTask(
     case InterfaceNameMode.custom:
       rawConfig['interface-name'] = realPatchConfig.interfaceName;
   }
-  rawConfig['external-ui-url'] = '';
   rawConfig['tcp-concurrent'] = realPatchConfig.tcpConcurrent;
   rawConfig['unified-delay'] = realPatchConfig.unifiedDelay;
   rawConfig['ipv6'] = realPatchConfig.ipv6;
