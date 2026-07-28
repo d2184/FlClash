@@ -205,6 +205,32 @@ void main() {
       final result = await scheduler.run(() async => 'next');
       expect(result, 'next');
     });
+
+    test('runDetached keeps the queue serialized after a failure', () async {
+      final scheduler = SerialTaskScheduler();
+      final events = <String>[];
+      var runningTasks = 0;
+      var maxRunningTasks = 0;
+
+      scheduler.runDetached('failing', () async {
+        runningTasks++;
+        maxRunningTasks = max(maxRunningTasks, runningTasks);
+        events.add('first');
+        runningTasks--;
+        throw StateError('failed');
+      });
+      scheduler.runDetached('next', () async {
+        runningTasks++;
+        maxRunningTasks = max(maxRunningTasks, runningTasks);
+        events.add('second');
+        runningTasks--;
+      });
+
+      await Future<void>.delayed(Duration.zero);
+
+      expect(events, ['first', 'second']);
+      expect(maxRunningTasks, 1);
+    });
   });
 
   group('retry', () {

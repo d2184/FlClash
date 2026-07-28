@@ -177,7 +177,16 @@ enum ResultType {
   error,
 }
 
-enum CoreEventType { log, delay, request, loaded, crash, geoUpdate }
+enum CoreEventType { log, delay, request, loaded, proxy, crash, geoUpdate }
+
+enum ProxyChangeType {
+  @JsonValue('auto')
+  auto,
+  @JsonValue('manual')
+  manual,
+  @JsonValue('unfix')
+  unfix,
+}
 
 enum InvokeMessageType { protect, process }
 

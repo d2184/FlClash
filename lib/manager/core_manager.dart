@@ -113,6 +113,48 @@ class _CoreContainerState extends ConsumerState<CoreManager>
   }
 
   @override
+  void onProxyChanged(
+    String groupName,
+    String proxyName, {
+    required ProxyChangeType changeType,
+  }) {
+    final profileId = ref.read(currentProfileIdProvider);
+    final proxiesAction = ref.read(proxiesActionProvider.notifier);
+
+    switch (changeType) {
+      case ProxyChangeType.manual:
+        if (!proxiesAction.hasPendingChange(profileId, groupName)) {
+          _setProxySelection(profileId, groupName, proxyName);
+        }
+        ref.read(checkIpNumProvider.notifier).add();
+        break;
+      case ProxyChangeType.unfix:
+        if (!proxiesAction.hasPendingChange(profileId, groupName)) {
+          _setProxySelection(profileId, groupName, null);
+        }
+        ref.read(checkIpNumProvider.notifier).add();
+        break;
+      case ProxyChangeType.auto:
+        break;
+    }
+    proxiesAction.updateGroupsDebounce();
+    super.onProxyChanged(groupName, proxyName, changeType: changeType);
+  }
+
+  void _setProxySelection(
+    int? profileId,
+    String groupName,
+    String? proxyName,
+  ) {
+    if (profileId == null) return;
+    ref.read(profilesActionProvider.notifier).setProxySelection(
+      profileId: profileId,
+      groupName: groupName,
+      proxyName: proxyName,
+    );
+  }
+
+  @override
   Future<void> onCrash(String message) async {
     if (ref.read(coreStatusProvider) != CoreStatus.connected) {
       return;
