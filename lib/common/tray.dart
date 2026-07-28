@@ -191,7 +191,7 @@ class AppTray implements TrayPort {
                 onSelected: () {
                   read(
                     proxiesActionProvider.notifier,
-                  ).changeProxy(groupName: group.name, proxyName: proxy.name);
+                  ).changeProxyDebounce(group.name, proxy.name);
                 },
               ),
           ],

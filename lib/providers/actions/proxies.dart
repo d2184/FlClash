@@ -21,6 +21,31 @@ class _DelayTestJob {
   bool cancelled = false;
 }
 
+typedef _ProxySelectionKey = ({int profileId, String groupName});
+
+final class _ProxySelectionRequest {
+  const _ProxySelectionRequest({
+    required this.profileId,
+    required this.groupName,
+    required this.proxyName,
+  });
+
+  final int profileId;
+  final String groupName;
+  final String proxyName;
+
+  _ProxySelectionKey get key => (profileId: profileId, groupName: groupName);
+}
+
+final class ProxyChangeException implements Exception {
+  final String message;
+
+  const ProxyChangeException(this.message);
+
+  @override
+  String toString() => message;
+}
+
 @Riverpod(keepAlive: true)
 class ProxiesAction extends _$ProxiesAction {
   CoreController get _core => ref.read(coreHandlerProvider);
@@ -29,7 +54,13 @@ class ProxiesAction extends _$ProxiesAction {
 
   final List<_DelayTestJob> _delayTestJobs = [];
 
-  final Map<String, String> _pendingSelectedRollback = {};
+  final Map<_ProxySelectionKey, _ProxySelectionRequest> _latestRequests = {};
+
+  final Map<_ProxySelectionKey, SerialTaskScheduler> _schedulers = {};
+
+  final Set<_ProxySelectionKey> _pendingChanges = {};
+
+  static const _changeProxyTimeout = Duration(seconds: 30);
 
   @override
   void build() {
@@ -53,41 +84,39 @@ class ProxiesAction extends _$ProxiesAction {
   }
 
   void changeProxyDebounce(String groupName, String proxyName) {
-    _pendingSelectedRollback.putIfAbsent(
-      groupName,
-      () => _currentSelectedName(groupName),
+    final currentProfile = ref.read(currentProfileProvider);
+    if (currentProfile == null) return;
+    final request = _ProxySelectionRequest(
+      profileId: currentProfile.id,
+      groupName: groupName,
+      proxyName: proxyName,
     );
-    ref
-        .read(profilesActionProvider.notifier)
-        .updateCurrentSelectedMap(groupName, proxyName);
-    debouncer.call((FunctionTag.changeProxy, groupName), (
-      String groupName,
-      String proxyName,
-    ) async {
-      await changeProxy(groupName: groupName, proxyName: proxyName);
-      updateGroupsDebounce();
-    }, args: [groupName, proxyName]);
-  }
-
-  String _currentSelectedName(String groupName) {
-    return ref.read(currentProfileProvider)?.selectedMap[groupName] ?? '';
+    _latestRequests[request.key] = request;
+    final tag =
+        '${FunctionTag.changeProxy.name}:${request.profileId}:$groupName';
+    debouncer.call(tag, () {
+      _schedulers
+          .putIfAbsent(request.key, SerialTaskScheduler.new)
+          .runDetached(tag, () => _applyChange(request));
+    });
   }
 
   Future<void> updateGroups() async {
+    if (!ref.mounted) return;
     try {
       commonPrint.log('updateGroups');
-      ref.read(groupsProvider.notifier).value = await retry(
+      final sortType = ref.read(
+        proxiesStyleSettingProvider.select((state) => state.sortType),
+      );
+      final delayMap = ref.read(delayDataSourceProvider);
+      final testUrl = ref.read(
+        appSettingProvider.select((state) => state.testUrl),
+      );
+      final selectedMap = ref.read(
+        currentProfileProvider.select((state) => state?.selectedMap ?? {}),
+      );
+      final groups = await retry<List<Group>>(
         task: () async {
-          final sortType = ref.read(
-            proxiesStyleSettingProvider.select((state) => state.sortType),
-          );
-          final delayMap = ref.read(delayDataSourceProvider);
-          final testUrl = ref.read(
-            appSettingProvider.select((state) => state.testUrl),
-          );
-          final selectedMap = ref.read(
-            currentProfileProvider.select((state) => state?.selectedMap ?? {}),
-          );
           try {
             return await _core.getProxiesGroups(
               selectedMap: selectedMap,
@@ -105,6 +134,8 @@ class ProxiesAction extends _$ProxiesAction {
         },
         retryIf: (res) => res.isEmpty,
       );
+      if (!ref.mounted) return;
+      ref.read(groupsProvider.notifier).value = groups;
     } catch (e) {
       // The Core failure path already runs inside the retry task above; a
       // throw here only means ref.read hit a disposed container or the
@@ -136,43 +167,116 @@ class ProxiesAction extends _$ProxiesAction {
     ref.read(delayDataSourceProvider.notifier).setDelay(delay);
   }
 
-  Future<void> changeProxy({
-    required String groupName,
-    required String proxyName,
-  }) async {
-    final profilesAction = ref.read(profilesActionProvider.notifier);
-    final rollbackName =
-        _pendingSelectedRollback.remove(groupName) ??
-        _currentSelectedName(groupName);
-    profilesAction.updateCurrentSelectedMap(groupName, proxyName);
-    try {
-      await _core.changeProxy(
-        ChangeProxyParams(groupName: groupName, proxyName: proxyName),
-      );
-    } catch (error) {
-      commonPrint.log(
-        'changeProxy($groupName -> $proxyName) failed: $error',
-        logLevel: coreFailureLogLevel(error),
-      );
-      profilesAction.updateCurrentSelectedMap(groupName, rollbackName);
-      dialogs.showNotifier(
-        currentAppLocalizations.changeProxyFailedTip,
-        level: MessageLevel.error,
-      );
+  bool hasPendingChange(int? profileId, String groupName) {
+    if (profileId == null) return false;
+    return _pendingChanges.contains((profileId: profileId, groupName: groupName));
+  }
+
+  bool _isCurrent(_ProxySelectionRequest request) =>
+      identical(_latestRequests[request.key], request);
+
+  void _completeRequest(_ProxySelectionRequest request) {
+    if (_isCurrent(request)) _latestRequests.remove(request.key);
+  }
+
+  void _finishRequest(_ProxySelectionRequest request) {
+    _completeRequest(request);
+    updateGroupsDebounce();
+  }
+
+  Future<void> _applyChange(_ProxySelectionRequest request) async {
+    if (!_isCurrent(request)) return;
+    if (ref.read(currentProfileProvider)?.id != request.profileId) {
+      _completeRequest(request);
       return;
     }
+
+    _pendingChanges.add(request.key);
+    try {
+      await _requestCoreChange(request);
+    } on ProxyChangeException catch (e) {
+      if (!ref.mounted) return;
+      _pendingChanges.remove(request.key);
+      _handleRejectedChange(request, e);
+      return;
+    } catch (e) {
+      if (!ref.mounted) return;
+      _pendingChanges.remove(request.key);
+      _handleFailedChange(request, e);
+      return;
+    }
+
+    if (!ref.mounted) return;
+    if (ref.read(currentProfileProvider)?.id == request.profileId) {
+      ref.read(profilesActionProvider.notifier).setProxySelection(
+        profileId: request.profileId,
+        groupName: request.groupName,
+        proxyName: request.proxyName.isEmpty ? null : request.proxyName,
+      );
+    }
+    _pendingChanges.remove(request.key);
+    _finishRequest(request);
+    unawaited(_cleanupConnections());
+  }
+
+  Future<void> _requestCoreChange(_ProxySelectionRequest request) async {
+    final message = await _core
+        .changeProxy(
+          ChangeProxyParams(
+            groupName: request.groupName,
+            proxyName: request.proxyName,
+          ),
+        )
+        .timeout(_changeProxyTimeout);
+    if (message.isNotEmpty) throw ProxyChangeException(message);
+  }
+
+  void _handleRejectedChange(
+    _ProxySelectionRequest request,
+    ProxyChangeException error,
+  ) {
+    commonPrint.log(
+      'changeProxy rejected: '
+      '${request.groupName} -> ${request.proxyName}: ${error.message}',
+      logLevel: LogLevel.warning,
+    );
+    if (_isCurrent(request)) {
+      dialogs.showNotifier(error.message, level: MessageLevel.error);
+    }
+    _finishRequest(request);
+  }
+
+  void _handleFailedChange(_ProxySelectionRequest request, Object error) {
+    commonPrint.log(
+      'changeProxy failed: '
+      '${request.groupName} -> ${request.proxyName}: $error',
+      logLevel: coreFailureLogLevel(error),
+    );
+    if (_isCurrent(request)) {
+      dialogs.showNotifier(
+        error is TimeoutException
+            ? currentAppLocalizations.proxyChangeTimeout
+            : error.toString(),
+        level: MessageLevel.error,
+      );
+    }
+    _finishRequest(request);
+  }
+
+  Future<void> _cleanupConnections() async {
     try {
       if (ref.read(appSettingProvider).closeConnections) {
         await _core.closeConnections();
       } else {
         await _core.resetConnections();
       }
-    } catch (error) {
+    } catch (e) {
       commonPrint.log(
-        'changeProxy($groupName -> $proxyName) connection reset failed: $error',
-        logLevel: coreFailureLogLevel(error),
+        'changeProxy connections cleanup error: $e',
+        logLevel: coreFailureLogLevel(e),
       );
     }
+    if (!ref.mounted) return;
     ref.read(checkIpNumProvider.notifier).add();
   }
 
