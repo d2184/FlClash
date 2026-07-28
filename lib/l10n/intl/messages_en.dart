@@ -836,6 +836,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesCount": m25,
     "proxiesEmpty": MessageLookupByLibrary.simpleMessage("Proxies are empty"),
     "proxyChains": MessageLookupByLibrary.simpleMessage("Proxy chain"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage(
+      "Proxy switch timed out",
+    ),
     "proxyDetectedAbnormal": MessageLookupByLibrary.simpleMessage(
       "The selected proxies are abnormal",
     ),

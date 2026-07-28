@@ -7,16 +7,23 @@ class ProfilesAction extends _$ProfilesAction {
   @override
   void build() {}
 
-  void updateCurrentSelectedMap(String groupName, String proxyName) {
-    final currentProfile = ref.read(currentProfileProvider);
-    if (currentProfile != null &&
-        currentProfile.selectedMap[groupName] != proxyName) {
-      final selectedMap = Map<String, String>.from(currentProfile.selectedMap)
-        ..[groupName] = proxyName;
-      ref
-          .read(profilesProvider.notifier)
-          .put(currentProfile.copyWith(selectedMap: selectedMap));
-    }
+  void setProxySelection({
+    required int profileId,
+    required String groupName,
+    required String? proxyName,
+  }) {
+    ref.read(profilesProvider.notifier).updateProfile(profileId, (profile) {
+      final current = profile.selectedMap[groupName];
+      if (current == proxyName) return profile;
+
+      final selectedMap = Map<String, String>.from(profile.selectedMap);
+      if (proxyName == null) {
+        selectedMap.remove(groupName);
+      } else {
+        selectedMap[groupName] = proxyName;
+      }
+      return profile.copyWith(selectedMap: selectedMap);
+    });
   }
 
   Future<void> deleteProfile(int id) async {
@@ -41,13 +48,14 @@ class ProfilesAction extends _$ProfilesAction {
 
   Future<void> autoUpdateProfiles() async {
     for (final profile in ref.read(profilesProvider)) {
-      if (!profile.autoUpdate) continue;
-      final isNotNeedUpdate = profile.lastUpdateDate
-          ?.add(profile.autoUpdateDuration)
-          .isBeforeNow;
-      if (isNotNeedUpdate == false || profile.type == ProfileType.file) {
-        continue;
-      }
+      if (!profile.autoUpdate || profile.type == ProfileType.file) continue;
+
+      final shouldUpdate = profile.lastUpdateDate
+              ?.add(profile.autoUpdateDuration)
+              .isBeforeNow ??
+          true;
+      if (!shouldUpdate) continue;
+
       try {
         await updateProfile(profile);
       } catch (e) {

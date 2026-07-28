@@ -602,6 +602,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesCount": m25,
     "proxiesEmpty": MessageLookupByLibrary.simpleMessage("代理为空"),
     "proxyChains": MessageLookupByLibrary.simpleMessage("代理链"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage("代理切换超时"),
     "proxyDetectedAbnormal": MessageLookupByLibrary.simpleMessage(
       "检测到选中的代理存在异常",
     ),

@@ -624,5 +624,6 @@
   "agePublicKey": "Публичный ключ",
   "ageSecretKeyHint": "Введите age-secret-key",
   "ageSecretKeyInvalidFormat": "Неверный формат: должен начинаться с AGE-SECRET-KEY-",
-  "ageKeyError": "Операция не удалась, попробуйте снова"
+  "ageKeyError": "Операция не удалась, попробуйте снова",
+  "proxyChangeTimeout": "Время ожидания переключения прокси истекло"
 }

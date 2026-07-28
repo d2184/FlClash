@@ -92,6 +92,20 @@ abstract class UpdateGeoDataParams with _$UpdateGeoDataParams {
 }
 
 @freezed
+abstract class ProxyChangedEvent with _$ProxyChangedEvent {
+  const factory ProxyChangedEvent({
+    @JsonKey(name: 'groupName') required String groupName,
+    @JsonKey(name: 'proxyName') required String proxyName,
+    @JsonKey(name: 'changeType')
+    @Default(ProxyChangeType.auto)
+    ProxyChangeType changeType,
+  }) = _ProxyChangedEvent;
+
+  factory ProxyChangedEvent.fromJson(Map<String, Object?> json) =>
+      _$ProxyChangedEventFromJson(json);
+}
+
+@freezed
 abstract class CoreEvent with _$CoreEvent {
   const factory CoreEvent({required CoreEventType type, dynamic data}) =
       _CoreEvent;

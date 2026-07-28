@@ -79,6 +79,19 @@ class SerialTaskScheduler {
     });
     return completer.future;
   }
+
+  void runDetached(dynamic tag, Future<void> Function() task) {
+    _serialTail = _serialTail.then((_) async {
+      try {
+        await task();
+      } catch (error, stackTrace) {
+        commonPrint.log(
+          'Serial task $tag failed: ${compactError(error)}, $stackTrace',
+          logLevel: LogLevel.warning,
+        );
+      }
+    });
+  }
 }
 
 class Throttler {

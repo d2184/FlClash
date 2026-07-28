@@ -688,6 +688,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesCount": m25,
     "proxiesEmpty": MessageLookupByLibrary.simpleMessage("プロキシが空です"),
     "proxyChains": MessageLookupByLibrary.simpleMessage("プロキシチェーン"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage(
+      "プロキシの切り替えがタイムアウトしました",
+    ),
     "proxyDetectedAbnormal": MessageLookupByLibrary.simpleMessage(
       "選択したプロキシに異常が見つかりました",
     ),

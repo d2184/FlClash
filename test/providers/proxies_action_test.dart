@@ -5,6 +5,7 @@ import 'package:fl_clash/core/controller.dart';
 import 'package:fl_clash/core/interface.dart';
 import 'package:fl_clash/core/method.dart';
 import 'package:fl_clash/enum/enum.dart';
+import 'package:fl_clash/l10n/l10n.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/action.dart';
 import 'package:fl_clash/providers/app.dart';
@@ -12,7 +13,6 @@ import 'package:fl_clash/providers/config.dart';
 import 'package:fl_clash/providers/core.dart';
 import 'package:fl_clash/providers/database.dart';
 import 'package:fl_clash/providers/state.dart';
-import 'package:fl_clash/l10n/l10n.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -53,6 +53,31 @@ ExternalProvider _provider(String name, {int count = 1}) => ExternalProvider(
   updateAt: DateTime.utc(2026),
 );
 
+Future<void> _settle(
+  ProviderContainer container,
+  bool Function(Map<String, String> selectedMap) done,
+) async {
+  final deadline = DateTime.now().add(const Duration(seconds: 5));
+  while (DateTime.now().isBefore(deadline)) {
+    final selectedMap =
+        container.read(currentProfileProvider)?.selectedMap ?? const {};
+    if (done(selectedMap)) return;
+    await Future<void>.delayed(const Duration(milliseconds: 20));
+  }
+  fail(
+    'selectedMap did not settle: '
+    '${container.read(currentProfileProvider)?.selectedMap}',
+  );
+}
+
+Future<void> _waitFor(bool Function() done) async {
+  final deadline = DateTime.now().add(const Duration(seconds: 5));
+  while (DateTime.now().isBefore(deadline)) {
+    if (done()) return;
+    await Future<void>.delayed(const Duration(milliseconds: 20));
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -77,6 +102,10 @@ void main() {
       ],
     );
     addTearDown(container.dispose);
+    // appSettingProvider is autoDispose; in the app `configProvider` keeps it
+    // alive. Without a listener it is recycled back to its defaults before an
+    // async read observes what a test wrote.
+    container.listen(appSettingProvider, (_, _) {}, fireImmediately: true);
     return container;
   }
 
@@ -184,23 +213,68 @@ void main() {
     });
   });
 
-  group('changeProxy', () {
+  group('changeProxyDebounce', () {
     setUp(() {
       when(() => core.changeProxy(any())).thenAnswer((_) async => '');
       when(core.closeConnections).thenAnswer((_) async => true);
       when(core.resetConnections).thenAnswer((_) async => true);
     });
 
+    tearDown(() {
+      debouncer.cancel('${FunctionTag.changeProxy.name}:1:Proxy');
+      debouncer.cancel(FunctionTag.updateGroups);
+    });
+
+    test('does not select before the Core accepts the change', () async {
+      final coreCalled = Completer<void>();
+      when(() => core.changeProxy(any())).thenAnswer((_) async {
+        coreCalled.complete();
+        return 'Not found group';
+      });
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
+
+      actionOf(container).changeProxyDebounce('Proxy', 'HK-01');
+      expect(container.read(currentProfileProvider)?.selectedMap, {
+        'Proxy': 'HK-00',
+      });
+
+      await coreCalled.future.timeout(const Duration(seconds: 5));
+      await pumpEventQueue();
+
+      expect(container.read(currentProfileProvider)?.selectedMap, {
+        'Proxy': 'HK-00',
+      });
+      verify(() => core.changeProxy(any())).called(1);
+    });
+
+    test('coalesces pending changes before calling the Core', () async {
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
+      final action = actionOf(container);
+
+      action.changeProxyDebounce('Proxy', 'HK-01');
+      action.changeProxyDebounce('Proxy', 'HK-02');
+      expect(container.read(currentProfileProvider)?.selectedMap, {
+        'Proxy': 'HK-00',
+      });
+
+      await _settle(container, (selectedMap) => selectedMap['Proxy'] == 'HK-02');
+
+      final captured = verify(
+        () => core.changeProxy(captureAny()),
+      ).captured.single;
+      expect((captured as ChangeProxyParams).proxyName, 'HK-02');
+    });
+
     test('closes connections and bumps the ip check when enabled', () async {
-      final container = buildContainer();
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
       container.read(appSettingProvider.notifier).value = const AppSettingProps(
         closeConnections: true,
       );
       final before = container.read(checkIpNumProvider);
 
-      await actionOf(
-        container,
-      ).changeProxy(groupName: 'Proxy', proxyName: 'HK-01');
+      actionOf(container).changeProxyDebounce('Proxy', 'HK-01');
+      await _settle(container, (selectedMap) => selectedMap['Proxy'] == 'HK-01');
+      await pumpEventQueue();
 
       verify(
         () => core.changeProxy(
@@ -213,99 +287,110 @@ void main() {
     });
 
     test('resets connections instead when the setting is off', () async {
-      final container = buildContainer();
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
       container.read(appSettingProvider.notifier).value = const AppSettingProps(
         closeConnections: false,
       );
 
-      await actionOf(
-        container,
-      ).changeProxy(groupName: 'Proxy', proxyName: 'HK-01');
+      actionOf(container).changeProxyDebounce('Proxy', 'HK-01');
+      await _settle(container, (selectedMap) => selectedMap['Proxy'] == 'HK-01');
+      await pumpEventQueue();
 
       verify(core.resetConnections).called(1);
       verifyNever(core.closeConnections);
     });
 
-    test('still bumps the ip check when the connection reset throws', () async {
-      when(core.closeConnections).thenThrow(
-        const CoreMethodException(
-          code: 'transport_disconnected',
-          message: 'Core RPC client is closed',
-        ),
-      );
-      final container = buildContainer();
+    test('a cleanup failure does not roll back a committed change', () async {
+      final cleanupAttempted = Completer<void>();
+      when(core.closeConnections).thenAnswer((_) async {
+        if (!cleanupAttempted.isCompleted) cleanupAttempted.complete();
+        throw StateError('closeConnections failed');
+      });
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
       container.read(appSettingProvider.notifier).value = const AppSettingProps(
         closeConnections: true,
       );
       final before = container.read(checkIpNumProvider);
 
-      await actionOf(
-        container,
-      ).changeProxy(groupName: 'Proxy', proxyName: 'HK-01');
-
-      expect(container.read(checkIpNumProvider), before + 1);
-    });
-
-    test('skips the connection reset when the switch itself fails', () async {
-      when(() => core.changeProxy(any())).thenThrow(StateError('core down'));
-      final container = buildContainer();
-      final before = container.read(checkIpNumProvider);
-
-      await actionOf(
-        container,
-      ).changeProxy(groupName: 'Proxy', proxyName: 'HK-01');
-
-      verifyNever(core.closeConnections);
-      verifyNever(core.resetConnections);
-      expect(container.read(checkIpNumProvider), before);
-    });
-
-    test('commits the selection the Core accepted', () async {
-      final container = buildContainer(profile: _selectedProfile('HK-00'));
-
-      await actionOf(
-        container,
-      ).changeProxy(groupName: 'Proxy', proxyName: 'HK-01');
+      actionOf(container).changeProxyDebounce('Proxy', 'HK-01');
+      await cleanupAttempted.future.timeout(const Duration(seconds: 5));
+      await pumpEventQueue();
 
       expect(container.read(currentProfileProvider)?.selectedMap, {
         'Proxy': 'HK-01',
       });
+      expect(container.read(checkIpNumProvider), before + 1);
     });
 
-    test('rolls the selection back when the switch fails', () async {
-      when(() => core.changeProxy(any())).thenThrow(StateError('core down'));
+    test('skips the connection cleanup when the switch fails', () async {
+      var calls = 0;
+      when(() => core.changeProxy(any())).thenAnswer((_) {
+        calls++;
+        throw StateError('core down');
+      });
       final container = buildContainer(profile: _selectedProfile('HK-00'));
+      final before = container.read(checkIpNumProvider);
 
-      await actionOf(
-        container,
-      ).changeProxy(groupName: 'Proxy', proxyName: 'HK-01');
+      actionOf(container).changeProxyDebounce('Proxy', 'HK-01');
+      await _waitFor(() => calls > 0);
+      await pumpEventQueue();
 
+      expect(calls, 1);
+      verifyNever(core.closeConnections);
+      verifyNever(core.resetConnections);
+      expect(container.read(checkIpNumProvider), before);
       expect(container.read(currentProfileProvider)?.selectedMap, {
         'Proxy': 'HK-00',
       });
     });
 
-    test(
-      'rolls back to the last selection the Core applied, not the last tap',
-      () async {
-        when(() => core.changeProxy(any())).thenThrow(StateError('core down'));
-        final container = buildContainer(profile: _selectedProfile('HK-00'));
-        final action = actionOf(container);
+    test('clears the selection when the Core accepts an empty name', () async {
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
 
-        action.changeProxyDebounce('Proxy', 'HK-01');
-        action.changeProxyDebounce('Proxy', 'HK-02');
-        expect(container.read(currentProfileProvider)?.selectedMap, {
-          'Proxy': 'HK-02',
-        });
+      actionOf(container).changeProxyDebounce('Proxy', '');
+      await _settle(
+        container,
+        (selectedMap) => !selectedMap.containsKey('Proxy'),
+      );
 
-        await action.changeProxy(groupName: 'Proxy', proxyName: 'HK-02');
+      expect(container.read(currentProfileProvider)?.selectedMap, isEmpty);
+    });
 
-        expect(container.read(currentProfileProvider)?.selectedMap, {
-          'Proxy': 'HK-00',
-        });
-        debouncer.cancel((FunctionTag.changeProxy, 'Proxy'));
-      },
-    );
+    test('does not persist a change after the profile switched', () async {
+      final changeStarted = Completer<void>();
+      final completeChange = Completer<String>();
+      final cleanupDone = Completer<void>();
+      when(() => core.changeProxy(any())).thenAnswer((_) {
+        changeStarted.complete();
+        return completeChange.future;
+      });
+      Future<bool> completeCleanup() async {
+        if (!cleanupDone.isCompleted) cleanupDone.complete();
+        return true;
+      }
+
+      when(core.closeConnections).thenAnswer((_) => completeCleanup());
+      when(core.resetConnections).thenAnswer((_) => completeCleanup());
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
+      container
+          .read(profilesProvider.notifier)
+          .put(const Profile(id: 2, autoUpdateDuration: Duration.zero));
+
+      actionOf(container).changeProxyDebounce('Proxy', 'HK-01');
+      await changeStarted.future.timeout(const Duration(seconds: 5));
+      container.read(currentProfileIdProvider.notifier).value = 2;
+      completeChange.complete('');
+      await cleanupDone.future.timeout(const Duration(seconds: 5));
+      await pumpEventQueue();
+
+      expect(
+        container.read(profilesProvider).map((item) => item.selectedMap),
+        [
+          {'Proxy': 'HK-00'},
+          isEmpty,
+        ],
+      );
+    });
   });
 
   group('proxyDelayTest', () {
@@ -715,6 +800,77 @@ void main() {
         'Proxy',
         'Auto',
       });
+    });
+  });
+
+  group('changeProxyDebounce ordering', () {
+    setUp(() {
+      when(core.closeConnections).thenAnswer((_) async => true);
+      when(core.resetConnections).thenAnswer((_) async => true);
+    });
+
+    tearDown(() {
+      debouncer.cancel('${FunctionTag.changeProxy.name}:1:Proxy');
+      debouncer.cancel(FunctionTag.updateGroups);
+    });
+
+    test('keeps the change the Core accepted when a later one fails', () async {
+      final firstStarted = Completer<void>();
+      final releaseFirst = Completer<String>();
+      var calls = 0;
+      when(() => core.changeProxy(any())).thenAnswer((_) {
+        calls++;
+        if (calls == 1) {
+          firstStarted.complete();
+          return releaseFirst.future;
+        }
+        return Future.value('Not found group');
+      });
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
+      final action = actionOf(container);
+
+      action.changeProxyDebounce('Proxy', 'HK-01');
+      await firstStarted.future.timeout(const Duration(seconds: 5));
+      action.changeProxyDebounce('Proxy', 'HK-02');
+
+      releaseFirst.complete('');
+      await _settle(container, (selectedMap) => selectedMap['Proxy'] == 'HK-01');
+      await _waitFor(() => calls >= 2);
+      await pumpEventQueue();
+
+      expect(container.read(currentProfileProvider)?.selectedMap, {
+        'Proxy': 'HK-01',
+      });
+      expect(calls, 2);
+    });
+
+    test('a pending cleanup does not block a later change', () async {
+      final cleanupStarted = Completer<void>();
+      final releaseCleanup = Completer<bool>();
+      var calls = 0;
+      when(() => core.changeProxy(any())).thenAnswer((_) async {
+        calls++;
+        return '';
+      });
+      when(core.closeConnections).thenAnswer((_) {
+        if (!cleanupStarted.isCompleted) cleanupStarted.complete();
+        return releaseCleanup.future;
+      });
+      final container = buildContainer(profile: _selectedProfile('HK-00'));
+      container.read(appSettingProvider.notifier).value = const AppSettingProps(
+        closeConnections: true,
+      );
+      final action = actionOf(container);
+
+      action.changeProxyDebounce('Proxy', 'HK-01');
+      await cleanupStarted.future.timeout(const Duration(seconds: 5));
+      action.changeProxyDebounce('Proxy', 'HK-02');
+
+      await _settle(container, (selectedMap) => selectedMap['Proxy'] == 'HK-02');
+
+      releaseCleanup.complete(true);
+      await pumpEventQueue();
+      expect(calls, 2);
     });
   });
 }

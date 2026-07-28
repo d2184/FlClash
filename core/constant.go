@@ -141,11 +141,26 @@ type Message struct {
 	Data any         `json:"data"`
 }
 
+type ProxyChangeType string
+
+const (
+	ProxyAutoSelected   ProxyChangeType = "auto"
+	ProxyManualSelected ProxyChangeType = "manual"
+	ProxyUnfixed        ProxyChangeType = "unfix"
+)
+
+type ProxyChanged struct {
+	GroupName  string          `json:"groupName"`
+	ProxyName  string          `json:"proxyName"`
+	ChangeType ProxyChangeType `json:"changeType"`
+}
+
 const (
 	LogMessage       MessageType = "log"
 	DelayMessage     MessageType = "delay"
 	RequestMessage   MessageType = "request"
 	LoadedMessage    MessageType = "loaded"
+	ProxyMessage     MessageType = "proxy"
 	GeoUpdateMessage MessageType = "geoUpdate"
 )
 

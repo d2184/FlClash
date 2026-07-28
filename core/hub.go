@@ -28,6 +28,7 @@ import (
 	"github.com/metacubex/mihomo/constant/features"
 	cp "github.com/metacubex/mihomo/constant/provider"
 	"github.com/metacubex/mihomo/hub/executor"
+	"github.com/metacubex/mihomo/hub/route"
 	"github.com/metacubex/mihomo/listener"
 	"github.com/metacubex/mihomo/log"
 	"github.com/metacubex/mihomo/tunnel"
@@ -750,6 +751,33 @@ func handleSetupConfig(params *SetupParams) string {
 		return err.Error()
 	}
 	return ""
+}
+
+func sendProxyChanged(groupName string, proxyName string, changeType ProxyChangeType) {
+	sendMessage(Message{
+		Type: ProxyMessage,
+		Data: ProxyChanged{
+			GroupName:  groupName,
+			ProxyName:  proxyName,
+			ChangeType: changeType,
+		},
+	})
+}
+
+var registerEventHooksOnce sync.Once
+
+func registerEventHooks() {
+	registerEventHooksOnce.Do(func() {
+		route.SwitchProxiesCallback = func(groupName string, proxyName string) {
+			sendProxyChanged(groupName, proxyName, ProxyManualSelected)
+		}
+		route.UnfixProxyCallback = func(groupName string) {
+			sendProxyChanged(groupName, "", ProxyUnfixed)
+		}
+		outboundgroup.GroupSelectedHook = func(groupName string, proxyName string) {
+			sendProxyChanged(groupName, proxyName, ProxyAutoSelected)
+		}
+	})
 }
 
 func init() {

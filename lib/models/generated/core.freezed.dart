@@ -1760,6 +1760,282 @@ as String,
 
 
 /// @nodoc
+mixin _$ProxyChangedEvent {
+
+@JsonKey(name: 'groupName') String get groupName;@JsonKey(name: 'proxyName') String get proxyName;@JsonKey(name: 'changeType') ProxyChangeType get changeType;
+/// Create a copy of ProxyChangedEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProxyChangedEventCopyWith<ProxyChangedEvent> get copyWith => _$ProxyChangedEventCopyWithImpl<ProxyChangedEvent>(this as ProxyChangedEvent, _$identity);
+
+  /// Serializes this ProxyChangedEvent to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as ProxyChangedEvent;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProxyChangedEvent&&(identical(other.groupName, _this.groupName) || other.groupName == _this.groupName)&&(identical(other.proxyName, _this.proxyName) || other.proxyName == _this.proxyName)&&(identical(other.changeType, _this.changeType) || other.changeType == _this.changeType));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as ProxyChangedEvent;
+  return Object.hash(runtimeType,_this.groupName,_this.proxyName,_this.changeType);
+}
+
+@override
+String toString() {
+  final _this = this as ProxyChangedEvent;
+  return 'ProxyChangedEvent(groupName: ${_this.groupName}, proxyName: ${_this.proxyName}, changeType: ${_this.changeType})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ProxyChangedEventCopyWith<$Res>  {
+  factory $ProxyChangedEventCopyWith(ProxyChangedEvent value, $Res Function(ProxyChangedEvent) _then) = _$ProxyChangedEventCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'groupName') String groupName,@JsonKey(name: 'proxyName') String proxyName,@JsonKey(name: 'changeType') ProxyChangeType changeType
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProxyChangedEventCopyWithImpl<$Res>
+    implements $ProxyChangedEventCopyWith<$Res> {
+  _$ProxyChangedEventCopyWithImpl(this._self, this._then);
+
+  final ProxyChangedEvent _self;
+  final $Res Function(ProxyChangedEvent) _then;
+
+/// Create a copy of ProxyChangedEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? groupName = null,Object? proxyName = null,Object? changeType = null,}) {
+  return _then(ProxyChangedEvent(
+groupName: null == groupName ? _self.groupName : groupName // ignore: cast_nullable_to_non_nullable
+as String,proxyName: null == proxyName ? _self.proxyName : proxyName // ignore: cast_nullable_to_non_nullable
+as String,changeType: null == changeType ? _self.changeType : changeType // ignore: cast_nullable_to_non_nullable
+as ProxyChangeType,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ProxyChangedEvent].
+extension ProxyChangedEventPatterns on ProxyChangedEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ProxyChangedEvent value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ProxyChangedEvent() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ProxyChangedEvent value)  $default,){
+final _that = this;
+switch (_that) {
+case _ProxyChangedEvent():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ProxyChangedEvent value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ProxyChangedEvent() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'groupName')  String groupName, @JsonKey(name: 'proxyName')  String proxyName, @JsonKey(name: 'changeType')  ProxyChangeType changeType)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ProxyChangedEvent() when $default != null:
+return $default(_that.groupName,_that.proxyName,_that.changeType);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'groupName')  String groupName, @JsonKey(name: 'proxyName')  String proxyName, @JsonKey(name: 'changeType')  ProxyChangeType changeType)  $default,) {final _that = this;
+switch (_that) {
+case _ProxyChangedEvent():
+return $default(_that.groupName,_that.proxyName,_that.changeType);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'groupName')  String groupName, @JsonKey(name: 'proxyName')  String proxyName, @JsonKey(name: 'changeType')  ProxyChangeType changeType)?  $default,) {final _that = this;
+switch (_that) {
+case _ProxyChangedEvent() when $default != null:
+return $default(_that.groupName,_that.proxyName,_that.changeType);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ProxyChangedEvent implements ProxyChangedEvent {
+  const _ProxyChangedEvent({@JsonKey(name: 'groupName') required this.groupName, @JsonKey(name: 'proxyName') required this.proxyName, @JsonKey(name: 'changeType') this.changeType = ProxyChangeType.auto});
+  factory _ProxyChangedEvent.fromJson(Map<String, dynamic> json) => _$ProxyChangedEventFromJson(json);
+
+@override@JsonKey(name: 'groupName') final  String groupName;
+@override@JsonKey(name: 'proxyName') final  String proxyName;
+@override@JsonKey(name: 'changeType') final  ProxyChangeType changeType;
+
+/// Create a copy of ProxyChangedEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ProxyChangedEventCopyWith<_ProxyChangedEvent> get copyWith => __$ProxyChangedEventCopyWithImpl<_ProxyChangedEvent>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ProxyChangedEventToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProxyChangedEvent&&(identical(other.groupName, groupName) || other.groupName == groupName)&&(identical(other.proxyName, proxyName) || other.proxyName == proxyName)&&(identical(other.changeType, changeType) || other.changeType == changeType));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,groupName,proxyName,changeType);
+}
+
+@override
+String toString() {
+    return 'ProxyChangedEvent(groupName: $groupName, proxyName: $proxyName, changeType: $changeType)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ProxyChangedEventCopyWith<$Res> implements $ProxyChangedEventCopyWith<$Res> {
+  factory _$ProxyChangedEventCopyWith(_ProxyChangedEvent value, $Res Function(_ProxyChangedEvent) _then) = __$ProxyChangedEventCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'groupName') String groupName,@JsonKey(name: 'proxyName') String proxyName,@JsonKey(name: 'changeType') ProxyChangeType changeType
+});
+
+
+
+
+}
+/// @nodoc
+class __$ProxyChangedEventCopyWithImpl<$Res>
+    implements _$ProxyChangedEventCopyWith<$Res> {
+  __$ProxyChangedEventCopyWithImpl(this._self, this._then);
+
+  final _ProxyChangedEvent _self;
+  final $Res Function(_ProxyChangedEvent) _then;
+
+/// Create a copy of ProxyChangedEvent
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? groupName = null,Object? proxyName = null,Object? changeType = null,}) {
+  return _then(_ProxyChangedEvent(
+groupName: null == groupName ? _self.groupName : groupName // ignore: cast_nullable_to_non_nullable
+as String,proxyName: null == proxyName ? _self.proxyName : proxyName // ignore: cast_nullable_to_non_nullable
+as String,changeType: null == changeType ? _self.changeType : changeType // ignore: cast_nullable_to_non_nullable
+as ProxyChangeType,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$CoreEvent {
 
  CoreEventType get type; dynamic get data;

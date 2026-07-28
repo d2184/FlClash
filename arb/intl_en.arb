@@ -624,5 +624,6 @@
   "agePublicKey": "Public Key",
   "ageSecretKeyHint": "Enter age-secret-key",
   "ageSecretKeyInvalidFormat": "Invalid format: must start with AGE-SECRET-KEY-",
-  "ageKeyError": "Operation failed, please try again"
+  "ageKeyError": "Operation failed, please try again",
+  "proxyChangeTimeout": "Proxy switch timed out"
 }

@@ -30,6 +30,12 @@ abstract mixin class CoreEventListener {
 
   void onLoaded(String providerName) {}
 
+  void onProxyChanged(
+    String groupName,
+    String proxyName, {
+    required ProxyChangeType changeType,
+  }) {}
+
   void onCrash(String message) {}
 
   void onGeoUpdate(
@@ -62,6 +68,16 @@ class CoreEventManager {
               break;
             case CoreEventType.crash:
               listener.onCrash(event.data);
+              break;
+            case CoreEventType.proxy:
+              final data = ProxyChangedEvent.fromJson(
+                event.data as Map<String, Object?>,
+              );
+              listener.onProxyChanged(
+                data.groupName,
+                data.proxyName,
+                changeType: data.changeType,
+              );
               break;
             case CoreEventType.geoUpdate:
               final data = event.data as Map<String, dynamic>;
