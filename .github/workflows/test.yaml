@@ -30,5 +30,8 @@ jobs:
       - name: Analyze
         run: flutter analyze --no-fatal-infos
 
+      - name: Run proxy action tests
+        run: flutter test test/common/function_test.dart test/providers/action_test.dart test/providers/proxies_action_test.dart --reporter expanded
+
       - name: Run tests
         run: flutter test --reporter expanded

@@ -135,7 +135,9 @@ class Profiles extends _$Profiles {
   void updateProfile(int profileId, Profile Function(Profile profile) builder) {
     final index = state.indexWhere((element) => element.id == profileId);
     if (index == -1) return;
-    final newProfile = builder(state[index]);
+    final oldProfile = state[index];
+    final newProfile = builder(oldProfile);
+    if (identical(oldProfile, newProfile)) return;
     final next = List<Profile>.from(state);
     next[index] = newProfile;
     _optimistic(next, () => database.profiles.put(newProfile.toCompanion()));

@@ -337,6 +337,9 @@ func setEventListener(listener unsafe.Pointer) {
 		releaseObject(eventListener)
 	}
 	eventListener = listener
+	if listener != nil {
+		registerEventHooks()
+	}
 }
 
 //export getTotalTraffic

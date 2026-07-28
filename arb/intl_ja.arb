@@ -624,5 +624,6 @@
   "agePublicKey": "公開キー",
   "ageSecretKeyHint": "age-secret-key を入力してください",
   "ageSecretKeyInvalidFormat": "フォーマットが無効です：AGE-SECRET-KEY- で始まる必要があります",
-  "ageKeyError": "操作に失敗しました。再試行してください"
+  "ageKeyError": "操作に失敗しました。再試行してください",
+  "proxyChangeTimeout": "プロキシの切り替えがタイムアウトしました"
 }

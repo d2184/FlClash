@@ -624,5 +624,6 @@
   "agePublicKey": "Public Key",
   "ageSecretKeyHint": "请输入 age-secret-key",
   "ageSecretKeyInvalidFormat": "格式错误：必须以 AGE-SECRET-KEY- 开头",
-  "ageKeyError": "操作失败，请重试"
+  "ageKeyError": "操作失败，请重试",
+  "proxyChangeTimeout": "代理切换超时"
 }
