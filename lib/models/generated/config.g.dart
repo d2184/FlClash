@@ -64,6 +64,7 @@ _AppSettingProps _$AppSettingPropsFromJson(
           .toList() ??
       const [],
   currentService: json['currentService'] as String?,
+  customExternalController: json['customExternalController'] as String? ?? '',
 );
 
 Map<String, dynamic> _$AppSettingPropsToJson(_AppSettingProps instance) =>
@@ -100,6 +101,7 @@ Map<String, dynamic> _$AppSettingPropsToJson(_AppSettingProps instance) =>
       'serviceOrder': instance.serviceOrder,
       'disabledServices': instance.disabledServices,
       'currentService': instance.currentService,
+      'customExternalController': instance.customExternalController,
     };
 
 const _$TabAnimationEnumMap = {
