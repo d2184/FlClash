@@ -448,6 +448,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editSsid": MessageLookupByLibrary.simpleMessage("Edit SSID"),
     "emptyTip": m7,
     "en": MessageLookupByLibrary.simpleMessage("English"),
+    "enable": MessageLookupByLibrary.simpleMessage("Enable"),
     "entries": MessageLookupByLibrary.simpleMessage(" entries"),
     "entriesCount": m8,
     "exclude": MessageLookupByLibrary.simpleMessage("Hide from recent tasks"),
@@ -475,7 +476,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "External controller",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "When enabled, the Clash core can be controlled on port 9090",
+      "When enabled, the Clash core can be controlled via the RESTful API",
     ),
     "externalFetch": MessageLookupByLibrary.simpleMessage("External fetch"),
     "externalLink": MessageLookupByLibrary.simpleMessage("External link"),

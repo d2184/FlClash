@@ -460,6 +460,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editSsid": MessageLookupByLibrary.simpleMessage("Изменить SSID"),
     "emptyTip": m7,
     "en": MessageLookupByLibrary.simpleMessage("Английский"),
+    "enable": MessageLookupByLibrary.simpleMessage("Включить"),
     "entries": MessageLookupByLibrary.simpleMessage(" записей"),
     "entriesCount": m8,
     "exclude": MessageLookupByLibrary.simpleMessage("Скрыть из недавних задач"),
@@ -487,7 +488,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Внешний контроллер",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "При включении ядром Clash можно управлять через порт 9090",
+      "При включении ядро Clash можно контролировать через RESTful API",
     ),
     "externalFetch": MessageLookupByLibrary.simpleMessage("Внешнее получение"),
     "externalLink": MessageLookupByLibrary.simpleMessage("Внешняя ссылка"),
