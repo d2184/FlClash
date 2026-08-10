@@ -7,6 +7,7 @@ import 'package:fl_clash/widgets/widgets.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+part 'general/external_controller_dialog.dart';
 part 'general/port_dialog.dart';
 part 'general/ua_dialog.dart';
 
@@ -204,6 +205,49 @@ class HostsItem extends ConsumerWidget {
   }
 }
 
+class ExternalControllerItem extends ConsumerWidget {
+  const ExternalControllerItem({super.key});
+
+  Future<void> _handleShowDialog(WidgetRef ref) async {
+    final result = await dialogs
+        .showCommonDialog<_ExternalControllerDialogResult>(
+          child: _ExternalControllerDialog(
+            value: ref.read(patchClashConfigProvider).externalController,
+            customValue: ref.read(appSettingProvider).customExternalController,
+          ),
+        );
+    if (result == null) {
+      return;
+    }
+    if (result.value.isNotEmpty) {
+      ref.read(appSettingProvider.notifier).update(
+        (state) => state.copyWith(customExternalController: result.value),
+      );
+    }
+    ref
+        .read(patchClashConfigProvider.notifier)
+        .update((state) => state.copyWith(externalController: result.value));
+  }
+
+  @override
+  Widget build(BuildContext context, ref) {
+    final appLocalizations = context.appLocalizations;
+    final externalController = ref.watch(
+      patchClashConfigProvider.select((state) => state.externalController),
+    );
+    return ListItem(
+      leading: const Icon(Icons.api_outlined),
+      title: Text(appLocalizations.externalController),
+      subtitle: Text(
+        externalController.isNotEmpty
+            ? externalController
+            : appLocalizations.externalControllerDesc,
+      ),
+      onTap: () => _handleShowDialog(ref),
+    );
+  }
+}
+
 ConfigToggleItem _clashToggle({
   required IconData icon,
   required ConfigLabel title,
@@ -286,16 +330,5 @@ final generalItems = <Widget>[
           : GeodataLoader.standard,
     ),
   ),
-  _clashToggle(
-    icon: Icons.api_outlined,
-    title: (l) => l.externalController,
-    subtitle: (l) => l.externalControllerDesc,
-    select: (state) =>
-        state.externalController == ExternalControllerStatus.open,
-    update: (state, value) => state.copyWith(
-      externalController: value
-          ? ExternalControllerStatus.open
-          : ExternalControllerStatus.close,
-    ),
-  ),
+  const ExternalControllerItem(),
 ].separated(const Divider(height: 0)).toList();
