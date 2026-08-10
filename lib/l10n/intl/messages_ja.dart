@@ -371,6 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editSsid": MessageLookupByLibrary.simpleMessage("SSIDを編集"),
     "emptyTip": m7,
     "en": MessageLookupByLibrary.simpleMessage("英語"),
+    "enable": MessageLookupByLibrary.simpleMessage("有効化"),
     "entries": MessageLookupByLibrary.simpleMessage(" 件"),
     "entriesCount": m8,
     "exclude": MessageLookupByLibrary.simpleMessage("最近のタスクから隠す"),
@@ -395,7 +396,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "expressiveScheme": MessageLookupByLibrary.simpleMessage("エクスプレッシブ"),
     "externalController": MessageLookupByLibrary.simpleMessage("外部コントローラー"),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "有効にすると、ポート9090でClashコアを制御できます",
+      "有効にすると、RESTful API経由でClashコアを制御できます",
     ),
     "externalFetch": MessageLookupByLibrary.simpleMessage("外部取得"),
     "externalLink": MessageLookupByLibrary.simpleMessage("外部リンク"),
