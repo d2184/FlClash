@@ -1175,6 +1175,21 @@ class AppLocalizations {
     );
   }
 
+  /// `When enabled, some apps can bypass the VPN`
+  String get allowBypassDesc {
+    return Intl.message(
+      'When enabled, some apps can bypass the VPN',
+      name: 'allowBypassDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable`
+  String get enable {
+    return Intl.message('Enable', name: 'enable', desc: '', args: []);
+  }
+
   /// `External controller`
   String get externalController {
     return Intl.message(
@@ -1185,10 +1200,10 @@ class AppLocalizations {
     );
   }
 
-  /// `When enabled, the Clash core can be controlled on port 9090`
+  /// `When enabled, the Clash core can be controlled via the RESTful API`
   String get externalControllerDesc {
     return Intl.message(
-      'When enabled, the Clash core can be controlled on port 9090',
+      'When enabled, the Clash core can be controlled via the RESTful API',
       name: 'externalControllerDesc',
       desc: '',
       args: [],
