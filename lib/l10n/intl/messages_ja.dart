@@ -188,6 +188,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "agree": MessageLookupByLibrary.simpleMessage("同意する"),
     "allowBypass": MessageLookupByLibrary.simpleMessage("アプリによるVPNバイパスを許可"),
+    "allowBypassDesc": MessageLookupByLibrary.simpleMessage(
+      "有効にすると、一部のアプリがVPNをバイパスできます",
+    ),
     "allowLan": MessageLookupByLibrary.simpleMessage("LANプロキシ"),
     "answers": MessageLookupByLibrary.simpleMessage("応答"),
     "app": MessageLookupByLibrary.simpleMessage("アプリ"),
@@ -479,6 +482,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "editorUnavailable": MessageLookupByLibrary.simpleMessage("エディターを利用できません"),
     "emptyTip": m8,
     "en": MessageLookupByLibrary.simpleMessage("英語"),
+    "enable": MessageLookupByLibrary.simpleMessage("有効化"),
     "enabled": MessageLookupByLibrary.simpleMessage("有効"),
     "entries": MessageLookupByLibrary.simpleMessage(" 件"),
     "error": MessageLookupByLibrary.simpleMessage("エラー"),
@@ -504,7 +508,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "expressiveScheme": MessageLookupByLibrary.simpleMessage("エクスプレッシブ"),
     "externalController": MessageLookupByLibrary.simpleMessage("外部コントローラー"),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "有効にすると、ポート9090でClashコアを制御できます",
+      "有効にすると、RESTful API経由でClashコアを制御できます",
     ),
     "externalLink": MessageLookupByLibrary.simpleMessage("外部リンク"),
     "fade": MessageLookupByLibrary.simpleMessage("フェード"),

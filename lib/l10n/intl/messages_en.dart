@@ -223,6 +223,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "allowBypass": MessageLookupByLibrary.simpleMessage(
       "Allow apps to bypass VPN",
     ),
+    "allowBypassDesc": MessageLookupByLibrary.simpleMessage(
+      "When enabled, some apps can bypass the VPN",
+    ),
     "allowLan": MessageLookupByLibrary.simpleMessage("Allow LAN"),
     "answers": MessageLookupByLibrary.simpleMessage("Answers"),
     "app": MessageLookupByLibrary.simpleMessage("App"),
@@ -572,6 +575,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "emptyTip": m8,
     "en": MessageLookupByLibrary.simpleMessage("English"),
+    "enable": MessageLookupByLibrary.simpleMessage("Enable"),
     "enabled": MessageLookupByLibrary.simpleMessage("Enabled"),
     "entries": MessageLookupByLibrary.simpleMessage(" entries"),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
@@ -601,7 +605,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "External controller",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "When enabled, the Clash core can be controlled on port 9090",
+      "When enabled, the Clash core can be controlled via the RESTful API",
     ),
     "externalLink": MessageLookupByLibrary.simpleMessage("External link"),
     "fade": MessageLookupByLibrary.simpleMessage("Fade"),

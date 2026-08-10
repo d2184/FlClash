@@ -135,7 +135,7 @@ void main() {
         logLevel: LogLevel.info,
         ipv6: false,
         tcpConcurrent: false,
-        externalController: ExternalControllerStatus.close,
+        externalController: '',
         unifiedDelay: false,
       ),
     );
@@ -612,7 +612,7 @@ void main() {
           .read(patchClashConfigProvider.notifier)
           .update(
             (state) => state.copyWith(
-              externalController: ExternalControllerStatus.open,
+              externalController: '127.0.0.1:9090',
             ),
           );
 
@@ -621,10 +621,10 @@ void main() {
       final params =
           verify(() => core.updateConfig(captureAny())).captured.single
               as UpdateParams;
-      expect(params.externalController, ExternalControllerStatus.close);
+      expect(params.externalController, '');
       expect(
         scoped.read(patchClashConfigProvider).externalController,
-        ExternalControllerStatus.open,
+        '127.0.0.1:9090',
       );
     });
   });
@@ -927,7 +927,7 @@ void main() {
             .read(patchClashConfigProvider.notifier)
             .update(
               (state) => state.copyWith(
-                externalController: ExternalControllerStatus.open,
+                externalController: '127.0.0.1:9090',
               ),
             );
 

@@ -228,6 +228,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "allowBypass": MessageLookupByLibrary.simpleMessage(
       "Разрешить приложениям обходить VPN",
     ),
+    "allowBypassDesc": MessageLookupByLibrary.simpleMessage(
+      "При включении некоторые приложения смогут обходить VPN",
+    ),
     "allowLan": MessageLookupByLibrary.simpleMessage("Разрешить LAN"),
     "answers": MessageLookupByLibrary.simpleMessage("Ответы"),
     "app": MessageLookupByLibrary.simpleMessage("Приложение"),
@@ -595,6 +598,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "emptyTip": m8,
     "en": MessageLookupByLibrary.simpleMessage("Английский"),
+    "enable": MessageLookupByLibrary.simpleMessage("Включить"),
     "enabled": MessageLookupByLibrary.simpleMessage("Включено"),
     "entries": MessageLookupByLibrary.simpleMessage(" записей"),
     "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
@@ -626,7 +630,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Внешний контроллер",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "При включении ядром Clash можно управлять через порт 9090",
+      "При включении ядро Clash можно контролировать через RESTful API",
     ),
     "externalLink": MessageLookupByLibrary.simpleMessage("Внешняя ссылка"),
     "fade": MessageLookupByLibrary.simpleMessage("Растворение"),

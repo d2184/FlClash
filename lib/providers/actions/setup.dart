@@ -483,7 +483,7 @@ class SetupAction extends _$SetupAction {
     if (ref.read(safeModeProvider)) {
       return patchConfig.copyWith(
         tun: patchConfig.tun.copyWith(enable: false),
-        externalController: ExternalControllerStatus.close,
+        externalController: '',
       );
     }
     final authorized =
