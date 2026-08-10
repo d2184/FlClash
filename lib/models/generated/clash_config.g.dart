@@ -328,6 +328,7 @@ const _$RuleActionEnumMap = {
   RuleAction.DOMAIN_SUFFIX: 'DOMAIN_SUFFIX',
   RuleAction.DOMAIN_KEYWORD: 'DOMAIN_KEYWORD',
   RuleAction.DOMAIN_REGEX: 'DOMAIN_REGEX',
+  RuleAction.DOMAIN_WILDCARD: 'DOMAIN_WILDCARD',
   RuleAction.GEOSITE: 'GEOSITE',
   RuleAction.IP_CIDR: 'IP_CIDR',
   RuleAction.IP_CIDR6: 'IP_CIDR6',
@@ -344,10 +345,13 @@ const _$RuleActionEnumMap = {
   RuleAction.IN_TYPE: 'IN_TYPE',
   RuleAction.IN_USER: 'IN_USER',
   RuleAction.IN_NAME: 'IN_NAME',
+  RuleAction.REMATCH_NAME: 'REMATCH_NAME',
   RuleAction.PROCESS_PATH: 'PROCESS_PATH',
   RuleAction.PROCESS_PATH_REGEX: 'PROCESS_PATH_REGEX',
+  RuleAction.PROCESS_PATH_WILDCARD: 'PROCESS_PATH_WILDCARD',
   RuleAction.PROCESS_NAME: 'PROCESS_NAME',
   RuleAction.PROCESS_NAME_REGEX: 'PROCESS_NAME_REGEX',
+  RuleAction.PROCESS_NAME_WILDCARD: 'PROCESS_NAME_WILDCARD',
   RuleAction.UID: 'UID',
   RuleAction.NETWORK: 'NETWORK',
   RuleAction.DSCP: 'DSCP',
@@ -444,12 +448,7 @@ _PatchClashConfig _$PatchClashConfigFromJson(Map<String, dynamic> json) =>
           $enumDecodeNullable(_$GeodataLoaderEnumMap, json['geodata-loader']) ??
           GeodataLoader.memconservative,
       globalUa: json['global-ua'] as String?,
-      externalController:
-          $enumDecodeNullable(
-            _$ExternalControllerStatusEnumMap,
-            json['external-controller'],
-          ) ??
-          ExternalControllerStatus.close,
+      externalController: json['external-controller'] as String? ?? '',
       hosts:
           (json['hosts'] as Map<String, dynamic>?)?.map(
             (k, e) => MapEntry(k, e as String),
@@ -482,8 +481,7 @@ Map<String, dynamic> _$PatchClashConfigToJson(_PatchClashConfig instance) =>
       'geox-url': _geoXUrlToJson(instance.geoXUrl),
       'geodata-loader': _$GeodataLoaderEnumMap[instance.geodataLoader]!,
       'global-ua': instance.globalUa,
-      'external-controller':
-          _$ExternalControllerStatusEnumMap[instance.externalController]!,
+      'external-controller': instance.externalController,
       'hosts': instance.hosts,
       'geo-auto-update': instance.geoAutoUpdate,
       'geo-update-interval': instance.geoUpdateInterval,
@@ -517,9 +515,4 @@ const _$InterfaceNameModeEnumMap = {
 const _$GeodataLoaderEnumMap = {
   GeodataLoader.standard: 'standard',
   GeodataLoader.memconservative: 'memconservative',
-};
-
-const _$ExternalControllerStatusEnumMap = {
-  ExternalControllerStatus.close: '',
-  ExternalControllerStatus.open: '127.0.0.1:9090',
 };
