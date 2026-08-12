@@ -83,7 +83,6 @@ func handleGetIsInit() bool {
 
 func handleForceGC() {
 	log.Infoln("[APP] request force GC")
-	tunnel.InvalidateAllProxies()
 	runtime.GC()
 	if features.Android {
 		debug.FreeOSMemory()
@@ -184,7 +183,24 @@ func proxyGroupNames(
 }
 
 func handleGetProxies() ProxiesData {
-	proxies := tunnel.AllProxies()
+	proxies := tunnel.Proxies()
+
+	providerProxies := make(map[string]map[string]proxyBrief)
+	for name, p := range tunnel.Providers() {
+		if p.VehicleType() == cp.Compatible {
+			continue
+		}
+		providerProxyList := p.Proxies()
+		pm := make(map[string]proxyBrief, len(providerProxyList))
+		for _, px := range providerProxyList {
+			pm[px.Name()] = proxyBrief{
+				Name:         px.Name(),
+				Type:         px.Type().String(),
+				ProviderName: name,
+			}
+		}
+		providerProxies[name] = pm
+	}
 
 	allNames := proxyGroupNames(config.GetProxyNameList(), func(name string) (constant.AdapterType, bool) {
 		p, ok := proxies[name]
@@ -199,8 +215,9 @@ func handleGetProxies() ProxiesData {
 		views[name] = proxyView(proxy)
 	}
 	return ProxiesData{
-		All:     allNames,
-		Proxies: views,
+		All:             allNames,
+		Proxies:         views,
+		ProviderProxies: providerProxies,
 	}
 }
 
@@ -230,7 +247,7 @@ var (
 )
 
 func lookupProxy(name string) constant.Proxy {
-	return tunnel.AllProxies()[name]
+	return tunnel.Proxies()[name]
 }
 
 func selectableGroup(groupName string) (pickableGroup, error) {
@@ -333,7 +350,7 @@ func handleTestDelay(params *TestDelayParams) *Delay {
 		Value: -1,
 	}
 
-	proxy := lookupProxy(params.ProxyName)
+	proxy := findProxy(params.ProviderName, params.ProxyName)
 	if proxy == nil {
 		reportMissingDelayTestProxy(params.ProxyName)
 		return delayData
