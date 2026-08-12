@@ -393,9 +393,10 @@ func TestHandleValidateConfigReportsMalformedYaml(t *testing.T) {
 	}
 }
 
-// The provider entry has to win, because that is the one handleGetProxies
-// reports under the shared name and the one the host is asking about.
-func TestLookupProxyPrefersTheProviderEntry(t *testing.T) {
+// lookupProxy resolves what the tunnel holds by name, which is what
+// selectableGroup needs; provider members are reached through findProxy
+// instead, because the tunnel does not hold them under a bare name.
+func TestLookupProxyResolvesTunnelEntries(t *testing.T) {
 	base := namedProxy("shared")
 	fromProvider := newCachingProvider("subscription", "shared", "node-a")
 
@@ -405,37 +406,36 @@ func TestLookupProxyPrefersTheProviderEntry(t *testing.T) {
 	)
 	t.Cleanup(func() { tunnel.UpdateProxies(nil, nil) })
 
-	if got := lookupProxy("shared"); got == base {
-		t.Error("lookupProxy(shared) returned the base entry, want the provider one")
+	if got := lookupProxy("shared"); got != base {
+		t.Error("lookupProxy(shared) did not return the tunnel entry")
 	}
-	if got := lookupProxy("node-a"); got == nil {
-		t.Error("lookupProxy(node-a) = nil, want the provider entry")
-	}
-	if got := lookupProxy("DIRECT"); got != base && got == nil {
+	if got := lookupProxy("DIRECT"); got == nil {
 		t.Error("lookupProxy(DIRECT) = nil, want the base entry")
+	}
+	if got := lookupProxy("node-a"); got != nil {
+		t.Errorf("lookupProxy(node-a) = %v, want nil; provider members need findProxy", got)
 	}
 	if got := lookupProxy("missing"); got != nil {
 		t.Errorf("lookupProxy(missing) = %v, want nil", got)
 	}
 }
 
-// A subscription refresh has to reach a delay test without a config apply,
-// which is the whole reason lookupProxy may read a cache at all.
-func TestLookupProxyFollowsAProviderUpdate(t *testing.T) {
+// A subscription refresh has to reach a delay test without a config apply.
+func TestFindProxyFollowsAProviderUpdate(t *testing.T) {
 	provider := newCachingProvider("subscription", "old-node")
 	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
 
-	if lookupProxy("old-node") == nil {
-		t.Fatal("lookupProxy(old-node) = nil before the update")
+	if findProxy("subscription", "old-node") == nil {
+		t.Fatal("findProxy(subscription, old-node) = nil before the update")
 	}
 
 	provider.setProxies("new-node")
 
-	if lookupProxy("new-node") == nil {
-		t.Error("lookupProxy(new-node) = nil, a subscription refresh did not reach the lookup")
+	if findProxy("subscription", "new-node") == nil {
+		t.Error("findProxy(subscription, new-node) = nil, a subscription refresh did not reach the lookup")
 	}
-	if got := lookupProxy("old-node"); got != nil {
-		t.Errorf("lookupProxy(old-node) = %v after the refresh dropped it, want nil", got)
+	if got := findProxy("subscription", "old-node"); got != nil {
+		t.Errorf("findProxy(subscription, old-node) = %v after the refresh dropped it, want nil", got)
 	}
 }
 
@@ -570,7 +570,7 @@ func TestProxyTableReadsAreSerialisedAgainstAnApply(t *testing.T) {
 					return
 				default:
 				}
-				tunnel.AllProxies()
+				tunnel.Proxies()
 				externalProviders()
 				lookupExternalProvider("subscription-0")
 			}
@@ -699,8 +699,8 @@ func TestUpdateExternalProviderRunsOneAtATime(t *testing.T) {
 	releaseUpdate(providerUpdateScope + name)
 }
 
-// cachingProvider counts how often the tunnel walked its proxy list, which is
-// exactly what the AllProxies cache exists to avoid.
+// cachingProvider counts how often its proxy list was walked, which is what
+// distinguishes a fresh read of the tunnel from a reused snapshot.
 type cachingProvider struct {
 	fakeProxyProvider
 	mu      sync.Mutex
@@ -748,7 +748,7 @@ func (p *cachingProvider) readCount() int {
 	return p.reads
 }
 
-func proxyNamesOf(proxies map[string]constant.Proxy) []string {
+func briefNamesOf(proxies map[string]proxyBrief) []string {
 	names := make([]string, 0, len(proxies))
 	for name := range proxies {
 		names = append(names, name)
@@ -757,95 +757,78 @@ func proxyNamesOf(proxies map[string]constant.Proxy) []string {
 	return names
 }
 
-func TestAllProxiesServesRepeatedCallsFromCache(t *testing.T) {
+func TestProviderProxiesReportsSubscriptionMembers(t *testing.T) {
 	provider := newCachingProvider("subscription", "node-a", "node-b")
 	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
 
-	first := tunnel.AllProxies()
-	reads := provider.readCount()
-	second := tunnel.AllProxies()
-
-	if provider.readCount() != reads {
-		t.Errorf("the provider list was walked again for an unchanged tunnel (%d -> %d reads)",
-			reads, provider.readCount())
+	pm, exist := handleGetProxies().ProviderProxies["subscription"]
+	if !exist {
+		t.Fatal("the handler did not report the subscription's proxies")
 	}
-	if got, want := proxyNamesOf(second), proxyNamesOf(first); !slices.Equal(got, want) {
-		t.Errorf("cached answer = %v, want %v", got, want)
+	if got, want := briefNamesOf(pm), []string{"node-a", "node-b"}; !slices.Equal(got, want) {
+		t.Errorf("provider proxies = %v, want %v", got, want)
 	}
-}
-
-// executor.ApplyConfig installs the providers (line 100, updateProxies) before
-// it loads them (line 115, loadProvider -> Initial -> the fetcher's onUpdate ->
-// setProxies), so a provider is in the tunnel with an empty list for as long as
-// its subscription takes to parse. Nothing tells the cache the list arrived
-// except the version the load bumps, and a read landing inside that window must
-// not be what the cache keeps answering with.
-func TestAllProxiesPicksUpAProviderThatLoadsAfterTheApply(t *testing.T) {
-	loading := newCachingProvider("subscription")
-	base := map[string]constant.Proxy{"DIRECT": namedProxy("DIRECT")}
-
-	tunnel.UpdateProxies(base, map[string]cp.ProxyProvider{"subscription": loading})
-	t.Cleanup(func() { tunnel.UpdateProxies(nil, nil) })
-
-	during := proxyNamesOf(tunnel.AllProxies())
-	if !slices.Equal(during, []string{"DIRECT"}) {
-		t.Fatalf("mid-apply AllProxies = %v, want only the base proxies", during)
-	}
-
-	loading.setProxies("node-a", "node-b")
-
-	after := proxyNamesOf(tunnel.AllProxies())
-	want := []string{"DIRECT", "node-a", "node-b"}
-	if !slices.Equal(after, want) {
-		t.Errorf("AllProxies = %v, want %v; a provider that loaded after the apply did not reach the tunnel", after, want)
+	for _, name := range []string{"node-a", "node-b"} {
+		if got := pm[name].ProviderName; got != "subscription" {
+			t.Errorf("%s provider-name = %q, want %q", name, got, "subscription")
+		}
 	}
 }
 
-// forceGC is the host's "give the memory back" hook — Android calls it from
-// onLowMemory and handleShutdown ends with it — and a cache the collection
-// cannot reach defeats it.
-func TestForceGCReleasesTheProxyCache(t *testing.T) {
-	provider := newCachingProvider("subscription", "node-a", "node-b")
-	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
-
-	tunnel.AllProxies()
-	warm := provider.readCount()
-	tunnel.AllProxies()
-	if provider.readCount() != warm {
-		t.Fatal("the cache was not warm, so this proves nothing about releasing it")
-	}
-
-	handleForceGC()
-
-	tunnel.AllProxies()
-	if provider.readCount() == warm {
-		t.Error("AllProxies still answered from cache after a forced GC, so the replaced proxies stay pinned")
-	}
-}
-
-func TestAllProxiesFollowsAProviderUpdate(t *testing.T) {
+// Provider members are not in tunnel.Proxies(), so a group listing them can
+// only render its rows if the handler reports them separately.
+func TestProviderProxiesStayOutOfTheProxyMap(t *testing.T) {
 	provider := newCachingProvider("subscription", "node-a")
 	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
 
-	tunnel.AllProxies()
-	provider.setProxies("node-b", "node-c")
-
-	got := proxyNamesOf(tunnel.AllProxies())
-	if want := []string{"node-b", "node-c"}; !slices.Equal(got, want) {
-		t.Errorf("proxies = %v, want %v; a subscription refresh did not reach the tunnel", got, want)
+	data := handleGetProxies()
+	if _, exist := data.Proxies["node-a"]; exist {
+		t.Error("a provider member leaked into the proxy map")
+	}
+	if _, exist := data.ProviderProxies["subscription"]["node-a"]; !exist {
+		t.Error("the provider member was not reported under its provider")
 	}
 }
 
-// A config apply replaces the maps outright, and the replacements start their
-// own version counts — so identical versions across an apply say nothing about
-// whether the proxies are the same. Only the invalidation on UpdateProxies
-// catches this.
-func TestAllProxiesFollowsAConfigApplyThatKeepsEveryVersion(t *testing.T) {
+// An inline provider's proxies are already in tunnel.Proxies(), so reporting
+// them again would double every node the host renders.
+func TestProviderProxiesSkipsInlineProviders(t *testing.T) {
+	withTunnelProviders(t, map[string]cp.ProxyProvider{
+		"subscription": newCachingProvider("subscription", "node-a"),
+		"inline":       &fakeProxyProvider{name: "inline", vehicle: cp.Compatible},
+	}, nil)
+
+	data := handleGetProxies()
+	if _, exist := data.ProviderProxies["inline"]; exist {
+		t.Error("an inline provider was reported as a proxy source")
+	}
+	if _, exist := data.ProviderProxies["subscription"]; !exist {
+		t.Error("the subscription provider was not reported")
+	}
+}
+
+func TestProviderProxiesFollowsAProviderUpdate(t *testing.T) {
+	provider := newCachingProvider("subscription", "node-a")
+	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
+
+	handleGetProxies()
+	provider.setProxies("node-b", "node-c")
+
+	got := briefNamesOf(handleGetProxies().ProviderProxies["subscription"])
+	if want := []string{"node-b", "node-c"}; !slices.Equal(got, want) {
+		t.Errorf("provider proxies = %v, want %v; a subscription refresh did not reach the host", got, want)
+	}
+}
+
+// A config apply replaces the provider map outright, and the replacements start
+// their own version counts — so identical versions across an apply must not let
+// the previous profile's nodes survive.
+func TestProviderProxiesFollowsAConfigApplyThatKeepsEveryVersion(t *testing.T) {
 	before := newCachingProvider("subscription", "old-node")
 	tunnel.UpdateProxies(nil, map[string]cp.ProxyProvider{"subscription": before})
 	t.Cleanup(func() { tunnel.UpdateProxies(nil, nil) })
 
-	tunnel.AllProxies()
+	handleGetProxies()
 
 	after := newCachingProvider("subscription", "new-node")
 	if after.Version() != before.Version() {
@@ -854,9 +837,38 @@ func TestAllProxiesFollowsAConfigApplyThatKeepsEveryVersion(t *testing.T) {
 	}
 	tunnel.UpdateProxies(nil, map[string]cp.ProxyProvider{"subscription": after})
 
-	got := proxyNamesOf(tunnel.AllProxies())
+	got := briefNamesOf(handleGetProxies().ProviderProxies["subscription"])
 	if want := []string{"new-node"}; !slices.Equal(got, want) {
-		t.Errorf("proxies = %v, want %v; the previous profile's nodes survived the apply", got, want)
+		t.Errorf("provider proxies = %v, want %v; the previous profile's nodes survived the apply", got, want)
+	}
+}
+
+// A delay test on a provider member carries the provider name, because the
+// member cannot be found in tunnel.Proxies() by name alone.
+func TestFindProxyResolvesProviderMembers(t *testing.T) {
+	provider := newCachingProvider("subscription", "node-a")
+	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
+	tunnel.UpdateProxies(
+		map[string]constant.Proxy{"DIRECT": namedProxy("DIRECT")},
+		map[string]cp.ProxyProvider{"subscription": provider},
+	)
+
+	if got := findProxy("subscription", "node-a"); got == nil {
+		t.Error("a provider member was not resolved through its provider")
+	} else if got.Name() != "node-a" {
+		t.Errorf("resolved proxy = %q, want %q", got.Name(), "node-a")
+	}
+	if findProxy("", "node-a") != nil {
+		t.Error("a provider member resolved without its provider name")
+	}
+	if got := findProxy("", "DIRECT"); got == nil || got.Name() != "DIRECT" {
+		t.Error("a tunnel proxy was not resolved with an empty provider name")
+	}
+	if findProxy("missing", "node-a") != nil {
+		t.Error("an unknown provider resolved to a proxy")
+	}
+	if findProxy("subscription", "missing") != nil {
+		t.Error("an unknown member resolved to a proxy")
 	}
 }
 
@@ -864,17 +876,17 @@ func TestHandleGetProxiesSeesAProviderUpdate(t *testing.T) {
 	provider := newCachingProvider("subscription", "node-a")
 	withTunnelProviders(t, map[string]cp.ProxyProvider{"subscription": provider}, nil)
 
-	if _, exist := handleGetProxies().Proxies["node-a"]; !exist {
+	if _, exist := handleGetProxies().ProviderProxies["subscription"]["node-a"]; !exist {
 		t.Fatal("the handler did not report the installed proxy")
 	}
 
 	provider.setProxies("node-b")
 
-	data := handleGetProxies()
-	if _, exist := data.Proxies["node-b"]; !exist {
+	pm := handleGetProxies().ProviderProxies["subscription"]
+	if _, exist := pm["node-b"]; !exist {
 		t.Error("the handler kept serving the pre-refresh proxy list")
 	}
-	if _, exist := data.Proxies["node-a"]; exist {
+	if _, exist := pm["node-a"]; exist {
 		t.Error("a proxy the refresh removed is still reported")
 	}
 }
