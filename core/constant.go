@@ -3,13 +3,14 @@ package main
 import (
 	"github.com/metacubex/http"
 
+	"net/netip"
+	"time"
+
 	"github.com/metacubex/mihomo/adapter/provider"
 	P "github.com/metacubex/mihomo/component/process"
 	"github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/log"
 	"github.com/metacubex/mihomo/tunnel"
-	"net/netip"
-	"time"
 )
 
 type InitParams struct {
@@ -69,9 +70,10 @@ type RouteState struct {
 }
 
 type TestDelayParams struct {
-	ProxyName string `json:"proxy-name"`
-	TestUrl   string `json:"test-url"`
-	Timeout   int64  `json:"timeout"`
+	ProxyName    string `json:"proxy-name"`
+	ProviderName string `json:"provider-name"`
+	TestUrl      string `json:"test-url"`
+	Timeout      int64  `json:"timeout"`
 }
 
 type ProbeParams struct {
@@ -124,9 +126,16 @@ type ExternalProvider struct {
 	SubscriptionInfo *provider.SubscriptionInfo `json:"subscription-info"`
 }
 
+type proxyBrief struct {
+	Name         string `json:"name"`
+	Type         string `json:"type"`
+	ProviderName string `json:"provider-name"`
+}
+
 type ProxiesData struct {
-	Proxies map[string]any `json:"proxies"`
-	All     []string       `json:"all"`
+	Proxies         map[string]any                   `json:"proxies"`
+	ProviderProxies map[string]map[string]proxyBrief `json:"provider-proxies"`
+	All             []string                         `json:"all"`
 }
 
 type nodeView struct {
