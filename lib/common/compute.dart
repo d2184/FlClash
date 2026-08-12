@@ -72,8 +72,17 @@ SelectedProxyState getRealSelectedProxyState(
   if (currentSelectedName.isEmpty) {
     return newState;
   }
+  final selectedIndex = group.all.indexWhere(
+    (proxy) => proxy.name == currentSelectedName,
+  );
   return getRealSelectedProxyState(
-    newState.copyWith(proxyName: currentSelectedName, testUrl: group.testUrl),
+    newState.copyWith(
+      proxyName: currentSelectedName,
+      testUrl: group.testUrl,
+      providerName: selectedIndex == -1
+          ? null
+          : group.all[selectedIndex].providerName,
+    ),
     groups: groups,
     selectedMap: selectedMap,
   );
@@ -83,9 +92,10 @@ SelectedProxyState computeRealSelectedProxyState(
   String proxyName, {
   required List<Group> groups,
   required Map<String, String> selectedMap,
+  String? providerName,
 }) {
   return getRealSelectedProxyState(
-    SelectedProxyState(proxyName: proxyName),
+    SelectedProxyState(proxyName: proxyName, providerName: providerName),
     groups: groups,
     selectedMap: selectedMap,
   );
