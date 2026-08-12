@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	cp "github.com/metacubex/mihomo/constant/provider"
 	"github.com/metacubex/mihomo/tunnel"
 )
 
@@ -59,14 +60,17 @@ func routeStamp() (epoch, picksVersion uint64) {
 
 func readPicks() (map[string]string, map[string]uint32) {
 	picks := map[string]string{}
-	for name, proxy := range tunnel.AllProxies() {
+	for name, proxy := range tunnel.Proxies() {
 		if group, ok := adapterAs[pickableGroup](proxy); ok {
 			picks[name] = group.Now()
 		}
 	}
-	providers := tunnel.ProvidersSnapshot()
+	providers := tunnel.Providers()
 	versions := make(map[string]uint32, len(providers))
 	for name, p := range providers {
+		if p.VehicleType() == cp.Compatible {
+			continue
+		}
 		versions[name] = p.Version()
 	}
 	return picks, versions
@@ -75,7 +79,7 @@ func readPicks() (map[string]string, map[string]uint32) {
 // mihomo swaps in a new strategy each time a rule set, manually or on its
 // interval, loads new content.
 func readRuleSets() map[string]any {
-	providers := tunnel.RuleProvidersSnapshot()
+	providers := tunnel.RuleProviders()
 	ruleSets := make(map[string]any, len(providers))
 	for name, p := range providers {
 		ruleSets[name] = p.Strategy()

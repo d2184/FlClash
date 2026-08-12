@@ -14,6 +14,7 @@ import (
 	"github.com/metacubex/mihomo/common/convert"
 	"github.com/metacubex/mihomo/config"
 	"github.com/metacubex/mihomo/constant"
+	cp "github.com/metacubex/mihomo/constant/provider"
 	"github.com/metacubex/mihomo/log"
 	"github.com/metacubex/mihomo/tunnel"
 )
@@ -36,7 +37,43 @@ type pickableGroup interface {
 }
 
 func lookupProxy(name string) constant.Proxy {
-	return tunnel.AllProxies()[name]
+	return tunnel.Proxies()[name]
+}
+
+func findProxy(providerName, proxyName string) constant.Proxy {
+	if providerName == "" {
+		return lookupProxy(proxyName)
+	}
+	p, ok := tunnel.Providers()[providerName]
+	if !ok {
+		return nil
+	}
+	return providerMember(p, proxyName)
+}
+
+// A connection chain ends in a bare node name, with no provider beside it.
+func lookupOutbound(name string) constant.Proxy {
+	if proxy := lookupProxy(name); proxy != nil {
+		return proxy
+	}
+	for _, p := range tunnel.Providers() {
+		if p.VehicleType() == cp.Compatible {
+			continue
+		}
+		if proxy := providerMember(p, name); proxy != nil {
+			return proxy
+		}
+	}
+	return nil
+}
+
+func providerMember(p cp.ProxyProvider, name string) constant.Proxy {
+	for _, proxy := range p.Proxies() {
+		if proxy.Name() == name {
+			return proxy
+		}
+	}
+	return nil
 }
 
 func adapterAs[T any](proxy constant.Proxy) (group T, ok bool) {
@@ -83,7 +120,7 @@ func proxyGroupNames(
 }
 
 func handleGetProxies() ProxiesData {
-	proxies := tunnel.AllProxies()
+	proxies := tunnel.Proxies()
 
 	names := proxyGroupNames(config.GetProxyNameList(), func(name string) (constant.AdapterType, bool) {
 		p, ok := proxies[name]
@@ -97,7 +134,27 @@ func handleGetProxies() ProxiesData {
 	for name, proxy := range proxies {
 		views[name] = proxyView(proxy)
 	}
-	return ProxiesData{All: names, Proxies: views}
+	return ProxiesData{All: names, Proxies: views, ProviderProxies: providerProxyBriefs()}
+}
+
+func providerProxyBriefs() map[string]map[string]proxyBrief {
+	briefs := make(map[string]map[string]proxyBrief)
+	for name, p := range tunnel.Providers() {
+		if p.VehicleType() == cp.Compatible {
+			continue
+		}
+		members := p.Proxies()
+		byName := make(map[string]proxyBrief, len(members))
+		for _, member := range members {
+			byName[member.Name()] = proxyBrief{
+				Name:         member.Name(),
+				Type:         member.Type().String(),
+				ProviderName: name,
+			}
+		}
+		briefs[name] = byName
+	}
+	return briefs
 }
 
 // Proxy.MarshalJSON encodes each node twice, with history the host never reads.
@@ -175,7 +232,7 @@ func handleChangeProxy(params *ChangeProxyParams) *ChangeProxyResult {
 func patchSelectGroup(mapping map[string]string) {
 	selectMu.Lock()
 	defer selectMu.Unlock()
-	proxies := tunnel.AllProxies()
+	proxies := tunnel.Proxies()
 	for name, selected := range mapping {
 		if selector, ok := adapterAs[outboundgroup.SelectAble](proxies[name]); ok {
 			selector.ForceSet(selected)
