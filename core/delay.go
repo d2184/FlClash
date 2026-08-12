@@ -77,7 +77,7 @@ func handleTestDelay(params *TestDelayParams) *Delay {
 	}
 	result := &Delay{Name: params.ProxyName, Url: url, Value: delayFailed}
 
-	proxy := lookupProxy(params.ProxyName)
+	proxy := findProxy(params.ProviderName, params.ProxyName)
 	if proxy == nil {
 		reportMissingDelayTestProxy(params.ProxyName)
 		return result

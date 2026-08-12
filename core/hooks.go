@@ -8,6 +8,7 @@ import (
 	mihomoHttp "github.com/metacubex/mihomo/component/http"
 	"github.com/metacubex/mihomo/component/proxydialer"
 	"github.com/metacubex/mihomo/component/updater"
+	"github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/dns"
 	"github.com/metacubex/mihomo/hub/executor"
 	"github.com/metacubex/mihomo/tunnel/statistic"
@@ -24,6 +25,10 @@ func init() {
 			sendMessage(RequestMessage, c)
 			watchRequestTraffic(c)
 		}
+	}
+	statistic.IsDirect = func(name string) bool {
+		proxy := lookupOutbound(name)
+		return proxy != nil && proxy.Type() == constant.Direct
 	}
 	dns.DefaultQueryNotify = func(record dns.QueryRecord) {
 		if hasEventListener() {
