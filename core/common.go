@@ -70,12 +70,12 @@ var (
 
 func externalProviders() map[string]cp.Provider {
 	eps := make(map[string]cp.Provider)
-	for n, p := range tunnel.ProvidersSnapshot() {
+	for n, p := range tunnel.Providers() {
 		if p.VehicleType() != cp.Compatible {
 			eps[n] = p
 		}
 	}
-	for n, p := range tunnel.RuleProvidersSnapshot() {
+	for n, p := range tunnel.RuleProviders() {
 		if p.VehicleType() != cp.Compatible {
 			eps[n] = p
 		}
@@ -84,13 +84,29 @@ func externalProviders() map[string]cp.Provider {
 }
 
 func lookupExternalProvider(name string) (cp.Provider, bool) {
-	if p, exist := tunnel.RuleProvidersSnapshot()[name]; exist && p.VehicleType() != cp.Compatible {
+	if p, exist := tunnel.RuleProviders()[name]; exist && p.VehicleType() != cp.Compatible {
 		return p, true
 	}
-	if p, exist := tunnel.ProvidersSnapshot()[name]; exist && p.VehicleType() != cp.Compatible {
+	if p, exist := tunnel.Providers()[name]; exist && p.VehicleType() != cp.Compatible {
 		return p, true
 	}
 	return nil, false
+}
+
+func findProxy(providerName, proxyName string) constant.Proxy {
+	if providerName == "" {
+		return tunnel.Proxies()[proxyName]
+	}
+	p, ok := tunnel.Providers()[providerName]
+	if !ok {
+		return nil
+	}
+	for _, proxy := range p.Proxies() {
+		if proxy.Name() == proxyName {
+			return proxy
+		}
+	}
+	return nil
 }
 
 func toExternalProvider(p cp.Provider) (*ExternalProvider, error) {
@@ -161,7 +177,7 @@ func updateListeners(cfg *config.Config) {
 func patchSelectGroup(mapping map[string]string) {
 	selectMu.Lock()
 	defer selectMu.Unlock()
-	for name, proxy := range tunnel.AllProxies() {
+	for name, proxy := range tunnel.Proxies() {
 		outbound, ok := proxy.(*adapter.Proxy)
 		if !ok {
 			continue

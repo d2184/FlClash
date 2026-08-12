@@ -59,6 +59,11 @@ Future<List<Group>> buildGroups(ComputeGroupsState state) async {
   final defaultTestUrl = state.defaultTestUrl;
   final proxies = proxiesData.proxies;
   if (proxies.isEmpty) return [];
+  final allProxies = {
+    for (final providerProxies in proxiesData.providerProxies.values)
+      ...providerProxies,
+    ...proxies,
+  };
   final groups = <Group>[];
   for (final groupName in all) {
     final raw = proxies[groupName];
@@ -67,7 +72,7 @@ Future<List<Group>> buildGroups(ComputeGroupsState state) async {
     final memberNames = raw['all'];
     final group = Map<String, dynamic>.from(raw);
     group['all'] = memberNames is List
-        ? memberNames.map((name) => proxies[name]).nonNulls.toList()
+        ? memberNames.map((name) => allProxies[name]).nonNulls.toList()
         : const [];
     groups.add(Group.fromJson(group));
   }

@@ -168,11 +168,12 @@ leaving a repo-wide policy as a comment reaches only the reader of that one file
   `core/lib.go`, and never cleared. mihomo checks `DefaultSocketHook` for nil once and dereferences it again when the
   socket is created (`component/dialer/socket_hook.go`), so clearing it while a dial is in flight calls a nil func
   value. Stopping the TUN swaps `activeTunHandler` instead.
-- `tunnel.AllProxies()` returns a shared, cached map — never modify it. The cache is invalidated by
-  `invalidateAllProxies` on `tunnel.UpdateProxies` and validated against each provider's `Version()`, so a rebuild
-  costs one read per provider rather than one per proxy. Anything else added to `tunnel/patch.go` that derives from the
-  proxy set needs both signals: the external controller can reload the config through `hub/route/configs.go` without
-  going through FlClash's `applyConfig`, so a hook on the FlClash side alone would miss a profile switch.
+- `tunnel.Proxies()` holds the config's proxies and groups, not provider members — a subscription's nodes live only on its
+  provider. `handleGetProxies` reports them separately as `provider-proxies` so a group can render rows for members the
+  proxy map does not contain, and a delay test on one carries its `provider-name` so `findProxy` can resolve it through
+  the provider. Read the tunnel on each call rather than caching the derived map: the external controller can reload the
+  config through `hub/route/configs.go` without going through FlClash's `applyConfig`, so a snapshot taken on the FlClash
+  side alone would miss a profile switch.
 - Core state that mirrors mihomo state goes stale at the next `applyConfig`, which replaces every proxy, provider and
   rule. Read the tunnel instead of caching a snapshot of it: `lookupExternalProvider` kept one that was rebuilt only
   when the host asked for the provider list, and the host asks after a successful setup and not after a failed one, so
