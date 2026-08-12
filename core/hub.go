@@ -29,6 +29,7 @@ import (
 	"github.com/metacubex/mihomo/config"
 	"github.com/metacubex/mihomo/constant"
 	"github.com/metacubex/mihomo/constant/features"
+	cp "github.com/metacubex/mihomo/constant/provider"
 	"github.com/metacubex/mihomo/dns"
 	"github.com/metacubex/mihomo/hub/executor"
 	"github.com/metacubex/mihomo/listener"
@@ -78,7 +79,6 @@ func handleGetIsInit() bool {
 
 func handleForceGC() {
 	log.Infoln("[APP] request force GC")
-	tunnel.InvalidateAllProxies()
 	runtime.GC()
 	if features.Android {
 		debug.FreeOSMemory()
@@ -167,7 +167,24 @@ func proxyGroupNames(
 }
 
 func handleGetProxies() ProxiesData {
-	proxies := tunnel.AllProxies()
+	proxies := tunnel.Proxies()
+
+	providerProxies := make(map[string]map[string]proxyBrief)
+	for name, p := range tunnel.Providers() {
+		if p.VehicleType() == cp.Compatible {
+			continue
+		}
+		providerProxyList := p.Proxies()
+		pm := make(map[string]proxyBrief, len(providerProxyList))
+		for _, px := range providerProxyList {
+			pm[px.Name()] = proxyBrief{
+				Name:         px.Name(),
+				Type:         px.Type().String(),
+				ProviderName: name,
+			}
+		}
+		providerProxies[name] = pm
+	}
 
 	allNames := proxyGroupNames(config.GetProxyNameList(), func(name string) (constant.AdapterType, bool) {
 		p, ok := proxies[name]
@@ -182,8 +199,9 @@ func handleGetProxies() ProxiesData {
 		views[name] = proxyView(proxy)
 	}
 	return ProxiesData{
-		All:     allNames,
-		Proxies: views,
+		All:             allNames,
+		Proxies:         views,
+		ProviderProxies: providerProxies,
 	}
 }
 
@@ -213,7 +231,7 @@ var (
 )
 
 func lookupProxy(name string) constant.Proxy {
-	return tunnel.AllProxies()[name]
+	return tunnel.Proxies()[name]
 }
 
 func selectableGroup(groupName string) (pickableGroup, error) {
@@ -316,7 +334,7 @@ func handleTestDelay(params *TestDelayParams) *Delay {
 		Value: -1,
 	}
 
-	proxy := lookupProxy(params.ProxyName)
+	proxy := findProxy(params.ProviderName, params.ProxyName)
 	if proxy == nil {
 		reportMissingDelayTestProxy(params.ProxyName)
 		return delayData
@@ -643,7 +661,14 @@ func handleSideLoadExternalProvider(providerName string, data []byte) *MethodErr
 // costs nothing when one is already running.
 func defaultRefreshHealthChecks() {
 	safeGoDetached("refreshHealthChecks", func() {
-		for name, p := range tunnel.ProvidersSnapshot() {
+		for name, p := range tunnel.Providers() {
+			// Compatible providers back proxy groups (and the reserved
+			// all-proxies provider); their members are already re-checked
+			// through the real providers, so probing them too would repeat
+			// the same proxies several times over for nothing.
+			if p.VehicleType() == cp.Compatible {
+				continue
+			}
 			log.Debugln("[APP] re-checking provider %s after resume", name)
 			p.HealthCheck()
 		}

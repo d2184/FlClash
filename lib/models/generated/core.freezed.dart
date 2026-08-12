@@ -6037,7 +6037,7 @@ $SubscriptionInfoCopyWith<$Res>? get subscriptionInfo {
 /// @nodoc
 mixin _$ProxiesData {
 
- Map<String, dynamic> get proxies; List<String> get all;
+ Map<String, dynamic> get proxies;@JsonKey(name: 'provider-proxies') Map<String, Map<String, dynamic>> get providerProxies; List<String> get all;
 /// Create a copy of ProxiesData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -6051,20 +6051,20 @@ $ProxiesDataCopyWith<ProxiesData> get copyWith => _$ProxiesDataCopyWithImpl<Prox
 @override
 bool operator ==(Object other) {
   final _this = this as ProxiesData;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProxiesData&&const DeepCollectionEquality().equals(other.proxies, _this.proxies)&&const DeepCollectionEquality().equals(other.all, _this.all));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProxiesData&&const DeepCollectionEquality().equals(other.proxies, _this.proxies)&&const DeepCollectionEquality().equals(other.providerProxies, _this.providerProxies)&&const DeepCollectionEquality().equals(other.all, _this.all));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ProxiesData;
-  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.proxies),const DeepCollectionEquality().hash(_this.all));
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.proxies),const DeepCollectionEquality().hash(_this.providerProxies),const DeepCollectionEquality().hash(_this.all));
 }
 
 @override
 String toString() {
   final _this = this as ProxiesData;
-  return 'ProxiesData(proxies: ${_this.proxies}, all: ${_this.all})';
+  return 'ProxiesData(proxies: ${_this.proxies}, providerProxies: ${_this.providerProxies}, all: ${_this.all})';
 }
 
 
@@ -6075,7 +6075,7 @@ abstract mixin class $ProxiesDataCopyWith<$Res>  {
   factory $ProxiesDataCopyWith(ProxiesData value, $Res Function(ProxiesData) _then) = _$ProxiesDataCopyWithImpl;
 @useResult
 $Res call({
- Map<String, dynamic> proxies, List<String> all
+ Map<String, dynamic> proxies,@JsonKey(name: 'provider-proxies') Map<String, Map<String, dynamic>> providerProxies, List<String> all
 });
 
 
@@ -6092,10 +6092,11 @@ class _$ProxiesDataCopyWithImpl<$Res>
 
 /// Create a copy of ProxiesData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? proxies = null,Object? all = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? proxies = null,Object? providerProxies = null,Object? all = null,}) {
   return _then(ProxiesData(
 proxies: null == proxies ? _self.proxies : proxies // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>,all: null == all ? _self.all : all // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,providerProxies: null == providerProxies ? _self.providerProxies : providerProxies // ignore: cast_nullable_to_non_nullable
+as Map<String, Map<String, dynamic>>,all: null == all ? _self.all : all // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
@@ -6181,10 +6182,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<String, dynamic> proxies,  List<String> all)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<String, dynamic> proxies, @JsonKey(name: 'provider-proxies')  Map<String, Map<String, dynamic>> providerProxies,  List<String> all)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProxiesData() when $default != null:
-return $default(_that.proxies,_that.all);case _:
+return $default(_that.proxies,_that.providerProxies,_that.all);case _:
   return orElse();
 
 }
@@ -6202,10 +6203,10 @@ return $default(_that.proxies,_that.all);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<String, dynamic> proxies,  List<String> all)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<String, dynamic> proxies, @JsonKey(name: 'provider-proxies')  Map<String, Map<String, dynamic>> providerProxies,  List<String> all)  $default,) {final _that = this;
 switch (_that) {
 case _ProxiesData():
-return $default(_that.proxies,_that.all);case _:
+return $default(_that.proxies,_that.providerProxies,_that.all);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -6222,10 +6223,10 @@ return $default(_that.proxies,_that.all);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<String, dynamic> proxies,  List<String> all)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<String, dynamic> proxies, @JsonKey(name: 'provider-proxies')  Map<String, Map<String, dynamic>> providerProxies,  List<String> all)?  $default,) {final _that = this;
 switch (_that) {
 case _ProxiesData() when $default != null:
-return $default(_that.proxies,_that.all);case _:
+return $default(_that.proxies,_that.providerProxies,_that.all);case _:
   return null;
 
 }
@@ -6237,7 +6238,7 @@ return $default(_that.proxies,_that.all);case _:
 @JsonSerializable()
 
 class _ProxiesData implements ProxiesData {
-  const _ProxiesData({required  Map<String, dynamic> proxies, required  List<String> all}): _proxies = proxies,_all = all;
+  const _ProxiesData({required  Map<String, dynamic> proxies, @JsonKey(name: 'provider-proxies')  Map<String, Map<String, dynamic>> providerProxies = const {}, required  List<String> all}): _proxies = proxies,_providerProxies = providerProxies,_all = all;
   factory _ProxiesData.fromJson(Map<String, dynamic> json) => _$ProxiesDataFromJson(json);
 
  final  Map<String, dynamic> _proxies;
@@ -6245,6 +6246,13 @@ class _ProxiesData implements ProxiesData {
   if (_proxies is EqualUnmodifiableMapView) return _proxies;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableMapView(_proxies);
+}
+
+ final  Map<String, Map<String, dynamic>> _providerProxies;
+@override@JsonKey(name: 'provider-proxies') Map<String, Map<String, dynamic>> get providerProxies {
+  if (_providerProxies is EqualUnmodifiableMapView) return _providerProxies;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_providerProxies);
 }
 
  final  List<String> _all;
@@ -6268,18 +6276,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProxiesData&&const DeepCollectionEquality().equals(other.proxies, _proxies)&&const DeepCollectionEquality().equals(other.all, _all));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProxiesData&&const DeepCollectionEquality().equals(other.proxies, _proxies)&&const DeepCollectionEquality().equals(other.providerProxies, _providerProxies)&&const DeepCollectionEquality().equals(other.all, _all));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_proxies),const DeepCollectionEquality().hash(_all));
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_proxies),const DeepCollectionEquality().hash(_providerProxies),const DeepCollectionEquality().hash(_all));
 }
 
 @override
 String toString() {
-    return 'ProxiesData(proxies: $proxies, all: $all)';
+    return 'ProxiesData(proxies: $proxies, providerProxies: $providerProxies, all: $all)';
 }
 
 
@@ -6290,7 +6298,7 @@ abstract mixin class _$ProxiesDataCopyWith<$Res> implements $ProxiesDataCopyWith
   factory _$ProxiesDataCopyWith(_ProxiesData value, $Res Function(_ProxiesData) _then) = __$ProxiesDataCopyWithImpl;
 @override @useResult
 $Res call({
- Map<String, dynamic> proxies, List<String> all
+ Map<String, dynamic> proxies,@JsonKey(name: 'provider-proxies') Map<String, Map<String, dynamic>> providerProxies, List<String> all
 });
 
 
@@ -6307,10 +6315,11 @@ class __$ProxiesDataCopyWithImpl<$Res>
 
 /// Create a copy of ProxiesData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? proxies = null,Object? all = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? proxies = null,Object? providerProxies = null,Object? all = null,}) {
   return _then(_ProxiesData(
 proxies: null == proxies ? _self._proxies : proxies // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>,all: null == all ? _self._all : all // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,providerProxies: null == providerProxies ? _self._providerProxies : providerProxies // ignore: cast_nullable_to_non_nullable
+as Map<String, Map<String, dynamic>>,all: null == all ? _self._all : all // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
