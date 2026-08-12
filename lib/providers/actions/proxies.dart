@@ -5,11 +5,13 @@ class _DelayTestTarget {
     required this.proxyName,
     required this.testUrl,
     required this.key,
+    this.providerName,
   });
 
   final String proxyName;
   final String testUrl;
   final String key;
+  final String? providerName;
 }
 
 class _DelayTestJob {
@@ -255,6 +257,7 @@ class ProxiesAction extends _$ProxiesAction {
         proxy.name,
         groups: groups,
         selectedMap: selectedMap,
+        providerName: proxy.providerName,
       );
       if (state.proxyName.isEmpty) {
         continue;
@@ -269,6 +272,7 @@ class ProxiesAction extends _$ProxiesAction {
           proxyName: state.proxyName,
           testUrl: currentTestUrl,
           key: key,
+          providerName: state.providerName,
         ),
       );
     }
@@ -303,7 +307,11 @@ class ProxiesAction extends _$ProxiesAction {
       return;
     }
     try {
-      final delay = await _core.getDelay(target.testUrl, target.proxyName);
+      final delay = await _core.getDelay(
+        target.testUrl,
+        target.proxyName,
+        target.providerName,
+      );
       if (delay != null && !job.cancelled) {
         setDelay(delay);
       }

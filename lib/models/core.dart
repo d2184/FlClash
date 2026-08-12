@@ -172,6 +172,9 @@ extension ExternalProviderExt on ExternalProvider {
 abstract class ProxiesData with _$ProxiesData {
   const factory ProxiesData({
     required Map<String, dynamic> proxies,
+    @JsonKey(name: 'provider-proxies')
+    @Default({})
+    Map<String, Map<String, dynamic>> providerProxies,
     required List<String> all,
   }) = _ProxiesData;
 
