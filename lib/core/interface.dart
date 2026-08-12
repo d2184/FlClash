@@ -29,7 +29,11 @@ mixin CoreInterface {
 
   Future<String> dumpRuleSet(String path);
 
-  Future<Delay?> asyncTestDelay(String url, String proxyName);
+  Future<Delay?> asyncTestDelay(
+    String url,
+    String proxyName, [
+    String? providerName,
+  ]);
 
   Future<ProbeResult?> probe(ProbeParams params);
 
@@ -401,9 +405,14 @@ abstract class CoreHandlerInterface with CoreInterface {
   }
 
   @override
-  Future<Delay?> asyncTestDelay(String url, String proxyName) async {
+  Future<Delay?> asyncTestDelay(
+    String url,
+    String proxyName, [
+    String? providerName,
+  ]) async {
     final delayParams = {
       'proxy-name': proxyName,
+      'provider-name': providerName ?? '',
       'timeout': delayTestTimeoutDuration.inMilliseconds,
       'test-url': url,
     };
