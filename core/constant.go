@@ -34,6 +34,7 @@ type UpdateParams struct {
 	UnifiedDelay       *bool              `json:"unified-delay"`
 	GeoAutoUpdate      *bool              `json:"geo-auto-update"`
 	GeoUpdateInterval  *int               `json:"geo-update-interval"`
+	GeoXUrl            map[string]string  `json:"geox-url"`
 }
 
 type tunSchema struct {

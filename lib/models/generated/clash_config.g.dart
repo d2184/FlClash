@@ -440,7 +440,7 @@ _PatchClashConfig _$PatchClashConfigFromJson(Map<String, dynamic> json) =>
           : Dns.safeDnsFromJson(json['dns'] as Map<String, Object?>),
       geoXUrl: json['geox-url'] == null
           ? defaultGeoXUrl
-          : _geoXUrlFromJson(json['geox-url'] as Map<String, Object?>?),
+          : geoXUrlFromJson(json['geox-url'] as Map<String, Object?>?),
       geodataLoader:
           $enumDecodeNullable(_$GeodataLoaderEnumMap, json['geodata-loader']) ??
           GeodataLoader.memconservative,
@@ -475,7 +475,7 @@ Map<String, dynamic> _$PatchClashConfigToJson(_PatchClashConfig instance) =>
       'tcp-concurrent': instance.tcpConcurrent,
       'tun': instance.tun,
       'dns': instance.dns,
-      'geox-url': _geoXUrlToJson(instance.geoXUrl),
+      'geox-url': geoXUrlToJson(instance.geoXUrl),
       'geodata-loader': _$GeodataLoaderEnumMap[instance.geodataLoader]!,
       'global-ua': instance.globalUa,
       'external-controller': instance.externalController,

@@ -34,6 +34,9 @@ _UpdateParams _$UpdateParamsFromJson(Map<String, dynamic> json) =>
       unifiedDelay: json['unified-delay'] as bool,
       geoAutoUpdate: json['geo-auto-update'] as bool? ?? false,
       geoUpdateInterval: (json['geo-update-interval'] as num?)?.toInt() ?? 24,
+      geoXUrl: json['geox-url'] == null
+          ? defaultGeoXUrl
+          : geoXUrlFromJson(json['geox-url'] as Map<String, Object?>?),
     );
 
 Map<String, dynamic> _$UpdateParamsToJson(_UpdateParams instance) =>
@@ -50,6 +53,7 @@ Map<String, dynamic> _$UpdateParamsToJson(_UpdateParams instance) =>
       'unified-delay': instance.unifiedDelay,
       'geo-auto-update': instance.geoAutoUpdate,
       'geo-update-interval': instance.geoUpdateInterval,
+      'geox-url': geoXUrlToJson(instance.geoXUrl),
     };
 
 const _$FindProcessModeEnumMap = {
