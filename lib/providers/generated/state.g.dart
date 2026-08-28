@@ -48,7 +48,7 @@ final class UpdateParamsProvider
   }
 }
 
-String _$updateParamsHash() => r'5ef71d333c5640d108319478859adce30a580fc5';
+String _$updateParamsHash() => r'efbc6acca2b6721d078a7477d1749231608be62b';
 
 @ProviderFor(trayState)
 final trayStateProvider = TrayStateProvider._();
