@@ -18,6 +18,7 @@ import (
 	"github.com/metacubex/mihomo/adapter/outboundgroup"
 	"github.com/metacubex/mihomo/adapter/provider"
 	"github.com/metacubex/mihomo/component/dialer"
+	"github.com/metacubex/mihomo/component/geodata"
 	"github.com/metacubex/mihomo/component/resolver"
 	"github.com/metacubex/mihomo/component/updater"
 	"github.com/metacubex/mihomo/config"
@@ -325,8 +326,29 @@ func updateConfig(params *UpdateParams) error {
 	}
 
 	updateListeners(currentConfig)
+	syncGeoXUrl(params.GeoXUrl)
 	syncGeoUpdater(params.GeoAutoUpdate, params.GeoUpdateInterval)
 	return nil
+}
+
+var geoXUrlSetters = map[string]struct {
+	current func() string
+	set     func(string)
+}{
+	"mmdb":    {geodata.MmdbUrl, geodata.SetMmdbUrl},
+	"asn":     {geodata.ASNUrl, geodata.SetASNUrl},
+	"geoip":   {geodata.GeoIpUrl, geodata.SetGeoIpUrl},
+	"geosite": {geodata.GeoSiteUrl, geodata.SetGeoSiteUrl},
+}
+
+func syncGeoXUrl(urls map[string]string) {
+	for key, url := range urls {
+		setter, exist := geoXUrlSetters[key]
+		if !exist || url == "" || url == setter.current() {
+			continue
+		}
+		setter.set(url)
+	}
 }
 
 func syncGeoUpdater(autoUpdate *bool, interval *int) {

@@ -515,7 +515,7 @@ extension GeoResourceUrlMapExt on Map<GeoResource, String> {
       map((key, value) => MapEntry(key.configKey, value));
 }
 
-Map<GeoResource, String> _geoXUrlFromJson(Map<String, Object?>? json) {
+Map<GeoResource, String> geoXUrlFromJson(Map<String, Object?>? json) {
   if (json == null) {
     return defaultGeoXUrl;
   }
@@ -524,7 +524,7 @@ Map<GeoResource, String> _geoXUrlFromJson(Map<String, Object?>? json) {
   );
 }
 
-Map<String, String> _geoXUrlToJson(Map<GeoResource, String> value) {
+Map<String, String> geoXUrlToJson(Map<GeoResource, String> value) {
   return value.raw;
 }
 
@@ -563,8 +563,8 @@ abstract class PatchClashConfig with _$PatchClashConfig {
     @Default(defaultGeoXUrl)
     @JsonKey(
       name: 'geox-url',
-      fromJson: _geoXUrlFromJson,
-      toJson: _geoXUrlToJson,
+      fromJson: geoXUrlFromJson,
+      toJson: geoXUrlToJson,
     )
     Map<GeoResource, String> geoXUrl,
     @Default(GeodataLoader.memconservative)

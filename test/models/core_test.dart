@@ -46,6 +46,55 @@ void main() {
       expect(params.allowLan, true);
       expect(params.mode, Mode.rule);
       expect(params.logLevel, LogLevel.info);
+      expect(params.geoXUrl, defaultGeoXUrl);
+    });
+
+    test('toJson sends geox-url with the keys the core reads', () {
+      const params = UpdateParams(
+        tun: Tun(),
+        mixedPort: 7890,
+        allowLan: false,
+        findProcessMode: FindProcessMode.off,
+        mode: Mode.rule,
+        logLevel: LogLevel.info,
+        ipv6: false,
+        tcpConcurrent: false,
+        externalController: '',
+        unifiedDelay: false,
+        geoXUrl: {
+          GeoResource.MMDB: 'https://example.com/geoip.metadb',
+          GeoResource.GEOSITE: 'https://example.com/geosite.dat',
+        },
+      );
+
+      expect(params.toJson()['geox-url'], {
+        'mmdb': 'https://example.com/geoip.metadb',
+        'geosite': 'https://example.com/geosite.dat',
+      });
+    });
+
+    test('geox-url round-trips through the core payload', () {
+      const params = UpdateParams(
+        tun: Tun(),
+        mixedPort: 7890,
+        allowLan: false,
+        findProcessMode: FindProcessMode.off,
+        mode: Mode.rule,
+        logLevel: LogLevel.info,
+        ipv6: false,
+        tcpConcurrent: false,
+        externalController: '',
+        unifiedDelay: false,
+        geoXUrl: {GeoResource.GEOIP: 'https://example.com/geoip.dat'},
+      );
+
+      final restored = UpdateParams.fromJson(
+        jsonDecode(jsonEncode(params.toJson())) as Map<String, dynamic>,
+      );
+
+      expect(restored.geoXUrl, {
+        GeoResource.GEOIP: 'https://example.com/geoip.dat',
+      });
     });
   });
 

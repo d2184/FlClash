@@ -181,6 +181,66 @@ func stubGeoUpdater(t *testing.T) *geoUpdaterCalls {
 	return calls
 }
 
+func stubGeoXUrls(t *testing.T) {
+	t.Helper()
+	previous := map[string]string{}
+	for key, setter := range geoXUrlSetters {
+		previous[key] = setter.current()
+	}
+	t.Cleanup(func() {
+		for key, url := range previous {
+			geoXUrlSetters[key].set(url)
+		}
+	})
+	for _, setter := range geoXUrlSetters {
+		setter.set("https://example.test/original")
+	}
+}
+
+// A manual GEO sync reads the URL straight off geodata, so a custom URL that
+// only ever reached config.yaml left the running core downloading from the old
+// address until the next profile apply.
+func TestSyncGeoXUrlAppliesCustomUrls(t *testing.T) {
+	stubGeoXUrls(t)
+
+	syncGeoXUrl(map[string]string{
+		"mmdb":    "https://example.test/geoip.metadb",
+		"asn":     "https://example.test/asn.mmdb",
+		"geoip":   "https://example.test/geoip.dat",
+		"geosite": "https://example.test/geosite.dat",
+	})
+
+	for key, want := range map[string]string{
+		"mmdb":    "https://example.test/geoip.metadb",
+		"asn":     "https://example.test/asn.mmdb",
+		"geoip":   "https://example.test/geoip.dat",
+		"geosite": "https://example.test/geosite.dat",
+	} {
+		if got := geoXUrlSetters[key].current(); got != want {
+			t.Errorf("%s url = %q, want %q", key, got, want)
+		}
+	}
+}
+
+func TestSyncGeoXUrlKeepsUrlsTheParamsOmit(t *testing.T) {
+	stubGeoXUrls(t)
+
+	syncGeoXUrl(map[string]string{
+		"geoip":   "https://example.test/geoip.dat",
+		"unknown": "https://example.test/ignored",
+		"geosite": "",
+	})
+
+	if got := geoXUrlSetters["geoip"].current(); got != "https://example.test/geoip.dat" {
+		t.Errorf("geoip url = %q, want the custom URL applied", got)
+	}
+	for _, key := range []string{"mmdb", "asn", "geosite"} {
+		if got := geoXUrlSetters[key].current(); got != "https://example.test/original" {
+			t.Errorf("%s url = %q, want the original left untouched", key, got)
+		}
+	}
+}
+
 func TestSyncGeoUpdaterStopsTheUpdaterWhenDisabled(t *testing.T) {
 	calls := stubGeoUpdater(t)
 
