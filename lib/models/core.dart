@@ -34,6 +34,9 @@ abstract class UpdateParams with _$UpdateParams {
     @Default([]) List<String> authentication,
     @Default(false) @JsonKey(name: 'geo-auto-update') bool geoAutoUpdate,
     @Default(24) @JsonKey(name: 'geo-update-interval') int geoUpdateInterval,
+    @JsonKey(name: 'geox-url', fromJson: geoXUrlFromJson, toJson: geoXUrlToJson)
+    @Default(defaultGeoXUrl)
+    Map<GeoResource, String> geoXUrl,
   }) = _UpdateParams;
 
   factory UpdateParams.fromJson(Map<String, dynamic> json) =>
