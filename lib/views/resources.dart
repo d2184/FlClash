@@ -195,12 +195,6 @@ class _GeoResourceListItemState extends ConsumerState<_GeoResourceListItem> {
           .read(geoResourceActionProvider.notifier)
           .updateGeoResource(widget.type);
     }, silence: false);
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      _fileInfoFuture = _getGeoFileInfo(fileName);
-    });
   }
 
   List<CommonPopupMenuItem> _menuItems(BuildContext context, String url) {
@@ -224,6 +218,13 @@ class _GeoResourceListItemState extends ConsumerState<_GeoResourceListItem> {
   @override
   Widget build(BuildContext context) {
     final isUpdating = ref.watch(isUpdatingProvider(widget.type.updatingKey));
+    ref.listen(isUpdatingProvider(widget.type.updatingKey), (previous, next) {
+      if (previous == true && next == false) {
+        setState(() {
+          _fileInfoFuture = _getGeoFileInfo(fileName);
+        });
+      }
+    });
     final url = ref.watch(
       patchClashConfigProvider.select((state) => state.geoXUrl[widget.type]),
     );
