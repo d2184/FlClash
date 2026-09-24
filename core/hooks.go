@@ -42,6 +42,7 @@ func init() {
 	}
 	updater.GeoUpdateHook = onGeoUpdate
 	proxydialer.DefaultLoopNotify = reportDialerLoop
+	registerEventHooks()
 }
 
 // Every dial through a looping dialer fails; one report stands for the burst.

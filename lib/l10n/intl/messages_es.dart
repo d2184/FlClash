@@ -192,44 +192,49 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m66(removed, added) =>
       "Se eliminarán estos proxies: ${removed}. Se añadirán estos: ${added}. Una línea cuyo nombre cambió cuenta como un proxy nuevo, y los perfiles personalizados que mencionen los eliminados los marcarán como ausentes. ¿Aplicar de todos modos?";
 
-  static String m67(label) =>
+  static String m67(error) => "No se pudo cambiar de proxy: ${error}";
+
+  static String m68(proxyName, reason) =>
+      "Se rechazó el cambio a ${proxyName}: ${reason}";
+
+  static String m69(label) =>
       "${label} sigue mencionado por reglas, grupos de proxies, proxies de marcación, DNS o NTP de este perfil, que dejarán de funcionar si se elimina. ¿Seguro que quieres eliminarlo?";
 
-  static String m68(count, label) =>
+  static String m70(count, label) =>
       "${Intl.plural(count, one: '1 grupo de proxies', other: '${label} grupos de proxies')}";
 
-  static String m69(count, label) =>
+  static String m71(count, label) =>
       "${Intl.plural(count, one: '1 regla', other: '${label} reglas')}";
 
-  static String m70(appName) => "${appName} (Modo seguro)";
-
-  static String m71(count) =>
-      "${Intl.plural(count, one: '1 segundo', other: '${count} segundos')}";
-
-  static String m72(count) => "${count} en vigor";
+  static String m72(appName) => "${appName} (Modo seguro)";
 
   static String m73(count) =>
-      "${Intl.plural(count, one: '1 problema', other: '${count} problemas')}";
+      "${Intl.plural(count, one: '1 segundo', other: '${count} segundos')}";
 
-  static String m74(time) => "Comprobado a las ${time}";
+  static String m74(count) => "${count} en vigor";
 
   static String m75(count) =>
+      "${Intl.plural(count, one: '1 problema', other: '${count} problemas')}";
+
+  static String m76(time) => "Comprobado a las ${time}";
+
+  static String m77(count) =>
       "${Intl.plural(count, one: '1 ajuste', other: '${count} ajustes')}";
 
-  static String m76(link) => "No se pudo leer ningún proxy de ${link}";
+  static String m78(link) => "No se pudo leer ningún proxy de ${link}";
 
-  static String m77(label) => "${label} debe ser un solo elemento";
+  static String m79(label) => "${label} debe ser un solo elemento";
 
-  static String m78(value) => "Pico: ${value}";
+  static String m80(value) => "Pico: ${value}";
 
-  static String m79(value) => "Total: ${value}";
+  static String m81(value) => "Total: ${value}";
 
-  static String m80(label) => "${label} debe ser una URL";
+  static String m82(label) => "${label} debe ser una URL";
 
-  static String m81(count) =>
+  static String m83(count) =>
       "${Intl.plural(count, one: 'hace 1 año', other: 'hace ${count} años')}";
 
-  static String m82(count) => "${Intl.plural(count, other: 'hace ${count} a')}";
+  static String m84(count) => "${Intl.plural(count, other: 'hace ${count} a')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -445,9 +450,6 @@ class MessageLookup extends MessageLookupByLibrary {
       "Deseleccionar todo",
     ),
     "cannotSave": MessageLookupByLibrary.simpleMessage("No se puede guardar"),
-    "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
-      "No se pudo cambiar de proxy; se ha restaurado la selección anterior",
-    ),
     "changelogBreaking": MessageLookupByLibrary.simpleMessage(
       "Cambios incompatibles",
     ),
@@ -1450,15 +1452,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesRemovedTip": m65,
     "proxiesReplacedTip": m66,
     "proxyChains": MessageLookupByLibrary.simpleMessage("Cadena de proxies"),
+    "proxyChangeFailed": m67,
+    "proxyChangeRejected": m68,
+    "proxyChangeRetry": MessageLookupByLibrary.simpleMessage("Reintentar"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage(
+      "Se agotó el tiempo al cambiar de proxy",
+    ),
     "proxyGroup": MessageLookupByLibrary.simpleMessage("Grupo de proxies"),
     "proxyGroupEmpty": MessageLookupByLibrary.simpleMessage(
       "El grupo de proxies está vacío",
     ),
-    "proxyGroupInUse": m67,
+    "proxyGroupInUse": m69,
     "proxyGroupsAfterStart": MessageLookupByLibrary.simpleMessage(
       "Los grupos aparecen aquí cuando se inicia el núcleo",
     ),
-    "proxyGroupsCount": m68,
+    "proxyGroupsCount": m70,
     "proxyProviders": MessageLookupByLibrary.simpleMessage(
       "Proveedores de proxies",
     ),
@@ -1703,14 +1711,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "La regla debe empezar con un tipo admitido, por ejemplo DOMAIN,example.com,DIRECT",
     ),
     "rules": MessageLookupByLibrary.simpleMessage("Reglas"),
-    "rulesCount": m69,
+    "rulesCount": m71,
     "runTime": MessageLookupByLibrary.simpleMessage("Tiempo de ejecución"),
     "running": MessageLookupByLibrary.simpleMessage("En ejecución"),
     "runtimeConfig": MessageLookupByLibrary.simpleMessage(
       "Configuración de ejecución",
     ),
     "safeMode": MessageLookupByLibrary.simpleMessage("Modo seguro"),
-    "safeModeAppTitle": m70,
+    "safeModeAppTitle": m72,
     "saturation": MessageLookupByLibrary.simpleMessage("Saturación"),
     "save": MessageLookupByLibrary.simpleMessage("Guardar"),
     "saveChanges": MessageLookupByLibrary.simpleMessage(
@@ -1725,9 +1733,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "search": MessageLookupByLibrary.simpleMessage("Buscar"),
     "seconds": MessageLookupByLibrary.simpleMessage("segundos"),
-    "secondsCount": m71,
+    "secondsCount": m73,
     "secretKey": MessageLookupByLibrary.simpleMessage("Clave"),
-    "sectionsInEffect": m72,
+    "sectionsInEffect": m74,
     "selectAll": MessageLookupByLibrary.simpleMessage("Seleccionar todo"),
     "selectRuleSet": MessageLookupByLibrary.simpleMessage(
       "Selecciona un conjunto de reglas",
@@ -1737,7 +1745,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "selected": MessageLookupByLibrary.simpleMessage("Seleccionado"),
     "server": MessageLookupByLibrary.simpleMessage("Servidor"),
-    "serviceAbnormalCount": m73,
+    "serviceAbnormalCount": m75,
     "serviceAllAvailable": MessageLookupByLibrary.simpleMessage(
       "Todo disponible",
     ),
@@ -1745,7 +1753,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "serviceBlocked": MessageLookupByLibrary.simpleMessage("Bloqueado"),
     "serviceCheck": MessageLookupByLibrary.simpleMessage("Comprobar"),
     "serviceCheckAll": MessageLookupByLibrary.simpleMessage("Comprobar todo"),
-    "serviceCheckedAt": m74,
+    "serviceCheckedAt": m76,
     "serviceComingSoon": MessageLookupByLibrary.simpleMessage("Próximamente"),
     "serviceDisallowedIsp": MessageLookupByLibrary.simpleMessage(
       "ISP no permitido",
@@ -1775,8 +1783,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "settingEntries": MessageLookupByLibrary.simpleMessage("ajustes"),
     "settings": MessageLookupByLibrary.simpleMessage("Ajustes"),
-    "settingsCount": m75,
-    "shareLinkUnreadable": m76,
+    "settingsCount": m77,
+    "shareLinkUnreadable": m78,
     "shareLinksInvalid": MessageLookupByLibrary.simpleMessage(
       "No se pudo leer ningún proxy de los enlaces",
     ),
@@ -1802,7 +1810,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "singleShareLinkOnly": MessageLookupByLibrary.simpleMessage(
       "Introduce aquí un solo enlace; para varios, usa la edición rápida de la lista",
     ),
-    "singleValueTip": m77,
+    "singleValueTip": m79,
     "size": MessageLookupByLibrary.simpleMessage("Tamaño"),
     "skipCertVerify": MessageLookupByLibrary.simpleMessage(
       "Omitir verificación de certificado",
@@ -1918,8 +1926,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "totalUpload": MessageLookupByLibrary.simpleMessage("Subido"),
     "tproxyPort": MessageLookupByLibrary.simpleMessage("Puerto TProxy"),
     "traffic": MessageLookupByLibrary.simpleMessage("Tráfico"),
-    "trafficPeak": m78,
-    "trafficTotal": m79,
+    "trafficPeak": m80,
+    "trafficTotal": m81,
     "trafficUsage": MessageLookupByLibrary.simpleMessage("Uso de tráfico"),
     "transport": MessageLookupByLibrary.simpleMessage("Transporte"),
     "tun": MessageLookupByLibrary.simpleMessage("TUN"),
@@ -1957,7 +1965,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Ancho de banda de subida",
     ),
     "url": MessageLookupByLibrary.simpleMessage("URL"),
-    "urlTip": m80,
+    "urlTip": m82,
     "useHosts": MessageLookupByLibrary.simpleMessage("Usar hosts"),
     "useSystemHosts": MessageLookupByLibrary.simpleMessage(
       "Usar hosts del sistema",
@@ -1986,8 +1994,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "writeToSystemDesc": MessageLookupByLibrary.simpleMessage(
       "Escribir en el sistema también ajusta el reloj del sistema; Android lo ignora.",
     ),
-    "yearsAgo": m81,
-    "yearsAgoShort": m82,
+    "yearsAgo": m83,
+    "yearsAgoShort": m84,
     "yes": MessageLookupByLibrary.simpleMessage("Sí"),
     "zhCN": MessageLookupByLibrary.simpleMessage("Chino simplificado"),
   };

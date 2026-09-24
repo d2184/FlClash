@@ -73,6 +73,7 @@ const (
 	RequestMessage   MessageType = "request"
 	DnsMessage       MessageType = "dns"
 	LoadedMessage    MessageType = "loaded"
+	ProxyMessage     MessageType = "proxy"
 	GeoUpdateMessage MessageType = "geoUpdate"
 	// Named after the Dart enum value, which is how CoreEvent.fromJson decodes it.
 	RouteChangedMessage   MessageType = "routeChanged"
@@ -262,6 +263,20 @@ type ProxiesData struct {
 type nodeView struct {
 	Name string `json:"name"`
 	Type string `json:"type"`
+}
+
+type ProxyChangeType string
+
+const (
+	ProxyAutoSelected   ProxyChangeType = "auto"
+	ProxyManualSelected ProxyChangeType = "manual"
+	ProxyUnfixed        ProxyChangeType = "unfix"
+)
+
+type ProxyChanged struct {
+	GroupName  string          `json:"groupName"`
+	ProxyName  string          `json:"proxyName"`
+	ChangeType ProxyChangeType `json:"changeType"`
 }
 
 type GeoUpdateStatus struct {

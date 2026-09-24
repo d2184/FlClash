@@ -403,6 +403,7 @@ abstract class CoreHandlerInterface with CoreInterface {
     final data = await _invokeMethod<Map<String, dynamic>>(
       method: CoreMethod.changeProxy,
       arguments: changeProxyParams.toJson(),
+      timeout: changeProxyGuardDuration,
     );
     if (data == null) {
       throw CoreMethodException(

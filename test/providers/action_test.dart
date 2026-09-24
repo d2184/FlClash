@@ -64,17 +64,36 @@ void main() {
       addTearDown(container.dispose);
       final action = container.read(profilesActionProvider.notifier);
 
-      action.updateCurrentSelectedMap('Group', 'Proxy');
+      action.setProxySelection(
+        profileId: first.id,
+        groupName: 'Group',
+        proxyName: 'Proxy',
+      );
       final updatedFirst = container.read(profilesProvider).single;
       expect(updatedFirst.selectedMap['Group'], 'Proxy');
 
-      action.updateCurrentSelectedMap('Group', 'Proxy');
+      action.setProxySelection(
+        profileId: first.id,
+        groupName: 'Group',
+        proxyName: null,
+      );
+      expect(
+        container.read(profilesProvider).single.selectedMap.containsKey('Group'),
+        isFalse,
+      );
+      final clearedFirst = container.read(profilesProvider).single;
+
+      action.setProxySelection(
+        profileId: first.id,
+        groupName: 'Group',
+        proxyName: null,
+      );
       expect(container.read(profilesProvider), hasLength(1));
 
       container.read(currentProfileIdProvider.notifier).value = null;
       action.putProfile(second);
       expect(container.read(currentProfileIdProvider), second.id);
-      expect(container.read(profilesProvider), [updatedFirst, second]);
+      expect(container.read(profilesProvider), [clearedFirst, second]);
     });
 
     test(

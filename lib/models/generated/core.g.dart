@@ -213,6 +213,28 @@ Map<String, dynamic> _$RouteSnapshotToJson(_RouteSnapshot instance) =>
       'picks': instance.picks,
     };
 
+_ProxyChangedEvent _$ProxyChangedEventFromJson(Map<String, dynamic> json) =>
+    _ProxyChangedEvent(
+      groupName: json['groupName'] as String,
+      proxyName: json['proxyName'] as String,
+      changeType:
+          $enumDecodeNullable(_$ProxyChangeTypeEnumMap, json['changeType']) ??
+          ProxyChangeType.auto,
+    );
+
+Map<String, dynamic> _$ProxyChangedEventToJson(_ProxyChangedEvent instance) =>
+    <String, dynamic>{
+      'groupName': instance.groupName,
+      'proxyName': instance.proxyName,
+      'changeType': _$ProxyChangeTypeEnumMap[instance.changeType]!,
+    };
+
+const _$ProxyChangeTypeEnumMap = {
+  ProxyChangeType.auto: 'auto',
+  ProxyChangeType.manual: 'manual',
+  ProxyChangeType.unfix: 'unfix',
+};
+
 _CoreEvent _$CoreEventFromJson(Map<String, dynamic> json) => _CoreEvent(
   type: $enumDecode(_$CoreEventTypeEnumMap, json['type']),
   data: json['data'],
@@ -231,6 +253,7 @@ const _$CoreEventTypeEnumMap = {
   CoreEventType.requestTraffic: 'requestTraffic',
   CoreEventType.dns: 'dns',
   CoreEventType.loaded: 'loaded',
+  CoreEventType.proxy: 'proxy',
   CoreEventType.crash: 'crash',
   CoreEventType.geoUpdate: 'geoUpdate',
   CoreEventType.routeChanged: 'routeChanged',

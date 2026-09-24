@@ -975,16 +975,6 @@ class AppLocalizations {
     );
   }
 
-  /// `Failed to switch proxy; the previous selection has been restored`
-  String get changeProxyFailedTip {
-    return Intl.message(
-      'Failed to switch proxy; the previous selection has been restored',
-      name: 'changeProxyFailedTip',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Failed to save the change; it has been rolled back`
   String get databaseWriteFailedTip {
     return Intl.message(
@@ -7839,6 +7829,41 @@ class AppLocalizations {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Proxy switch timed out`
+  String get proxyChangeTimeout {
+    return Intl.message(
+      'Proxy switch timed out',
+      name: 'proxyChangeTimeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switch to {proxyName} was rejected: {reason}`
+  String proxyChangeRejected(Object proxyName, Object reason) {
+    return Intl.message(
+      'Switch to $proxyName was rejected: $reason',
+      name: 'proxyChangeRejected',
+      desc: '',
+      args: [proxyName, reason],
+    );
+  }
+
+  /// `Failed to switch proxy: {error}`
+  String proxyChangeFailed(Object error) {
+    return Intl.message(
+      'Failed to switch proxy: $error',
+      name: 'proxyChangeFailed',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Retry`
+  String get proxyChangeRetry {
+    return Intl.message('Retry', name: 'proxyChangeRetry', desc: '', args: []);
   }
 }
 

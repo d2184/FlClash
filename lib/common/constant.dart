@@ -77,6 +77,8 @@ const serviceSweepBudgetFactor = 6;
 
 const coreConnectionWaitDuration = Duration(seconds: 10);
 
+const changeProxyGuardDuration = Duration(seconds: 5);
+
 /// Keep at or below the Core's delay-test concurrency (`delayTestConcurrency`
 /// in core/delay.go).
 const maxConcurrentDelayTests = 32;
