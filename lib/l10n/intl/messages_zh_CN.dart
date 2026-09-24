@@ -811,6 +811,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesCount": m45,
     "proxiesEmpty": MessageLookupByLibrary.simpleMessage("代理为空"),
     "proxyChains": MessageLookupByLibrary.simpleMessage("代理链"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage("代理切换超时"),
     "proxyDefinition": MessageLookupByLibrary.simpleMessage("完整配置"),
     "proxyDefinitionNotMap": MessageLookupByLibrary.simpleMessage(
       "配置必须是包含 name 和 type 的 YAML 映射",

@@ -906,6 +906,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesCount": m45,
     "proxiesEmpty": MessageLookupByLibrary.simpleMessage("プロキシが空です"),
     "proxyChains": MessageLookupByLibrary.simpleMessage("プロキシチェーン"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage(
+      "プロキシの切り替えがタイムアウトしました",
+    ),
     "proxyDefinition": MessageLookupByLibrary.simpleMessage("完全な設定"),
     "proxyDefinitionNotMap": MessageLookupByLibrary.simpleMessage(
       "設定は name と type を含む YAML マッピングである必要があります",

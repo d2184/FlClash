@@ -35,6 +35,11 @@ class CoreController {
     _instance = null;
   }
 
+  @visibleForTesting
+  static void setInstance(CoreController instance) {
+    _instance = instance;
+  }
+
   factory CoreController() {
     _instance ??= CoreController._internal();
     return _instance!;
@@ -147,9 +152,8 @@ class CoreController {
     );
   }
 
-  Future<ChangeProxyResult> changeProxy(ChangeProxyParams changeProxyParams) {
-    return _interface.changeProxy(changeProxyParams);
-  }
+  Future<ChangeProxyResult> changeProxy(ChangeProxyParams changeProxyParams) =>
+      _interface.changeProxy(changeProxyParams);
 
   Future<RouteSnapshot?> watchRoute(bool watch) {
     return _interface.watchRoute(watch);
@@ -279,4 +283,4 @@ class CoreController {
   }
 }
 
-final coreController = CoreController();
+CoreController get coreController => CoreController();

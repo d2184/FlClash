@@ -1124,6 +1124,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "proxiesCount": m45,
     "proxiesEmpty": MessageLookupByLibrary.simpleMessage("Список прокси пуст"),
     "proxyChains": MessageLookupByLibrary.simpleMessage("Цепочка прокси"),
+    "proxyChangeTimeout": MessageLookupByLibrary.simpleMessage(
+      "Время ожидания переключения прокси истекло",
+    ),
     "proxyDefinition": MessageLookupByLibrary.simpleMessage(
       "Полная конфигурация",
     ),
