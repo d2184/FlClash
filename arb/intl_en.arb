@@ -780,5 +780,9 @@
   "large": "Large",
   "extraLarge": "Extra large",
   "switchProfile": "Switch profile",
-  "lastUpdated": "Last updated"
+  "lastUpdated": "Last updated",
+  "proxyChangeTimeout": "Proxy switch timed out",
+  "proxyChangeRejected": "Switch to {proxyName} was rejected: {reason}",
+  "proxyChangeFailed": "Failed to switch proxy: {error}",
+  "proxyChangeRetry": "Retry"
 }

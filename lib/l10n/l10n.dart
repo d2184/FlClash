@@ -6472,6 +6472,41 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Proxy switch timed out`
+  String get proxyChangeTimeout {
+    return Intl.message(
+      'Proxy switch timed out',
+      name: 'proxyChangeTimeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switch to {proxyName} was rejected: {reason}`
+  String proxyChangeRejected(Object proxyName, Object reason) {
+    return Intl.message(
+      'Switch to $proxyName was rejected: $reason',
+      name: 'proxyChangeRejected',
+      desc: '',
+      args: [proxyName, reason],
+    );
+  }
+
+  /// `Failed to switch proxy: {error}`
+  String proxyChangeFailed(Object error) {
+    return Intl.message(
+      'Failed to switch proxy: $error',
+      name: 'proxyChangeFailed',
+      desc: '',
+      args: [error],
+    );
+  }
+
+  /// `Retry`
+  String get proxyChangeRetry {
+    return Intl.message('Retry', name: 'proxyChangeRetry', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {
