@@ -80,6 +80,10 @@ func handleGetIsInit() bool {
 	return isInit.Load()
 }
 
+func handleGetVersion() string {
+	return constant.Version
+}
+
 func handleForceGC() {
 	log.Infoln("[APP] request force GC")
 	runtime.GC()
