@@ -63,17 +63,39 @@ class Debouncer {
 
 class SerialTaskScheduler {
   Future<void> _serialTail = Future<void>.value();
+  int _pendingCount = 0;
+
+  bool get hasPendingTasks => _pendingCount > 0;
 
   Future<T> run<T>(Future<T> Function() task) {
     final completer = Completer<T>();
+    _pendingCount++;
     _serialTail = _serialTail.then((_) async {
       try {
         completer.complete(await task());
       } catch (error, stackTrace) {
         completer.completeError(error, stackTrace);
+      } finally {
+        _pendingCount--;
       }
     });
     return completer.future;
+  }
+
+  void runDetached(dynamic tag, Future<void> Function() task) {
+    _pendingCount++;
+    _serialTail = _serialTail.then((_) async {
+      try {
+        await task();
+      } catch (error, stackTrace) {
+        commonPrint.log(
+          'Serial task $tag failed: ${compactError(error)}, $stackTrace',
+          logLevel: LogLevel.warning,
+        );
+      } finally {
+        _pendingCount--;
+      }
+    });
   }
 }
 
