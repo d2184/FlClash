@@ -340,8 +340,8 @@ func setEventListener(listener unsafe.Pointer) {
 	}
 	eventListener = listener
 	eventListenerLock.Unlock()
-	if listener == nil {
-		stopRouteWatch()
+	if listener != nil {
+		registerEventHooks()
 	}
 }
 
