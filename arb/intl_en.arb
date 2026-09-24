@@ -125,7 +125,6 @@
   "localNetworkDeniedTip": "Local network permission denied: using the gvisor stack, LAN is unreachable.",
   "compatible": "Compatibility mode",
   "notSelectedTip": "The current proxy group cannot be selected",
-  "changeProxyFailedTip": "Failed to switch proxy; the previous selection has been restored",
   "databaseWriteFailedTip": "Failed to save the change; it has been rolled back",
   "tip": "Tip",
   "account": "Account",
@@ -940,5 +939,9 @@
   "customImportDroppedSubRules": "{count, plural, =1{1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules} other{{label} SUB-RULE rules were dropped, since custom profiles do not support sub-rules}}",
   "autoInclude": "Auto-include",
   "allReferencedProxies": "All referenced proxies",
-  "allReferencedProxyProviders": "All referenced proxy providers"
+  "allReferencedProxyProviders": "All referenced proxy providers",
+  "proxyChangeTimeout": "Proxy switch timed out",
+  "proxyChangeRejected": "Switch to {proxyName} was rejected: {reason}",
+  "proxyChangeFailed": "Failed to switch proxy: {error}",
+  "proxyChangeRetry": "Retry"
 }

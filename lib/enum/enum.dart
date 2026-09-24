@@ -227,10 +227,20 @@ enum CoreEventType {
   requestTraffic,
   dns,
   loaded,
+  proxy,
   crash,
   geoUpdate,
   routeChanged,
   dialerLoop,
+}
+
+enum ProxyChangeType {
+  @JsonValue('auto')
+  auto,
+  @JsonValue('manual')
+  manual,
+  @JsonValue('unfix')
+  unfix,
 }
 
 enum FindProcessMode { always, off }

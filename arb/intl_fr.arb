@@ -125,7 +125,6 @@
   "localNetworkDeniedTip": "Autorisation du réseau local refusée : la pile gvisor est utilisée, le LAN est inaccessible.",
   "compatible": "Mode de compatibilité",
   "notSelectedTip": "Le groupe de proxys actuel n’est pas sélectionnable",
-  "changeProxyFailedTip": "Échec du changement de proxy ; la sélection précédente a été rétablie",
   "databaseWriteFailedTip": "Échec de l’enregistrement de la modification ; elle a été annulée",
   "tip": "Astuce",
   "account": "Compte",
@@ -940,5 +939,9 @@
   "customImportDroppedSubRules": "{count, plural, =1{1 règle SUB-RULE a été abandonnée, car les profils personnalisés ne prennent pas en charge les sous-règles} other{{label} règles SUB-RULE ont été abandonnées, car les profils personnalisés ne prennent pas en charge les sous-règles}}",
   "autoInclude": "Inclure automatiquement",
   "allReferencedProxies": "Tous les proxys référencés",
-  "allReferencedProxyProviders": "Tous les fournisseurs de proxys référencés"
+  "allReferencedProxyProviders": "Tous les fournisseurs de proxys référencés",
+  "proxyChangeTimeout": "Délai dépassé lors du changement de proxy",
+  "proxyChangeRejected": "Le passage à {proxyName} a été refusé : {reason}",
+  "proxyChangeFailed": "Échec du changement de proxy : {error}",
+  "proxyChangeRetry": "Réessayer"
 }

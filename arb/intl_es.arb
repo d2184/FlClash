@@ -125,7 +125,6 @@
   "localNetworkDeniedTip": "Permiso de red local denegado: con la pila gvisor, la LAN no es accesible.",
   "compatible": "Modo de compatibilidad",
   "notSelectedTip": "No se puede seleccionar el grupo de proxies actual",
-  "changeProxyFailedTip": "No se pudo cambiar de proxy; se ha restaurado la selección anterior",
   "databaseWriteFailedTip": "No se pudo guardar el cambio; se ha revertido",
   "tip": "Consejo",
   "account": "Cuenta",
@@ -940,5 +939,9 @@
   "customImportDroppedSubRules": "{count, plural, =1{Se descartó 1 regla SUB-RULE, porque los perfiles personalizados no admiten subreglas} other{Se descartaron {label} reglas SUB-RULE, porque los perfiles personalizados no admiten subreglas}}",
   "autoInclude": "Incluir automáticamente",
   "allReferencedProxies": "Todos los proxies referenciados",
-  "allReferencedProxyProviders": "Todos los proveedores de proxies referenciados"
+  "allReferencedProxyProviders": "Todos los proveedores de proxies referenciados",
+  "proxyChangeTimeout": "Se agotó el tiempo al cambiar de proxy",
+  "proxyChangeRejected": "Se rechazó el cambio a {proxyName}: {reason}",
+  "proxyChangeFailed": "No se pudo cambiar de proxy: {error}",
+  "proxyChangeRetry": "Reintentar"
 }

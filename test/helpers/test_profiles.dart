@@ -10,6 +10,20 @@ class TestProfiles extends Profiles {
   List<Profile> build() => initial;
 
   @override
+  void updateProfile(
+    int profileId,
+    Profile Function(Profile profile) builder,
+  ) {
+    final index = state.indexWhere((profile) => profile.id == profileId);
+    if (index == -1) return;
+    final updatedProfile = builder(state[index]);
+    if (identical(updatedProfile, state[index])) return;
+    final next = List<Profile>.from(state);
+    next[index] = updatedProfile;
+    state = next;
+  }
+
+  @override
   void put(Profile profile) {
     final next = List<Profile>.from(state);
     final index = next.indexWhere((item) => item.id == profile.id);
@@ -29,15 +43,6 @@ class TestProfiles extends Profiles {
   @override
   void reorder(List<Profile> profiles) {
     state = List.of(profiles);
-  }
-
-  @override
-  void updateProfile(int profileId, Profile Function(Profile profile) builder) {
-    final index = state.indexWhere((item) => item.id == profileId);
-    if (index == -1) return;
-    final next = List<Profile>.from(state);
-    next[index] = builder(state[index]);
-    state = next;
   }
 
   void replace(List<Profile> profiles) {
