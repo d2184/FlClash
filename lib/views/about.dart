@@ -107,8 +107,8 @@ class AboutView extends ConsumerWidget {
               _buildLinkItem(
                 glyph: AppGlyphs.cpu,
                 title: appLocalizations.core,
-                url: 'https://github.com/chen08209/Clash.Meta/tree/FlClash',
-                label: 'github.com/chen08209/Clash.Meta',
+                url: 'https://github.com/MetaCubeX/mihomo/tree/Alpha',
+                label: 'github.com/MetaCubeX/mihomo',
               ),
               _buildLinkItem(
                 glyph: AppGlyphs.send,
