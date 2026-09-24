@@ -6407,6 +6407,16 @@ class AppLocalizations {
       args: [profiles, label],
     );
   }
+
+  /// `Proxy switch timed out`
+  String get proxyChangeTimeout {
+    return Intl.message(
+      'Proxy switch timed out',
+      name: 'proxyChangeTimeout',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -241,9 +241,19 @@ enum CoreEventType {
   request,
   dns,
   loaded,
+  proxy,
   crash,
   geoUpdate,
   routeChanged,
+}
+
+enum ProxyChangeType {
+  @JsonValue('auto')
+  auto,
+  @JsonValue('manual')
+  manual,
+  @JsonValue('unfix')
+  unfix,
 }
 
 enum InvokeMessageType { protect, process }

@@ -236,10 +236,7 @@ class AppTray implements TrayPort {
           selectedName: read(selectedProxyNameProvider(group.name)),
           delays: delays[group.name] ?? const {},
           onSelected: (proxyName) {
-            proxiesAction.changeProxy(
-              groupName: group.name,
-              proxyName: proxyName,
-            );
+            proxiesAction.changeProxyDebounce(group.name, proxyName);
           },
         ),
       TrayMenuAction(
