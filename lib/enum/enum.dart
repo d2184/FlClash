@@ -428,6 +428,7 @@ enum DashboardWidget {
   systemProxyButton(platforms: desktopPlatforms),
   intranetIp,
   memoryInfo,
+  coreVersion,
   serviceStatus,
   dnsQueries,
   requests,

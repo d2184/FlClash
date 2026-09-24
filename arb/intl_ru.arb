@@ -362,6 +362,7 @@
   "memoryReleased": "Память освобождена",
   "memoryReleasedSize": "Освобождено {size}",
   "releaseMemoryFailed": "Не удалось освободить память",
+  "coreVersion": "Версия ядра",
   "cancel": "Отмена",
   "fileIsUpdate": "Файл изменён. Сохранить изменения?",
   "profileHasUpdate": "Профиль изменён. Отключить автообновление?",

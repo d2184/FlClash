@@ -362,6 +362,7 @@
   "memoryReleased": "内存已释放",
   "memoryReleasedSize": "已释放 {size}",
   "releaseMemoryFailed": "释放内存失败",
+  "coreVersion": "内核版本",
   "cancel": "取消",
   "fileIsUpdate": "文件有修改，是否保存修改",
   "profileHasUpdate": "配置文件已经修改，是否关闭自动更新？",

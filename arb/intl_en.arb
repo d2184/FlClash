@@ -362,6 +362,7 @@
   "memoryReleased": "Memory released",
   "memoryReleasedSize": "Released {size}",
   "releaseMemoryFailed": "Failed to release memory",
+  "coreVersion": "Core version",
   "cancel": "Cancel",
   "fileIsUpdate": "The file has been modified. Save the changes?",
   "profileHasUpdate": "The profile has been modified. Turn off auto update?",

@@ -1,11 +1,10 @@
 package main
 
 import (
-	"github.com/metacubex/http"
-
 	"net/netip"
 	"time"
 
+	"github.com/metacubex/http"
 	"github.com/metacubex/mihomo/adapter/provider"
 	P "github.com/metacubex/mihomo/component/process"
 	"github.com/metacubex/mihomo/constant"
@@ -169,6 +168,7 @@ const (
 	getExternalProvidersMethod     CoreMethod = "getExternalProviders"
 	getExternalProviderMethod      CoreMethod = "getExternalProvider"
 	getMemoryStatsMethod           CoreMethod = "getMemoryStats"
+	getVersionMethod               CoreMethod = "getVersion"
 	updateGeoDataMethod            CoreMethod = "updateGeoData"
 	updateExternalProviderMethod   CoreMethod = "updateExternalProvider"
 	sideLoadExternalProviderMethod CoreMethod = "sideLoadExternalProvider"

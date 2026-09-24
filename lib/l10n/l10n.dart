@@ -2910,6 +2910,16 @@ class AppLocalizations {
     );
   }
 
+  /// `Core version`
+  String get coreVersion {
+    return Intl.message(
+      'Core version',
+      name: 'coreVersion',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Cancel`
   String get cancel {
     return Intl.message('Cancel', name: 'cancel', desc: '', args: []);

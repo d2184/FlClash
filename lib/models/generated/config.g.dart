@@ -120,6 +120,7 @@ const _$DashboardWidgetEnumMap = {
   DashboardWidget.systemProxyButton: 'systemProxyButton',
   DashboardWidget.intranetIp: 'intranetIp',
   DashboardWidget.memoryInfo: 'memoryInfo',
+  DashboardWidget.coreVersion: 'coreVersion',
   DashboardWidget.serviceStatus: 'serviceStatus',
   DashboardWidget.dnsQueries: 'dnsQueries',
   DashboardWidget.requests: 'requests',

@@ -298,6 +298,9 @@ var methodHandlers = map[CoreMethod]methodHandler{
 			response.success(handleGetMemoryStats())
 		})
 	}),
+	getVersionMethod: withoutArguments(func(response MethodResponse) {
+		response.success(handleGetVersion())
+	}),
 	clearEffectMethod: withArguments(func(profileId *int64, response MethodResponse) {
 		safeGo(response, func() {
 			response.success(handleClearEffect(*profileId))
