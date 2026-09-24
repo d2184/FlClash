@@ -5,6 +5,19 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'generated/core.freezed.dart';
 part 'generated/core.g.dart';
 
+Map<GeoResource, String> geoXUrlFromJson(Map<String, Object?>? json) {
+  if (json == null) {
+    return defaultGeoXUrl;
+  }
+  return json.map(
+    (key, value) => MapEntry(GeoResource.fromJson(key), value as String),
+  );
+}
+
+Map<String, String> geoXUrlToJson(Map<GeoResource, String> value) {
+  return value.raw;
+}
+
 @freezed
 abstract class SetupParams with _$SetupParams {
   const factory SetupParams({
@@ -34,6 +47,9 @@ abstract class UpdateParams with _$UpdateParams {
     @Default([]) List<String> authentication,
     @Default(false) @JsonKey(name: 'geo-auto-update') bool geoAutoUpdate,
     @Default(24) @JsonKey(name: 'geo-update-interval') int geoUpdateInterval,
+    @JsonKey(name: 'geox-url', fromJson: geoXUrlFromJson, toJson: geoXUrlToJson)
+    @Default(defaultGeoXUrl)
+    Map<GeoResource, String> geoXUrl,
   }) = _UpdateParams;
 
   factory UpdateParams.fromJson(Map<String, dynamic> json) =>
