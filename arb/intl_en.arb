@@ -780,5 +780,6 @@
   "large": "Large",
   "extraLarge": "Extra large",
   "switchProfile": "Switch profile",
-  "lastUpdated": "Last updated"
+  "lastUpdated": "Last updated",
+  "proxyChangeTimeout": "Proxy switch timed out"
 }
