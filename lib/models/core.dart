@@ -55,7 +55,7 @@ abstract class UpdateParams with _$UpdateParams {
     required bool ipv6,
     @JsonKey(name: 'tcp-concurrent') required bool tcpConcurrent,
     @JsonKey(name: 'external-controller')
-    required ExternalControllerStatus externalController,
+    required String externalController,
     @Default('') String secret,
     @JsonKey(name: 'unified-delay') required bool unifiedDelay,
     @Default([]) List<String> authentication,

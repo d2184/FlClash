@@ -46,6 +46,7 @@ const defaultTunMtu = 9000;
 const minTunMtu = 1280;
 const maxTunMtu = 65535;
 const defaultCongestionController = 'cubic';
+const defaultExternalController = '127.0.0.1:9090';
 
 // The congestion controls mipstack registers, cubic first as its default.
 const congestionControllers = [
@@ -2005,9 +2006,9 @@ abstract class PatchClashConfig with _$PatchClashConfig {
     @JsonKey(name: 'geodata-loader')
     GeodataLoader geodataLoader,
     @JsonKey(name: 'global-ua') String? globalUa,
-    @Default(ExternalControllerStatus.close)
+    @Default('')
     @JsonKey(name: 'external-controller')
-    ExternalControllerStatus externalController,
+    String externalController,
     @Default('') String secret,
     @Default({}) Map<String, String> hosts,
     @Default(false) @JsonKey(name: 'geo-auto-update') bool geoAutoUpdate,
@@ -2072,7 +2073,7 @@ extension PatchClashConfigExt on PatchClashConfig {
   );
 
   PatchClashConfig ensureControllerSecret() {
-    if (externalController == ExternalControllerStatus.close) {
+    if (externalController.isEmpty) {
       return secret.isEmpty ? this : copyWith(secret: '');
     }
     return secret.isEmpty ? copyWith(secret: generateRandomSecret(32)) : this;

@@ -166,7 +166,7 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
   rawConfig['external-controller'] =
       data.safeMode || realPatchConfig.secret.isEmpty
       ? ''
-      : realPatchConfig.externalController.value;
+      : realPatchConfig.externalController;
   rawConfig['secret'] = realPatchConfig.secret;
   // mihomo serves the unix and pipe controllers without a secret, and the unix
   // one unlinks whatever sits at its path before opening it to everyone.

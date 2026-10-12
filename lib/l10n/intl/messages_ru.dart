@@ -766,6 +766,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("Английский"),
+    "enable": MessageLookupByLibrary.simpleMessage("Включить"),
     "enabled": MessageLookupByLibrary.simpleMessage("Включено"),
     "entries": MessageLookupByLibrary.simpleMessage(" записей"),
     "error": MessageLookupByLibrary.simpleMessage("Ошибка"),
@@ -819,11 +820,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Внешний контроллер",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "Внешний контроллер позволяет управлять ядром через порт 9090.",
+      "При включении ядро Clash можно контролировать через RESTful API",
     ),
-    "externalControllerSecret": MessageLookupByLibrary.simpleMessage(
-      "Секрет внешнего контроллера",
-    ),
+    "externalControllerSecret": MessageLookupByLibrary.simpleMessage("Секрет"),
     "externalLink": MessageLookupByLibrary.simpleMessage("Внешняя ссылка"),
     "extraLarge": MessageLookupByLibrary.simpleMessage("Очень крупный"),
     "fade": MessageLookupByLibrary.simpleMessage("Растворение"),

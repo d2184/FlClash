@@ -128,7 +128,7 @@ void main() {
         logLevel: LogLevel.info,
         ipv6: false,
         tcpConcurrent: false,
-        externalController: ExternalControllerStatus.close,
+        externalController: '',
         unifiedDelay: false,
       ),
     );
@@ -801,7 +801,7 @@ void main() {
           .read(patchClashConfigProvider.notifier)
           .update(
             (state) => state.copyWith(
-              externalController: ExternalControllerStatus.open,
+              externalController: '127.0.0.1:9090',
             ),
           );
 
@@ -810,10 +810,10 @@ void main() {
       final params =
           verify(() => core.updateConfig(captureAny())).captured.single
               as UpdateParams;
-      expect(params.externalController, ExternalControllerStatus.close);
+      expect(params.externalController, '');
       expect(
         scoped.read(patchClashConfigProvider).externalController,
-        ExternalControllerStatus.open,
+        '127.0.0.1:9090',
       );
     });
 
@@ -841,23 +841,23 @@ void main() {
     test('hands the Core the controller secret with the address', () async {
       final params = await updateWith(
         const PatchClashConfig(
-          externalController: ExternalControllerStatus.open,
+          externalController: '127.0.0.1:9090',
           secret: 'abc',
         ),
       );
 
-      expect(params.externalController, ExternalControllerStatus.open);
+      expect(params.externalController, '127.0.0.1:9090');
       expect(params.secret, 'abc');
     });
 
     test('never opens the controller without a secret', () async {
       final params = await updateWith(
         const PatchClashConfig(
-          externalController: ExternalControllerStatus.open,
+          externalController: '127.0.0.1:9090',
         ),
       );
 
-      expect(params.externalController, ExternalControllerStatus.close);
+      expect(params.externalController, '');
     });
   });
 
@@ -1177,7 +1177,7 @@ void main() {
             .read(patchClashConfigProvider.notifier)
             .update(
               (state) => state.copyWith(
-                externalController: ExternalControllerStatus.open,
+                externalController: '127.0.0.1:9090',
               ),
             );
 
