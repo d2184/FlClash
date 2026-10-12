@@ -440,7 +440,7 @@ void main() {
       expect(config.mixedPort, defaultMixedPort);
       expect(config.allowLan, false);
       expect(config.mode, Mode.rule);
-      expect(config.externalController, ExternalControllerStatus.close);
+      expect(config.externalController, '');
       expect(config.geodataLoader, GeodataLoader.memconservative);
       expect(config.interfaceNameMode, InterfaceNameMode.clear);
       expect(config.interfaceName, '');
@@ -452,7 +452,7 @@ void main() {
         allowLan: true,
         mode: Mode.rule,
         logLevel: LogLevel.debug,
-        externalController: ExternalControllerStatus.open,
+        externalController: '127.0.0.1:9090',
         geodataLoader: GeodataLoader.memconservative,
         interfaceNameMode: InterfaceNameMode.custom,
         interfaceName: 'eth0',
@@ -467,7 +467,7 @@ void main() {
       expect(restored.allowLan, true);
       expect(restored.mode, Mode.rule);
       expect(restored.logLevel, LogLevel.debug);
-      expect(restored.externalController, ExternalControllerStatus.open);
+      expect(restored.externalController, '127.0.0.1:9090');
       expect(restored.geodataLoader, GeodataLoader.memconservative);
       expect(restored.interfaceNameMode, InterfaceNameMode.custom);
       expect(restored.interfaceName, 'eth0');
@@ -495,7 +495,7 @@ void main() {
 
   group('PatchClashConfig.ensureControllerSecret', () {
     const open = PatchClashConfig(
-      externalController: ExternalControllerStatus.open,
+      externalController: '127.0.0.1:9090',
     );
 
     test('leaves a closed controller without a secret as it is', () {
@@ -508,7 +508,7 @@ void main() {
       final ensured = open.ensureControllerSecret();
 
       expect(ensured.secret, matches(RegExp(r'^[A-Za-z0-9]{32}$')));
-      expect(ensured.externalController, ExternalControllerStatus.open);
+      expect(ensured.externalController, '127.0.0.1:9090');
     });
 
     test('is idempotent, so a secret the user chose or was shown stays', () {
@@ -526,10 +526,10 @@ void main() {
       () {
         final first = open.ensureControllerSecret();
         final closed = first
-            .copyWith(externalController: ExternalControllerStatus.close)
+            .copyWith(externalController: '')
             .ensureControllerSecret();
         final second = closed
-            .copyWith(externalController: ExternalControllerStatus.open)
+            .copyWith(externalController: '127.0.0.1:9090')
             .ensureControllerSecret();
 
         expect(closed.secret, isEmpty);
@@ -561,7 +561,7 @@ void main() {
         logLevel: LogLevel.debug,
         ipv6: true,
         tcpConcurrent: false,
-        externalController: ExternalControllerStatus.open,
+        externalController: '127.0.0.1:9090',
         secret: 'secret',
         unifiedDelay: false,
         geoAutoUpdate: true,

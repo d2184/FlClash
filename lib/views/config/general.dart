@@ -10,6 +10,7 @@ import 'package:fl_clash/widgets/widgets.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+part 'general/external_controller_form.dart';
 part 'general/port_form.dart';
 
 class LogLevelItem extends ConsumerWidget {
@@ -207,19 +208,26 @@ class AuthenticationPasswordItem extends ConsumerWidget {
   }
 }
 
-class ExternalControllerSecretItem extends ConsumerWidget {
-  const ExternalControllerSecretItem({super.key});
+class ExternalControllerItem extends ConsumerWidget {
+  const ExternalControllerItem({super.key});
+
+  Future<void> _handleShowForm(BuildContext context) async {
+    await showFormSheet<void>(
+      context: context,
+      builder: (_) => const _ExternalControllerForm(),
+    );
+  }
 
   @override
   Widget build(BuildContext context, ref) {
-    return ConfigTextItem(
-      title: (l) => l.externalControllerSecret,
-      maxLength: TextInputLimits.password,
-      selector: patchClashConfigProvider.select((state) => state.secret),
-      normalize: (value) => value.trim(),
-      onChanged: (ref, value) => ref
-          .read(patchClashConfigProvider.notifier)
-          .update((state) => state.copyWith(secret: value)),
+    final appLocalizations = context.appLocalizations;
+    final externalController = ref.watch(
+      patchClashConfigProvider.select((state) => state.externalController),
+    );
+    return ListItem(
+      title: Text(appLocalizations.externalController),
+      subtitle: externalController.isEmpty ? null : Text(externalController),
+      onTap: () => _handleShowForm(context),
     );
   }
 }
@@ -299,10 +307,7 @@ class GeneralView extends ConsumerWidget {
     ];
   }
 
-  List<Widget> _inboundItems({
-    required bool authentication,
-    required bool externalController,
-  }) {
+  List<Widget> _inboundItems({required bool authentication}) {
     return [
       const PortItem(),
       _clashToggle(
@@ -310,19 +315,7 @@ class GeneralView extends ConsumerWidget {
         select: (state) => state.allowLan,
         update: (state, value) => state.copyWith(allowLan: value),
       ),
-      _clashToggle(
-        title: (l) => l.externalController,
-        select: (state) =>
-            state.externalController == ExternalControllerStatus.open,
-        update: (state, value) => state
-            .copyWith(
-              externalController: value
-                  ? ExternalControllerStatus.open
-                  : ExternalControllerStatus.close,
-            )
-            .ensureControllerSecret(),
-      ),
-      if (externalController) const ExternalControllerSecretItem(),
+      const ExternalControllerItem(),
       const AuthenticationItem(),
       if (authentication) ...const [
         AuthenticationAccountItem(),
@@ -426,11 +419,6 @@ class GeneralView extends ConsumerWidget {
     final authentication = ref.watch(
       networkSettingProvider.select((state) => state.authentication.enable),
     );
-    final externalController = ref.watch(
-      patchClashConfigProvider.select(
-        (state) => state.externalController == ExternalControllerStatus.open,
-      ),
-    );
     return BaseScaffold(
       title: appLocalizations.general,
       body: ListView(
@@ -454,10 +442,7 @@ class GeneralView extends ConsumerWidget {
           ),
           generateSection(
             title: appLocalizations.inbound,
-            items: _inboundItems(
-              authentication: authentication,
-              externalController: externalController,
-            ),
+            items: _inboundItems(authentication: authentication),
             footer: [
               appLocalizations.externalControllerDesc,
               appLocalizations.authenticationDesc,

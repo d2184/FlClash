@@ -613,6 +613,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyFallback": MessageLookupByLibrary.simpleMessage("빈 폴백"),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("영어"),
+    "enable": MessageLookupByLibrary.simpleMessage("사용"),
     "enabled": MessageLookupByLibrary.simpleMessage("사용"),
     "entries": MessageLookupByLibrary.simpleMessage("개 항목"),
     "error": MessageLookupByLibrary.simpleMessage("오류"),
@@ -654,7 +655,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "extendScript": MessageLookupByLibrary.simpleMessage("확장 스크립트"),
     "externalController": MessageLookupByLibrary.simpleMessage("외부 컨트롤러"),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "외부 컨트롤러를 사용하면 9090 포트로 코어를 제어할 수 있습니다.",
+      "사용하면 RESTful API로 Clash 코어를 제어할 수 있습니다",
     ),
     "externalControllerSecret": MessageLookupByLibrary.simpleMessage(
       "외부 컨트롤러 시크릿",

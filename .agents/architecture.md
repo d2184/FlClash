@@ -128,7 +128,7 @@ an on toggle and none of an off one. That release had no custom profiles, so its
 
 `_makeRealProfileTask` in `lib/common/task.dart` writes `mixed-port`, `allow-lan`, and `external-controller` into every
 generated profile. With `allow-lan` off, mihomo's `genAddr` binds each listener to `127.0.0.1`; the external controller is
-`ExternalControllerStatus.close` by default and never binds anywhere but loopback. The task also clears
+empty by default and binds nowhere; a custom address, including a non-loopback one, is the user's choice. The task also clears
 `external-controller-tls`, `-unix` and `-pipe` in every mode: the unix and pipe controllers answer without a secret, and
 the unix one unlinks whatever file sits at its path before opening it to everyone, so a profile may not choose them.
 Outside safe mode, profiles retain `listeners`, `tunnels`, `ss-config`, `vmess-config`, `tuic-server`, `iptables`,
@@ -1321,7 +1321,7 @@ rewritten; each owner reads the flag where it would otherwise act:
 
 - Core config: `SetupAction._effectivePatchConfig` is the one place the profile path and `updateConfig` derive what
   the Core receives from the user's `PatchClashConfig`. In safe mode it reports `tun.enable: false` and
-  `ExternalControllerStatus.close`, so the generated profile and every `updateConfig` carry no TUN and an empty
+  an empty external controller, so the generated profile and every `updateConfig` carry no TUN and an empty
   `external-controller` (the Core's `route.ReCreateServer` binds no RESTful API port) while the settings keep the
   user's values and the installed app keeps `127.0.0.1:9090`. `SetupAction.requestAdmin` skips authorization.
 - System clock: `_makeRealProfileTask` sets `write-to-system: false` on whatever `ntp` section the generated profile

@@ -735,6 +735,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyFallback": MessageLookupByLibrary.simpleMessage("Empty fallback"),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("English"),
+    "enable": MessageLookupByLibrary.simpleMessage("Enable"),
     "enabled": MessageLookupByLibrary.simpleMessage("Enabled"),
     "entries": MessageLookupByLibrary.simpleMessage(" entries"),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
@@ -784,7 +785,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "External controller",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "The external controller lets you control the core on port 9090.",
+      "When enabled, the Clash core can be controlled via the RESTful API",
     ),
     "externalControllerSecret": MessageLookupByLibrary.simpleMessage(
       "External controller secret",

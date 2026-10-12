@@ -571,6 +571,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyFallback": MessageLookupByLibrary.simpleMessage("空组兜底"),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("英语"),
+    "enable": MessageLookupByLibrary.simpleMessage("启用"),
     "enabled": MessageLookupByLibrary.simpleMessage("已开启"),
     "entries": MessageLookupByLibrary.simpleMessage("个条目"),
     "error": MessageLookupByLibrary.simpleMessage("错误"),
@@ -612,7 +613,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "extendScript": MessageLookupByLibrary.simpleMessage("扩展脚本"),
     "externalController": MessageLookupByLibrary.simpleMessage("外部控制器"),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "外部控制器开启后，可通过 9090 端口控制内核。",
+      "开启后将可以通过 RESTful API 控制 Clash 内核",
     ),
     "externalControllerSecret": MessageLookupByLibrary.simpleMessage("外部控制器密钥"),
     "externalLink": MessageLookupByLibrary.simpleMessage("外部链接"),

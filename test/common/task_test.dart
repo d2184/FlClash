@@ -518,7 +518,7 @@ void main() {
 
       final open = await build(
         const PatchClashConfig(
-          externalController: ExternalControllerStatus.open,
+          externalController: '127.0.0.1:9090',
           secret: 'from-the-app',
         ),
       );
@@ -529,7 +529,7 @@ void main() {
       expect(closed['secret'], '');
       final missingSecret = await build(
         const PatchClashConfig(
-          externalController: ExternalControllerStatus.open,
+          externalController: '127.0.0.1:9090',
         ),
       );
       expect(missingSecret['external-controller'], '');
@@ -564,7 +564,7 @@ void main() {
               'ntp': {'enable': true, 'write-to-system': true},
             },
             realPatchConfig: const PatchClashConfig(
-              externalController: ExternalControllerStatus.open,
+              externalController: '127.0.0.1:9090',
               secret: 'from-the-app',
             ),
             appendSystemDns: false,

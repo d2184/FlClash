@@ -221,7 +221,7 @@ void main() {
         const Config(
           themeProps: ThemeProps(),
           patchClashConfig: PatchClashConfig(
-            externalController: ExternalControllerStatus.open,
+            externalController: '127.0.0.1:9090',
           ),
         ),
       );

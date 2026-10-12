@@ -780,6 +780,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("Inglés"),
+    "enable": MessageLookupByLibrary.simpleMessage("Activar"),
     "enabled": MessageLookupByLibrary.simpleMessage("Activado"),
     "entries": MessageLookupByLibrary.simpleMessage(" entradas"),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
@@ -839,7 +840,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Controlador externo",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "El controlador externo permite controlar el núcleo en el puerto 9090.",
+      "Al activarlo, el núcleo de Clash se puede controlar mediante la API RESTful",
     ),
     "externalControllerSecret": MessageLookupByLibrary.simpleMessage(
       "Clave del controlador externo",
@@ -1007,9 +1008,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "inputRuleContent": MessageLookupByLibrary.simpleMessage(
       "Introduce el contenido de la regla",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "Se denegó el permiso de lista de apps, por lo que no se pueden mostrar las apps instaladas. Concédelo manualmente en los ajustes del sistema.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "Se denegó el permiso de lista de apps, por lo que no se pueden mostrar las apps instaladas. Concédelo manualmente en los ajustes del sistema.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "Este sistema oculta la lista de apps instaladas hasta que se concede el permiso. Autorízalo para configurar el proxy por app.",
     ),

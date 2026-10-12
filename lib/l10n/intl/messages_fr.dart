@@ -783,6 +783,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyFallback": MessageLookupByLibrary.simpleMessage("Repli si vide"),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("Anglais"),
+    "enable": MessageLookupByLibrary.simpleMessage("Activer"),
     "enabled": MessageLookupByLibrary.simpleMessage("Activé"),
     "entries": MessageLookupByLibrary.simpleMessage(" entrées"),
     "error": MessageLookupByLibrary.simpleMessage("Erreur"),
@@ -838,7 +839,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Contrôleur externe",
     ),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "Le contrôleur externe permet de piloter le cœur via le port 9090.",
+      "Une fois activé, le cœur Clash peut être piloté via l’API RESTful",
     ),
     "externalControllerSecret": MessageLookupByLibrary.simpleMessage(
       "Secret du contrôleur externe",
@@ -1010,9 +1011,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "inputRuleContent": MessageLookupByLibrary.simpleMessage(
       "Saisissez le contenu de la règle",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "L’autorisation de la liste des apps a été refusée ; les apps installées ne peuvent donc pas être listées. Veuillez l’accorder manuellement dans les réglages du système.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "L’autorisation de la liste des apps a été refusée ; les apps installées ne peuvent donc pas être listées. Veuillez l’accorder manuellement dans les réglages du système.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "Ce système masque la liste des apps installées tant que l’autorisation n’est pas accordée. Accordez-la pour configurer le proxy par app.",
     ),

@@ -624,6 +624,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "emptyFallback": MessageLookupByLibrary.simpleMessage("空グループのフォールバック"),
     "emptyTip": m23,
     "en": MessageLookupByLibrary.simpleMessage("英語"),
+    "enable": MessageLookupByLibrary.simpleMessage("有効化"),
     "enabled": MessageLookupByLibrary.simpleMessage("有効"),
     "entries": MessageLookupByLibrary.simpleMessage(" 件"),
     "error": MessageLookupByLibrary.simpleMessage("エラー"),
@@ -665,7 +666,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "extendScript": MessageLookupByLibrary.simpleMessage("拡張スクリプト"),
     "externalController": MessageLookupByLibrary.simpleMessage("外部コントローラー"),
     "externalControllerDesc": MessageLookupByLibrary.simpleMessage(
-      "外部コントローラーを有効にすると、ポート 9090 でコアを制御できます。",
+      "有効にすると、RESTful API経由でClashコアを制御できます",
     ),
     "externalControllerSecret": MessageLookupByLibrary.simpleMessage(
       "外部コントローラーのシークレット",

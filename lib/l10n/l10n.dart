@@ -1180,6 +1180,11 @@ class AppLocalizations {
     );
   }
 
+  /// `Enable`
+  String get enable {
+    return Intl.message('Enable', name: 'enable', desc: '', args: []);
+  }
+
   /// `External controller`
   String get externalController {
     return Intl.message(
@@ -1190,10 +1195,10 @@ class AppLocalizations {
     );
   }
 
-  /// `The external controller lets you control the core on port 9090.`
+  /// `When enabled, the Clash core can be controlled via the RESTful API`
   String get externalControllerDesc {
     return Intl.message(
-      'The external controller lets you control the core on port 9090.',
+      'When enabled, the Clash core can be controlled via the RESTful API',
       name: 'externalControllerDesc',
       desc: '',
       args: [],
@@ -7797,8 +7802,7 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one:
-          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',
