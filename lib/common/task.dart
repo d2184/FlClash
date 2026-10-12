@@ -180,7 +180,6 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
       rawConfig['iptables'] = {'enable': false};
     }
   }
-  rawConfig['external-ui'] = '';
   switch (realPatchConfig.interfaceNameMode) {
     case InterfaceNameMode.clear:
       rawConfig['interface-name'] = '';
@@ -189,7 +188,6 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
     case InterfaceNameMode.custom:
       rawConfig['interface-name'] = realPatchConfig.interfaceName;
   }
-  rawConfig['external-ui-url'] = '';
   rawConfig['tcp-concurrent'] = realPatchConfig.tcpConcurrent;
   rawConfig['unified-delay'] = realPatchConfig.unifiedDelay;
   rawConfig['ipv6'] = realPatchConfig.ipv6;
