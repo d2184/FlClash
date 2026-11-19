@@ -180,6 +180,9 @@ abstract class CargoBuild : DefaultTask() {
             val release = target.resolve("$triple/release")
             execOperations.exec {
                 ndkEnvironment()
+                listOf("CFLAGS", "CXXFLAGS").forEach { name ->
+                    environment(name, listOfNotNull(System.getenv(name), "-DNDEBUG").joinToString(" "))
+                }
                 workingDir(workspace)
                 commandLine(cargoExecutable.get(), "build", "--release", "--locked", "--target", triple, "-p", "concord-android")
             }
@@ -193,9 +196,6 @@ abstract class CargoBuild : DefaultTask() {
             listOf("libconcord.so", "libcore_jni.so").forEach { library ->
                 release.resolve(library).copyTo(output.resolve("$abi/$library"), overwrite = true)
             }
-            // Packaged as a library so the installer extracts it to the native library directory,
-            // the one place an app can execute a file from.
-            release.resolve("tun").copyTo(output.resolve("$abi/libtun.so"), overwrite = true)
         }
     }
 

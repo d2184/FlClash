@@ -327,82 +327,28 @@ void main() {
     });
   });
 
-  group('root mode', () {
-    Future<void> pumpVpn(
-      WidgetTester tester, {
-      required bool su,
-      required bool rootTun,
-      Widget item = const VpnSections(),
-    }) async {
-      container.dispose();
-      container = ProviderContainer(
-        overrides: [
-          profilesProvider.overrideWith(TestProfiles.new),
-          suInstalledProvider.overrideWith((ref) async => su),
-        ],
+  testWidgets('legacy root mode leaves system VPN settings available', (
+    tester,
+  ) async {
+    container
+        .read(vpnSettingProvider.notifier)
+        .update((state) => state.copyWith(rootTun: true));
+    await pumpItem(tester, const VpnSections());
+
+    final l = currentAppLocalizations;
+    expect(find.text(l.rootTun), findsNothing);
+    expect(find.textContaining(l.rootTunDesc), findsNothing);
+    for (final row in [
+      VpnSystemProxyItem,
+      AllowBypassItem,
+      Ipv6Item,
+      DNSHijackingItem,
+    ]) {
+      final toggle = tester.widget<Switch>(
+        find.descendant(of: find.byType(row), matching: find.byType(Switch)),
       );
-      globalState.container = container;
-      container.read(viewSizeProvider.notifier).value = const Size(1200, 1000);
-      container
-          .read(vpnSettingProvider.notifier)
-          .update((state) => state.copyWith(rootTun: rootTun));
-      await pumpItem(tester, item);
+      expect(toggle.onChanged, isNotNull, reason: '$row');
     }
-
-    bool enabled(WidgetTester tester, Type row) =>
-        tester
-            .widget<Switch>(
-              find.descendant(
-                of: find.byType(row),
-                matching: find.byType(Switch),
-              ),
-            )
-            .onChanged !=
-        null;
-
-    String footer(WidgetTester tester) => tester
-        .widget<Text>(
-          find.textContaining(currentAppLocalizations.bypassDomainDesc),
-        )
-        .data!;
-
-    testWidgets('the VPN section offers no root mode', (tester) async {
-      await pumpVpn(tester, su: true, rootTun: false);
-      final l = currentAppLocalizations;
-
-      expect(find.byType(RootTunItem), findsNothing);
-      expect(footer(tester), isNot(contains(l.rootTunDesc)));
-      for (final row in [
-        VpnSystemProxyItem,
-        AllowBypassItem,
-        Ipv6Item,
-        DNSHijackingItem,
-      ]) {
-        expect(enabled(tester, row), isTrue, reason: '$row');
-      }
-    });
-
-    testWidgets('without su the row says so and still turns on', (
-      tester,
-    ) async {
-      await pumpVpn(
-        tester,
-        su: false,
-        rootTun: false,
-        item: const RootTunItem(),
-      );
-      final l = currentAppLocalizations;
-
-      expect(find.text(l.rootTunUnavailable), findsOneWidget);
-      await tester.tap(
-        find.descendant(
-          of: find.byType(RootTunItem),
-          matching: find.byType(Switch),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(container.read(vpnSettingProvider).rootTun, isTrue);
-    });
   });
 }
 

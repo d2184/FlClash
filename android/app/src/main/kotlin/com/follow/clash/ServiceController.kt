@@ -13,8 +13,6 @@ import com.follow.clash.core.Core
 import com.follow.clash.service.ManagedService
 import com.follow.clash.service.NetworkObserver
 import com.follow.clash.service.ProxyService
-import com.follow.clash.service.RootTunService
-import com.follow.clash.service.RootTunUnavailable
 import com.follow.clash.service.ServiceConfig
 import com.follow.clash.service.VpnService
 import com.follow.clash.service.models.VpnOptions
@@ -72,11 +70,7 @@ object ServiceController {
 
     internal suspend fun start(options: VpnOptions): ServiceStart = lock.withLock {
         ServiceConfig.updateVpnOptions(options)
-        val nextIntent = when {
-            options.enable && options.rootTun -> RootTunService::class.intent
-            options.enable -> VpnService::class.intent
-            else -> ProxyService::class.intent
-        }
+        val nextIntent = if (options.enable) VpnService::class.intent else ProxyService::class.intent
 
         if (binding?.component != nextIntent.component) {
             if (binding != null) {
@@ -104,11 +98,7 @@ object ServiceController {
                     GlobalState.log("Unable to clean up failed background service start: $cleanupError")
                 }
             release()
-            return@withLock if (error is RootTunUnavailable) {
-                ServiceStart.RootUnavailable(error.message.orEmpty())
-            } else {
-                ServiceStart.Failed
-            }
+            return@withLock ServiceStart.Failed
         }
 
         Core.startListener()
@@ -139,7 +129,6 @@ object ServiceController {
     private fun stopServices() {
         listOf(
             VpnService::class.intent,
-            RootTunService::class.intent,
             ProxyService::class.intent,
         ).forEach { intent ->
             runCatching { GlobalState.application.stopService(intent) }
@@ -231,7 +220,6 @@ private class ManagedServiceBinding(
             when (binder) {
                 is VpnService.LocalBinder -> binder.service
                 is ProxyService.LocalBinder -> binder.service
-                is RootTunService.LocalBinder -> binder.service
                 null -> error("Binder is empty")
                 else -> error("Unsupported service binder: ${binder.javaClass.name}")
             }

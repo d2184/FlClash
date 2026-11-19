@@ -35,8 +35,8 @@ private fun vpnOptions(enable: Boolean = true) = VpnOptions(
     routeAddress = emptyList(),
 )
 
-private fun configuredState(enable: Boolean = true, rootTun: Boolean = false) = SharedState(
-    vpnOptions = vpnOptions(enable).copy(rootTun = rootTun),
+private fun configuredState(enable: Boolean = true) = SharedState(
+    vpnOptions = vpnOptions(enable),
     setupParams = JsonParser.parseString(
         """{"selected-map":{},"options":{"test-url":"https://example.com"}}""",
     ).asJsonObject,
@@ -93,7 +93,6 @@ private class FakeHost(override val scope: CoroutineScope) : ServiceStateHost {
     var storedSharedState = configuredState()
     var setupResult: Result<String> = Result.success("")
     var startSucceeds = true
-    var rootUnavailable: String? = null
     var vpnPermissionGranted = true
     var runsAsVpn: Boolean? = null
     var tile: TileGateway? = null
@@ -113,8 +112,6 @@ private class FakeHost(override val scope: CoroutineScope) : ServiceStateHost {
     var startCalls = 0
     var stopCalls = 0
     var stoppedNotifications = 0
-    val rootFallbacks = mutableListOf<String>()
-    val startedOptions = mutableListOf<VpnOptions>()
     val stopFailures = mutableListOf<StartFailure?>()
     var lastInitParams: String? = null
     var lastSetupParams: String? = null
@@ -144,10 +141,6 @@ private class FakeHost(override val scope: CoroutineScope) : ServiceStateHost {
         stopFailures += failure
     }
 
-    override fun notifyRootFallback(reason: String) {
-        rootFallbacks += reason
-    }
-
     override suspend fun quickSetup(initParams: String, setupParams: String): Result<String> {
         setupCalls++
         lastInitParams = initParams
@@ -159,11 +152,7 @@ private class FakeHost(override val scope: CoroutineScope) : ServiceStateHost {
     override suspend fun startService(options: VpnOptions): ServiceStart {
         startCalls++
         lastStartOptions = options
-        startedOptions += options
         beforeStartService?.invoke()
-        if (options.rootTun) {
-            rootUnavailable?.let { return ServiceStart.RootUnavailable(it) }
-        }
         if (!startSucceeds) {
             return ServiceStart.Failed
         }
@@ -853,48 +842,22 @@ class ServiceStateMachineTest {
     }
 
     @Test
-    fun `a root run that gets root starts without asking for the VPN permission`() = runTest {
+    fun `legacy vpn options still require the VPN permission`() = runTest {
         val host = FakeHost(backgroundScope)
-        val app = FakeApp(vpnGranted = false)
-        host.app = app
-        val machine = ServiceStateMachine(host)
-        machine.syncSharedState(configuredState(rootTun = true))
-
-        assertTrue(machine.requestStart().await())
-        assertEquals(RunState.STARTED, machine.runState.value)
-        assertEquals(listOf(true), host.startedOptions.map { it.rootTun })
-        assertTrue(host.rootFallbacks.isEmpty())
-    }
-
-    @Test
-    fun `a root run without root falls back to the system VPN for this run only`() = runTest {
-        val host = FakeHost(backgroundScope)
-        host.rootUnavailable = "su: permission denied"
-        val machine = ServiceStateMachine(host)
-        machine.syncSharedState(configuredState(rootTun = true))
-
-        assertTrue(machine.requestStart().await())
-        assertEquals(RunState.STARTED, machine.runState.value)
-        assertEquals(listOf(true, false), host.startedOptions.map { it.rootTun })
-        assertEquals(listOf("su: permission denied"), host.rootFallbacks)
-
-        machine.requestStop().await()
-        host.rootUnavailable = null
-        assertTrue(machine.requestStart().await())
-        assertEquals(true, host.startedOptions.last().rootTun)
-    }
-
-    @Test
-    fun `a root fallback still needs the VPN permission`() = runTest {
-        val host = FakeHost(backgroundScope)
-        host.rootUnavailable = "no su"
         host.app = FakeApp(vpnGranted = false)
         val machine = ServiceStateMachine(host)
-        machine.syncSharedState(configuredState(rootTun = true))
+        val gson = Gson()
+        val json = gson.toJsonTree(configuredState()).asJsonObject
+        json.getAsJsonObject("vpnOptions").addProperty("rootTun", true)
+        machine.syncSharedState(gson.fromJson(json, SharedState::class.java))
 
         assertFalse(machine.requestStart().await())
         assertEquals(RunState.STOPPED, machine.runState.value)
-        assertEquals(listOf(true), host.startedOptions.map { it.rootTun })
+        assertEquals(0, host.startCalls)
         assertEquals(listOf(StartFailure.VPN_PERMISSION), host.stopFailures)
+        host.app = FakeApp()
+        assertTrue(machine.requestStart().await())
+        assertEquals(vpnOptions(), host.lastStartOptions)
+        assertEquals(true, host.runtime?.vpn)
     }
 }

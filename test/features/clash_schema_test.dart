@@ -45,6 +45,10 @@ void main() {
     expect(concordSupportedKeys('rule-types'), containsAll(ruleTypes.keys));
   });
 
+  test('completes HTTP request rule types', () {
+    expect(ruleTypes.keys, containsAll(['URL-REGEX', 'USER-AGENT']));
+  });
+
   test('completes only the proxy and group types Concord applies', () {
     final proxies = concordSupportedKeys('proxy-types');
     expect(proxies, containsAll(proxy.fields['type']!.values));

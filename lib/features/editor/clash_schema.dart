@@ -178,6 +178,8 @@ const _ruleExamples = {
   'DOMAIN-KEYWORD': 'example',
   'DOMAIN-WILDCARD': '*.example.com',
   'DOMAIN-REGEX': r'^.*\.example\.com$',
+  'URL-REGEX': r'^https://example\.com/',
+  'USER-AGENT': 'curl*',
   'GEOSITE': 'cn',
   'IP-CIDR': '192.168.0.0/16',
   'IP-CIDR6': 'fc00::/7',

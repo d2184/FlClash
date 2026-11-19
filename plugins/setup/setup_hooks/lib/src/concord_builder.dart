@@ -89,6 +89,8 @@ class ConcordBuilder {
       toolchainDir: _workspace,
       targetTriple: target.rustTriple,
     ),
+    for (final name in const ['CFLAGS', 'CXXFLAGS'])
+      name: [?Platform.environment[name], '-DNDEBUG'].join(' '),
     'CONCORD_PRODUCT_NAME': config.productName,
     if (target.goos == 'darwin') ..._macosEnvironment(),
   };

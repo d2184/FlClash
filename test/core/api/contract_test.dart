@@ -10,9 +10,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'fake_channel.dart';
 import 'schema_core.dart';
 
-/// Methods of the schema this app never calls: the Kotlin service owns the
-/// first three, and the rest serve the views of a dashboard on the external
-/// controller.
+/// Methods the Kotlin service or an external controller owns, plus features
+/// Dart has not integrated yet.
 const _notCalledByDart = {
   'core.setPressure',
   'tun.start',
@@ -22,6 +21,7 @@ const _notCalledByDart = {
   'provider.healthCheck',
   'proxy.states',
   'rule.list',
+  'mitm.readModule',
 };
 
 /// The schema types its answer as optional where the core always fills it, so

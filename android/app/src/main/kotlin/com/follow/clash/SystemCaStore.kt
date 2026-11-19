@@ -1,7 +1,6 @@
 package com.follow.clash
 
 import android.content.Context
-import com.follow.clash.service.RootTun
 import java.io.File
 import java.io.IOException
 import java.security.KeyStore
@@ -40,7 +39,7 @@ object SystemCaStore {
         return mapOf(
             "user" to (store.getCertificateAlias(certificate)?.startsWith("user:") == true),
             "system" to system,
-            "root" to rootAvailable(),
+            "root" to hasSu(),
         )
     }
 
@@ -73,13 +72,15 @@ object SystemCaStore {
     // Asking su would prompt for root, so the answer to the last request stands
     // in for it until the next one.
     fun hasRootAccess(context: Context): Boolean {
-        return rootAvailable() && preferences(context).getBoolean(ROOT_GRANTED, false)
+        return hasSu() && preferences(context).getBoolean(ROOT_GRANTED, false)
     }
 
     private fun preferences(context: Context) =
         context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
 
-    private fun rootAvailable(): Boolean = RootTun.suPath() != null
+    internal fun hasSu(): Boolean =
+        (System.getenv("PATH").orEmpty().split(':') + listOf("/system/xbin", "/sbin"))
+            .any { it.isNotEmpty() && File(it, "su").exists() }
 
     private fun parse(der: ByteArray): X509Certificate {
         return CertificateFactory.getInstance("X.509")

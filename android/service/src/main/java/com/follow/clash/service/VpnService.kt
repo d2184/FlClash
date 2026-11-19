@@ -99,7 +99,6 @@ class VpnService : SystemVpnService(), ManagedService {
     }
 
     private fun handleStart(options: VpnOptions) {
-        RootTun.clearLeftovers(this)
         val fd = with(Builder()) {
             addAddressAndRoutes(options)
             addDnsServers(options)

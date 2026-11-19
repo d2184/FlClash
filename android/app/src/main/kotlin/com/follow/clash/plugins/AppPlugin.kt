@@ -46,7 +46,6 @@ import com.follow.clash.common.registerReceiverCompat
 import com.follow.clash.common.shortcutId
 import com.follow.clash.getPackageIconPath
 import com.follow.clash.packages.PackageResolver
-import com.follow.clash.service.RootTun
 import com.follow.clash.showToast
 import com.google.gson.Gson
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -284,7 +283,7 @@ class AppPlugin : FlutterPlugin, MethodChannel.MethodCallHandler, ActivityAware 
                 SystemCaStore.hasRootAccess(GlobalState.application)
             }
 
-            "hasSu" -> reply(result) { RootTun.suPath() != null }
+            "hasSu" -> reply(result) { SystemCaStore.hasSu() }
 
             "removeCaCertificateWithRoot" -> reply(result) {
                 SystemCaStore.remove(

@@ -21,8 +21,6 @@ internal sealed interface ServiceStart {
     data object Started : ServiceStart
 
     data object Failed : ServiceStart
-
-    data class RootUnavailable(val reason: String) : ServiceStart
 }
 
 /**
@@ -50,8 +48,6 @@ internal interface ServiceStateHost {
     fun app(): AppGateway?
 
     fun notifyStopped(failure: StartFailure? = null)
-
-    fun notifyRootFallback(reason: String)
 
     suspend fun quickSetup(initParams: String, setupParams: String): Result<String>
 
@@ -134,15 +130,6 @@ internal object AndroidServiceStateHost : ServiceStateHost {
 
     override fun notifyStopped(failure: StartFailure?) {
         flutterEngine?.plugin<ServicePlugin>()?.notifyStopped(failure)
-    }
-
-    override fun notifyRootFallback(reason: String) {
-        val plugin = flutterEngine?.plugin<ServicePlugin>()
-        if (plugin != null) {
-            plugin.notifyRootFallback(reason)
-        } else {
-            showToast("$ROOT_FALLBACK_MESSAGE $reason")
-        }
     }
 
     override suspend fun quickSetup(initParams: String, setupParams: String): Result<String> =
