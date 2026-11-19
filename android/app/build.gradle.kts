@@ -1,26 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import java.util.Properties
 
 plugins {
     id("com.android.application")
     id("dev.flutter.flutter-gradle-plugin")
 }
-
-val localProperties = Properties().apply {
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localPropertiesFile.inputStream().use { load(it) }
-    }
-}
-
-val releaseStoreFile = file("keystore.jks")
-val releaseStorePassword = localProperties.getProperty("storePassword")
-val releaseKeyAlias = localProperties.getProperty("keyAlias")
-val releaseKeyPassword = localProperties.getProperty("keyPassword")
-val hasReleaseSigning = releaseStoreFile.exists() &&
-    releaseStorePassword != null &&
-    releaseKeyAlias != null &&
-    releaseKeyPassword != null
 
 android {
     namespace = "com.follow.clash"
@@ -40,17 +23,6 @@ android {
         versionName = flutter.versionName
     }
 
-    signingConfigs {
-        if (hasReleaseSigning) {
-            create("release") {
-                storeFile = releaseStoreFile
-                storePassword = releaseStorePassword
-                keyAlias = releaseKeyAlias
-                keyPassword = releaseKeyPassword
-            }
-        }
-    }
-
     packaging {
         jniLibs {
             useLegacyPackaging = true
@@ -66,13 +38,6 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            if (hasReleaseSigning) {
-                signingConfig = signingConfigs.getByName("release")
-            } else {
-                signingConfig = signingConfigs.getByName("debug")
-                applicationIdSuffix = ".dev"
-            }
-
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",

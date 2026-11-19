@@ -53,9 +53,9 @@ reports through `concord -t`, not this table.
 | `find-process-mode` | general | android, macos, windows, linux | T0 | `"strict"` |
 | `geo-auto-update` | general | android, macos, windows, linux | T0 | `false` |
 | `geo-update-interval` | general | android, macos, windows, linux | T0 | `24` |
-| `geox-url.asn` | general | android, macos, windows, linux | T0 | `"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"` |
-| `geox-url.geosite` | general | android, macos, windows, linux | T0 | `"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"` |
-| `geox-url.mmdb` | general | android, macos, windows, linux | T0 | `"https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb"` |
+| `geox-url.asn` | general | android, macos, windows, linux | T0 | `"https://github.com/d2184/geoip/raw/release/GeoLite2-ASN.mmdb"` |
+| `geox-url.geosite` | general | android, macos, windows, linux | T0 | `"https://github.com/d2184/geosite/raw/release/geosite.dat"` |
+| `geox-url.mmdb` | general | android, macos, windows, linux | T0 | `"https://github.com/d2184/geoip/raw/release/geoip.metadb"` |
 | `global-ua` | general | android, macos, windows, linux | T0 | `"clash.meta/1.10.0"` |
 | `hosts` | general | android, macos, windows, linux | T0 |  |
 | `interface-name` | general | android, macos, windows, linux | T0 | `""` |

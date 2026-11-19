@@ -1802,9 +1802,9 @@ and step without building, for any platform.
   names `core_dir`, whatever the branch, and an rs version starts its prerelease with `rs` (`0.9.5-rs.1`,
   `0.9.5-rs.nightly.…`). The packager refuses a tag of the other line. The form is `setup` or `portable` on Windows
   and absent elsewhere.
-- Each run writes `dist/manifest.json` and `FlClash-<version>-SHA256SUMS`. The release job merges the per-platform
-  runs with `dart run tool/package.dart merge`, checks the result with `check` (Release File Names in `commands.md`),
-  and its release notes, Homebrew cask and F-Droid copy read names from the merged manifest.
+- Each run writes `dist/manifest.json` and `FlClash-<version>-SHA256SUMS`. The `Android APK` workflow runs on manual
+  dispatch with a release version such as `0.9.5-rs.1`. The full version names the artifacts. On the runner,
+  `pubspec.yaml` gets `0.9.5+<build number>`. The workflow signs the APKs and uploads them to `Prerelease-Alpha`.
 - Kept from the fork's patches: package trees normalized to 0755/0644 before `dpkg-deb`, `rpmbuild` and
   `appimagetool` (see Linux Helper below); `dpkg-deb -Zxz`, because the dpkg of UOS and other Debian derivatives
   cannot unpack Ubuntu's default zstd; `StartupWMClass` in every desktop entry; an `AppRun` that passes its arguments
