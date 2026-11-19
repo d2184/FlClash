@@ -1782,10 +1782,10 @@ and step without building, for any platform.
   `concord_dir` and `dev` when it names `core_dir`, whatever the branch. The version is the `v*` tag on `HEAD` without
   its `v` and with `+` turned into `.` (GitHub rewrites `+` in asset names), else `<pubspec version>-nightly.<commit
   date>.<sha7>`. The form is `setup` or `portable` on Windows and absent elsewhere.
-- Each run writes `dist/manifest.json` and `FlClash-<line>-<version>-SHA256SUMS`. The release job merges the
-  per-platform runs with `dart run tool/package.dart merge`, and its release notes, Homebrew cask and F-Droid copy
-  read names from the merged manifest. For the `dev` line it also uploads the Windows installers and APKs under their
-  old names plus a `SHA256SUMS`, which apps released before these names still fetch.
+- Each run writes `dist/manifest.json` and `FlClash-<line>-<version>-SHA256SUMS`. The desktop release job merges the
+  per-platform runs with `dart run tool/package.dart merge`; its release notes and Homebrew cask read the merged manifest.
+  For the `dev` line it also uploads Windows installers under their old names plus a `SHA256SUMS` for older clients.
+  The manually triggered `Android APK` workflow builds unsigned APKs, signs them separately, and uploads only the signed APKs to Actions.
 - Kept from the fork's patches: package trees normalized to 0755/0644 before `dpkg-deb`, `rpmbuild` and
   `appimagetool` (see Linux Helper below); `dpkg-deb -Zxz`, because the dpkg of UOS and other Debian derivatives
   cannot unpack Ubuntu's default zstd; `StartupWMClass` in every desktop entry; an `AppRun` that passes its arguments
