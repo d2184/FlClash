@@ -65,11 +65,11 @@ stored as JSON in the `profiles.overrides` column, with every key available, and
 `setupState` resolves `SetupState.overrides` by profile type, intersecting the app-wide keys with the normal set, and
 `_makeRealProfileTask` merges whatever it is handed; there is no on/off toggle, a picked key is the override.
 
-Each `*OverrideKey` names one Clash key, with `parent.field` paths for nested maps, and covers every yaml key of the
-matching Concord section; `test/models/{dns,ntp,sniffer}_override_test.dart` read `concord/schema/config-schema.json`
-and fail when a core bump adds or drops one. `overrideJson` builds the fragment in model order and writes every picked
-key as it is, empty included, for every profile type: an emptied entry clears the profile's value, and a key the core
-refuses empty, such as `nameserver`, or `proxy-server-nameserver` under `respect-rules`, fails the config in the core.
+Each `*OverrideKey` names one Clash key, with `parent.field` paths for nested maps, and covers the yaml keys of
+the matching Concord section not owned by another setting (`dns.append-system` belongs to `NetworkProps`).
+`test/models/{dns,ntp,sniffer}_override_test.dart` check that coverage against `concord/schema/config-schema.json`.
+`overrideJson` writes every picked key in model order, empty included: an emptied entry clears the profile's value.
+A key the core refuses empty, such as `nameserver` or `proxy-server-nameserver` under `respect-rules`, fails the config.
 Only removing an entry, or dropping its line in quick edit, takes a key off.
 `mergeDnsOverride` merges one level deep so a partial fallback filter keeps the profile's other filter keys; NTP spreads
 over the profile's flat `ntp` map. For a profile whose `dns.enable` is not true, the task first fills `baselineDns` for

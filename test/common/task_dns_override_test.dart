@@ -31,6 +31,7 @@ Future<YamlMap> _dnsOf({
   required Map<String, dynamic> rawConfig,
   Dns dns = _dns,
   Set<DnsOverrideKey> keys = _keys,
+  bool appendSystemDns = false,
 }) async {
   final result = await makeRealProfileTask(
     MakeRealProfileState(
@@ -39,7 +40,7 @@ Future<YamlMap> _dnsOf({
       rawConfig: rawConfig,
       realPatchConfig: const PatchClashConfig(),
       overrides: ProfileOverrides(dns: dns, dnsOverrideKeys: keys),
-      appendSystemDns: false,
+      appendSystemDns: appendSystemDns,
       proxyGroups: const [],
       rules: const [],
       addedRules: const [],
@@ -72,6 +73,26 @@ void main() {
       'geoip': false,
       'domain': ['keep.me'],
     });
+  });
+
+  test('requests system DNS without changing the resolver list', () async {
+    final dns = await _dnsOf(
+      rawConfig: {'dns': _profileDns},
+      appendSystemDns: true,
+    );
+
+    expect(dns['append-system'], isTrue);
+    expect(dns['nameserver'], ['1.1.1.1']);
+  });
+
+  test('leaves the profile system DNS setting alone when off', () async {
+    final dns = await _dnsOf(
+      rawConfig: {
+        'dns': {..._profileDns, 'append-system': true},
+      },
+    );
+
+    expect(dns['append-system'], isTrue);
   });
 
   test(

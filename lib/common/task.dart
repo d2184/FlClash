@@ -354,7 +354,6 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
       ? Map<String, dynamic>.from(rawConfig['dns'] as Map)
       : <String, dynamic>{};
   final isEnableDns = rawDns['enable'] == true;
-  const systemDns = 'system://';
   if (!isEnableDns) {
     rawDns = mergeDnsOverride(
       rawDns,
@@ -366,6 +365,9 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
     overrides.dns.overrideJson(overrides.dnsOverrideKeys),
   );
   mitm.network.applyToDns(rawDns);
+  if (appendSystemDns) {
+    rawDns['append-system'] = true;
+  }
   rawConfig['dns'] = rawDns;
   final ntpOverride = overrides.ntp.overrideJson(overrides.ntpOverrideKeys);
   if (ntpOverride.isNotEmpty) {
@@ -373,14 +375,6 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
         ? Map<String, dynamic>.from(rawConfig['ntp'] as Map)
         : <String, dynamic>{};
     rawConfig['ntp'] = {...rawNtp, ...ntpOverride};
-  }
-  if (appendSystemDns) {
-    final List<String> nameserver = List<String>.from(
-      rawConfig['dns']['nameserver'] ?? [],
-    );
-    if (!nameserver.contains(systemDns)) {
-      rawConfig['dns']['nameserver'] = [...nameserver, systemDns];
-    }
   }
   if (data.safeMode) {
     rawConfig['listeners'] = [];

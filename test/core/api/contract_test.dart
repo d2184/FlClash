@@ -22,6 +22,8 @@ const _notCalledByDart = {
   'proxy.states',
   'rule.list',
   'mitm.readModule',
+  'mitm.moduleStatus',
+  'mitm.fetchModule',
 };
 
 /// The schema types its answer as optional where the core always fills it, so

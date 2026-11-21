@@ -217,6 +217,7 @@ String _setting(String path) {
     'keys' when key == 'mitm' => 'MITM',
     'keys' when defaultClashConfig.toJson().containsKey(key) => 'general',
     'keys' when key == 'authentication' => 'network',
+    'dns' when key == 'append-system' => 'app DNS',
     'dns' ||
     'dns.fallback-filter' when picks(DnsOverrideKey.values) => 'DNS override',
     'tun' when picks(TunOverrideKey.values) => 'TUN override',

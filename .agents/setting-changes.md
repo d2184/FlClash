@@ -56,7 +56,8 @@ Prefer update whenever the Core has a setter for the setting, because an apply r
 rebuilds the profile YAML and hands it to the Core's `config.apply` through `setupConfig`. The provider holds three values:
 
 - `PatchClashConfig.setupOnly`: the config with every field that update carries reset to its default.
-- `NetworkProps.appendSystemDns`.
+- `NetworkProps.appendSystemDns`, which sets `dns.append-system` when on. The Core appends its system
+  resolver after applying MITM DNS changes; off leaves the profile's own resolver settings intact.
 - `NetworkProps.bypassPrivateRoute` on desktop, where the task adds the private ranges to the TUN's final
   `route-exclude-address`.
 
